@@ -328,21 +328,20 @@
             margin-top: 0.3rem;
         }
 
-        /* ----- SLIDERS ----- */
-        .slider-group {
+        /* ----- SLIDERS - one per row ----- */
+        .slider-group-vertical {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem 1rem;
+            flex-direction: column;
+            gap: 0.5rem;
             margin-top: 0.3rem;
         }
         .slider-item {
-            flex: 1 1 140px;
-            min-width: 120px;
+            width: 100%;
         }
         .slider-item label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             font-weight: 500;
             color: #0b2a4e;
             margin-bottom: 0.05rem;
@@ -457,7 +456,6 @@
         @media (max-width: 1000px) {
             .grid { grid-template-columns: 1fr; gap: 0.6rem; }
             .two-col { grid-template-columns: 1fr; }
-            .slider-item { flex: 1 1 100%; }
         }
         @media (max-width: 600px) {
             .infographic { padding: 0.8rem; max-height: 100vh; }
@@ -484,6 +482,7 @@
         <div class="tab-bar">
             <button class="tab active" data-lever="lever1"><i class="fas fa-plane-departure"></i> Lever 1 · Park & Fly</button>
             <button class="tab" data-lever="lever2"><i class="fas fa-share-alt"></i> Lever 2 · Park-Slash</button>
+            <button class="tab" data-lever="lever3"><i class="fas fa-robot"></i> Lever 3 · AVP Sandbox</button>
             <span class="tab placeholder"><i class="fas fa-chart-pie"></i> Business models</span>
         </div>
     </div>
@@ -492,12 +491,10 @@
     <div class="scrollable-content">
 
         <!-- ========================================================== -->
-        <!-- LEVER 1 -->
+        <!-- LEVER 1: PARK & FLY -->
         <!-- ========================================================== -->
         <div id="lever1" class="lever-content active">
             <div class="grid">
-
-                <!-- Card 1 -->
                 <div class="card">
                     <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
                     <ul>
@@ -506,8 +503,6 @@
                         <li><i class="fas fa-tag"></i> <span><strong>Price‑sensitive segment</strong> · convert airport parkers & taxi users</span></li>
                     </ul>
                 </div>
-
-                <!-- Card 2 -->
                 <div class="card">
                     <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
                     <ul>
@@ -517,8 +512,6 @@
                         <li><i class="fas fa-clock"></i> <span><strong>Peak manpower</strong> · reservation + gig drivers + dynamic pricing</span></li>
                     </ul>
                 </div>
-
-                <!-- Card 3: Operations -->
                 <div class="card card-full">
                     <div class="card-title"><i class="fas fa-route"></i> Operations · Zero‑shuttle valet</div>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; align-items: center;">
@@ -541,8 +534,6 @@
                         <i class="fas fa-check-circle" style="color: #1f6f4a;"></i> 100% resource efficiency · no shuttle bus
                     </div>
                 </div>
-
-                <!-- Card 4: Assumptions -->
                 <div class="card">
                     <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions & Sensitivity</div>
                     <ul class="assumption-list">
@@ -555,7 +546,7 @@
                             <div style="font-size: 0.75rem; font-weight: 600; color: #0b2a4e;"><i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust parameters</div>
                             <button class="reset-btn" id="resetLever1"><i class="fas fa-undo"></i> Reset</button>
                         </div>
-                        <div class="slider-group">
+                        <div class="slider-group-vertical">
                             <div class="slider-item"><label>Daily trips <span id="l1TripsValue">45</span></label><input type="range" id="l1TripsSlider" min="15" max="90" value="45" step="1"></div>
                             <div class="slider-item"><label>Valet fee (HK$) <span id="l1FeeValue">200</span></label><input type="range" id="l1FeeSlider" min="120" max="300" value="200" step="5"></div>
                             <div class="slider-item"><label>Rebate rate <span id="l1RebateValue">7.5%</span></label><input type="range" id="l1RebateSlider" min="3" max="12" value="7.5" step="0.5"></div>
@@ -563,23 +554,18 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Card 5: Financials -->
                 <div class="card" id="lever1Financials">
                     <div class="card-title"><i class="fas fa-chart-simple"></i> Financial estimates</div>
                     <div id="lever1Stats" style="display: flex; flex-direction: column; gap: 0.4rem;"></div>
                 </div>
-
             </div>
         </div>
 
         <!-- ========================================================== -->
-        <!-- LEVER 2 -->
+        <!-- LEVER 2: PARK-SLASH -->
         <!-- ========================================================== -->
         <div id="lever2" class="lever-content">
             <div class="grid">
-
-                <!-- Card 1 -->
                 <div class="card">
                     <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
                     <ul>
@@ -589,8 +575,6 @@
                         <li><i class="fas fa-store"></i> <span><strong>Retail flywheel</strong> · Drives HK$284k/month incremental retail sales</span></li>
                     </ul>
                 </div>
-
-                <!-- Card 2 -->
                 <div class="card">
                     <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
                     <ul>
@@ -600,8 +584,6 @@
                         <li><i class="fas fa-robot"></i> <span><strong>Anti-fraud automation</strong> · ANPR + receipt-upload for spend validation</span></li>
                     </ul>
                 </div>
-
-                <!-- Card 3: Operations -->
                 <div class="card card-full">
                     <div class="card-title"><i class="fas fa-route"></i> Operations · Auto-pilot</div>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; align-items: center;">
@@ -624,8 +606,6 @@
                         <i class="fas fa-check-circle" style="color: #1f6f4a;"></i> Fully automated · receipt-upload validation
                     </div>
                 </div>
-
-                <!-- Card 4: Assumptions -->
                 <div class="card">
                     <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions & Sensitivity</div>
                     <ul class="assumption-list">
@@ -639,7 +619,7 @@
                             <div style="font-size: 0.75rem; font-weight: 600; color: #0b2a4e;"><i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust parameters</div>
                             <button class="reset-btn" id="resetLever2"><i class="fas fa-undo"></i> Reset</button>
                         </div>
-                        <div class="slider-group">
+                        <div class="slider-group-vertical">
                             <div class="slider-item"><label>Monthly trips <span id="l2TripsValue">1,500</span></label><input type="range" id="l2TripsSlider" min="500" max="3000" value="1500" step="50"></div>
                             <div class="slider-item"><label>Rent credit (HK$/hr) <span id="l2CreditValue">2.00</span></label><input type="range" id="l2CreditSlider" min="1.0" max="3.5" value="2.0" step="0.1"></div>
                             <div class="slider-item"><label>Free-rider leakage <span id="l2LeakageValue">10%</span></label><input type="range" id="l2LeakageSlider" min="5" max="20" value="10" step="1"></div>
@@ -647,11 +627,92 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Card 5: Financials -->
                 <div class="card" id="lever2Financials">
                     <div class="card-title"><i class="fas fa-chart-simple"></i> Financial estimates</div>
                     <div id="lever2Stats" style="display: flex; flex-direction: column; gap: 0.4rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- LEVER 3: AVP R&D SANDBOX (UPDATED) -->
+        <!-- ========================================================== -->
+        <div id="lever3" class="lever-content">
+            <div class="grid">
+
+                <!-- Card 1: Opportunities -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> <span><strong>Strategic site: Shatin/Tai Po MSCP</strong> · Proximity to HKSTP – ideal for AVP pilot collaboration with EV tech partners</span></li>
+                        <li><i class="fas fa-layer-group"></i> <span><strong>Upper-floor yield optimisation</strong> · Dedicate <strong>L5 & L6 (200 bays)</strong> as AVP sandbox – zero impact on L1–L4 public parking</span></li>
+                        <li><i class="fas fa-mountain"></i> <span><strong>Real-world edge cases</strong> · Compact bays · steep spiral ramps · GPS-denied multi‑floor environment – invaluable for AVP algorithm training</span></li>
+                        <li><i class="fas fa-star"></i> <span><strong>Future customer willingness‑to‑pay</strong> · Post‑pilot, AVP‑enabled car parks command premium pricing as customers pay for drop‑off & auto‑park convenience</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 2: Considerations -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
+                    <ul>
+                        <li><i class="fas fa-gavel"></i> <span><strong>Regulatory & licensing</strong> · AV Pilot Licence from Transport Department required · 6‑month lobbying & permit acquisition phase</span></li>
+                        <li><i class="fas fa-shield"></i> <span><strong>Liability & risk isolation</strong> · Tenant partners must carry full third‑party insurance · indemnity clauses protect Link REIT</span></li>
+                        <li><i class="fas fa-lock"></i> <span><strong>Data privacy & security</strong> · All footage anonymised via Edge AI · complies with HK Privacy Ordinance</span></li>
+                        <li><i class="fas fa-arrows-up-down"></i> <span><strong>Physical isolation</strong> · Automated bollards at L4/L5 ramp · clear signage preventing public entry to L5–L6</span></li>
+                    </ul>
+                    <div style="margin-top:0.3rem;font-size:0.7rem;color:#7a5f2e;background:#f1e9d8;border-radius:30px;padding:0.1rem 0.6rem;display:inline-block;">
+                        <i class="fas fa-scale-balanced"></i> Legal Disclaimer: All regulatory provisions subject to Link REIT Legal Department review
+                    </div>
+                </div>
+
+                <!-- Card 3: Operations (updated timeline) -->
+                <div class="card card-full">
+                    <div class="card-title"><i class="fas fa-route"></i> Operations · 5‑year horizon</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; align-items: center;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.2rem 0.4rem; align-items: center; font-size: 0.82rem;">
+                            <span class="flow-step"><i class="fas fa-handshake"></i> M1–6: Lobby TB for permit</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step"><i class="fas fa-file-signature"></i> M7–12: Master Lease + build</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step"><i class="fas fa-flask"></i> Y2–4: Pilot operations</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step"><i class="fas fa-rocket"></i> Y5+: Commercial roll‑out</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; margin-top: 0.3rem; font-size: 0.72rem;">
+                        <span style="background:#dce8f5;border-radius:40px;padding:0.08rem 0.6rem;"><i class="fas fa-gavel"></i> 6‑month TB lobbying</span>
+                        <span style="background:#dce8f5;border-radius:40px;padding:0.08rem 0.6rem;"><i class="fas fa-file-contract"></i> 5‑year Master Lease</span>
+                        <span style="background:#dce8f5;border-radius:40px;padding:0.08rem 0.6rem;"><i class="fas fa-chart-line"></i> Post‑pilot commercialisation</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Assumptions + Sliders (one per row) -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions & Sensitivity</div>
+                    <ul class="assumption-list">
+                        <li><strong>Zero CapEx for Link:</strong> All hardware & infrastructure funded by EV partners</li>
+                        <li><strong>5‑year Master Lease:</strong> Fixed term · B2B wholesale pricing</li>
+                        <li><strong>Isolation:</strong> L5–L6 restricted · public uses L1–L4 · zero disruption</li>
+                        <li><strong>Post‑pilot value uplift:</strong> AVP‑enabled sites command premium pricing due to customer convenience</li>
+                    </ul>
+                    <div style="margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid #e3ebf4;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; flex-wrap: wrap; gap: 0.2rem;">
+                            <div style="font-size: 0.75rem; font-weight: 600; color: #0b2a4e;"><i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust parameters</div>
+                            <button class="reset-btn" id="resetLever3"><i class="fas fa-undo"></i> Reset</button>
+                        </div>
+                        <div class="slider-group-vertical">
+                            <div class="slider-item"><label>Bays leased <span id="l3BaysValue">200</span></label><input type="range" id="l3BaysSlider" min="100" max="400" value="200" step="10"></div>
+                            <div class="slider-item"><label>Monthly rent (HK$/bay) <span id="l3RentValue">1,000</span></label><input type="range" id="l3RentSlider" min="500" max="2000" value="1000" step="50"></div>
+                            <div class="slider-item"><label>Lease term (years) <span id="l3TermValue">5</span></label><input type="range" id="l3TermSlider" min="3" max="7" value="5" step="0.5"></div>
+                            <div class="slider-item"><label>Post‑pilot price premium (%) <span id="l3PremiumValue">15%</span></label><input type="range" id="l3PremiumSlider" min="5" max="35" value="15" step="1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5: Financials (refocused on customer willingness‑to‑pay) -->
+                <div class="card" id="lever3Financials">
+                    <div class="card-title"><i class="fas fa-chart-simple"></i> Financial estimates</div>
+                    <div id="lever3Stats" style="display: flex; flex-direction: column; gap: 0.4rem;"></div>
                 </div>
 
             </div>
@@ -659,7 +720,7 @@
 
         <!-- Footer -->
         <div class="bottom-bar">
-            <span class="left"><i class="far fa-file-lines"></i> Two strategic levers · click tabs to switch · sliders update live</span>
+            <span class="left"><i class="far fa-file-lines"></i> Three strategic levers · click tabs to switch · sliders update live</span>
             <span class="right"><i class="fas fa-building-columns" style="color: #b68b40;"></i> Link REIT · Car Park Portfolio</span>
         </div>
 
@@ -672,7 +733,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ----- TAB SWITCHING -----
     const tabs = document.querySelectorAll('.tab[data-lever]');
-    const contents = { lever1: document.getElementById('lever1'), lever2: document.getElementById('lever2') };
+    const contents = {
+        lever1: document.getElementById('lever1'),
+        lever2: document.getElementById('lever2'),
+        lever3: document.getElementById('lever3')
+    };
+
     function switchLever(id) {
         tabs.forEach(t => t.classList.toggle('active', t.dataset.lever === id));
         Object.keys(contents).forEach(k => contents[k].classList.toggle('active', k === id));
@@ -844,6 +910,93 @@ document.addEventListener('DOMContentLoaded', function() {
         updateL2();
     });
     updateL2();
+
+    // ================================================================
+    // LEVER 3 (UPDATED)
+    // ================================================================
+    const l3D = { bays: 200, rent: 1000, term: 5, premium: 15 };
+    function updateL3() {
+        const bays = parseInt(document.getElementById('l3BaysSlider').value);
+        const rent = parseFloat(document.getElementById('l3RentSlider').value);
+        const term = parseFloat(document.getElementById('l3TermSlider').value);
+        const premium = parseFloat(document.getElementById('l3PremiumSlider').value);
+
+        document.getElementById('l3BaysValue').textContent = bays;
+        document.getElementById('l3RentValue').textContent = rent.toLocaleString();
+        document.getElementById('l3TermValue').textContent = term;
+        document.getElementById('l3PremiumValue').textContent = premium + '%';
+
+        // Current rental income during pilot
+        const monthlyRevenue = bays * rent;
+        const annualRevenue = monthlyRevenue * 12;
+        const totalLeaseRevenue = annualRevenue * term;
+
+        // Post-pilot value uplift: AVP-enabled sites command premium pricing
+        // Assume 200 bays x HK$2,000 avg monthly rate (current market) x premium %
+        const currentMarketRate = 2000;
+        const upliftedRate = currentMarketRate * (1 + premium / 100);
+        const incrementalPerBay = upliftedRate - currentMarketRate;
+        const totalIncrementalMonthly = bays * incrementalPerBay;
+        const totalIncrementalAnnual = totalIncrementalMonthly * 12;
+
+        // Popularity gain: assume 20% of customers prefer AVP-enabled sites
+        const popularityGain = 20; // % of customers willing to pay premium
+
+        const container = document.getElementById('lever3Stats');
+        container.innerHTML = `
+            <div class="stat-block">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span class="stat-label"><i class="fas fa-flask"></i> Pilot phase · ${term}‑year lease</span>
+                    <span style="background:#f1e9d8;border-radius:30px;padding:0.05rem 0.6rem;font-size:0.7rem;color:#7a5f2e;">B2B wholesale</span>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:0.4rem 1rem;margin-top:0.1rem;">
+                    <div><span class="stat-label">Monthly rental income</span> <div class="stat-number">HK$${monthlyRevenue.toLocaleString()}</div></div>
+                    <div><span class="stat-label">Annual rental income</span> <div class="stat-number green">HK$${Math.round(annualRevenue).toLocaleString()}</div></div>
+                    <div><span class="stat-label">Total lease value</span> <div class="stat-number gold">HK$${Math.round(totalLeaseRevenue).toLocaleString()}</div></div>
+                </div>
+                <div style="font-size:0.68rem;color:#1f4d6e;margin-top:0.05rem;"><i class="fas fa-arrow-right"></i> ${bays} bays · HK$${rent}/bay/mo · ${term}‑year term</div>
+            </div>
+            <div class="stat-block" style="background:#f3f8fe;">
+                <div style="display:flex;justify-content:space-between;">
+                    <span class="stat-label"><i class="fas fa-rocket"></i> Post‑pilot commercialisation (Year 5+)</span>
+                    <span style="background:#f1e9d8;border-radius:30px;padding:0.05rem 0.6rem;font-size:0.7rem;color:#7a5f2e;">${premium}% price premium</span>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:0.4rem 1rem;margin-top:0.1rem;">
+                    <div><span class="stat-label">Current market rate</span> <div class="stat-number">HK$${currentMarketRate.toLocaleString()}/bay</div></div>
+                    <div><span class="stat-label">AVP‑enabled rate</span> <div class="stat-number gold">HK$${Math.round(upliftedRate).toLocaleString()}/bay</div></div>
+                    <div><span class="stat-label">Incremental / bay / mo</span> <div class="stat-number green">HK$${Math.round(incrementalPerBay).toLocaleString()}</div></div>
+                    <div><span class="stat-label">Total incremental / mo</span> <div class="stat-number gold">HK$${Math.round(totalIncrementalMonthly).toLocaleString()}</div></div>
+                </div>
+                <div style="font-size:0.68rem;color:#1f4d6e;margin-top:0.05rem;"><i class="fas fa-arrow-right"></i> Annualised incremental revenue: <strong>HK$${Math.round(totalIncrementalAnnual).toLocaleString()}</strong></div>
+            </div>
+            <div class="stat-block" style="background:#fafcfe;border:1px solid #e6edf5;">
+                <span class="stat-label"><i class="fas fa-users"></i> Customer willingness‑to‑pay & popularity gain</span>
+                <div style="display:flex;flex-wrap:wrap;gap:0.4rem 1rem;align-items:baseline;margin-top:0.1rem;">
+                    <div><span class="stat-label">Customers preferring AVP</span> <div class="stat-number">${popularityGain}%</div></div>
+                    <div><span class="stat-label">Estimated additional occupancy</span> <div class="stat-number green">+${Math.round(popularityGain * 0.6)}%</div></div>
+                    <div><span class="stat-label">Brand value uplift</span> <div class="stat-number gold">High</div></div>
+                </div>
+                <div style="font-size:0.68rem;color:#1f4d6e;margin-top:0.05rem;"><i class="fas fa-star"></i> AVP‑enabled car parks become destination car parks · customers pay for convenience</div>
+            </div>
+            <div style="background:#0b2a4e;border-radius:12px;padding:0.4rem 1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.3rem;margin-top:0.15rem;">
+                <span style="color:#b68b40;font-size:0.75rem;font-weight:600;"><i class="fas fa-circle-dollar"></i> TOTAL INCREMENTAL</span>
+                <span style="color:white;font-size:1.4rem;font-weight:700;">HK$${Math.round(totalIncrementalMonthly).toLocaleString()} <span style="font-size:0.85rem;color:#b68b40;">/mo</span></span>
+                <span style="color:#b68b40;font-size:1.2rem;font-weight:700;">HK$${Math.round(totalIncrementalAnnual).toLocaleString()} <span style="font-size:0.85rem;color:#b68b40;">/yr</span></span>
+                <span style="color:#b68b40;font-size:1.0rem;font-weight:700;">post‑pilot</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:0.3rem;font-size:0.68rem;color:#2f4b74;background:#f1f7fe;border-radius:30px;padding:0.15rem 0.8rem;margin-top:0.1rem;">
+                <span><strong>Pilot:</strong> ${term}‑year lease · HK$${rent}/bay/mo</span>
+                <span><strong>Post‑pilot premium:</strong> ${premium}%</span>
+                <span><strong>Customer preference:</strong> ${popularityGain}%</span>
+            </div>
+        `;
+    }
+    ['l3BaysSlider','l3RentSlider','l3TermSlider','l3PremiumSlider'].forEach(id => document.getElementById(id).addEventListener('input', updateL3));
+    document.getElementById('resetLever3').addEventListener('click', function() {
+        ['l3BaysSlider','l3RentSlider','l3TermSlider','l3PremiumSlider'].forEach((id,i) => document.getElementById(id).value = Object.values(l3D)[i]);
+        updateL3();
+    });
+    updateL3();
 
 });
 </script>
