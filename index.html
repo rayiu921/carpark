@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Park & Fly · Link REIT</title>
-    <!-- Font Awesome -->
+    <title>Link REIT · Car Park Levers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ----- RESET & BASE ----- */
@@ -54,14 +53,12 @@
             gap: 0.75rem;
         }
 
-        /* Logo image - uses the path you provided */
         .logo-image {
             height: 48px;
             width: auto;
             display: block;
         }
 
-        /* Fallback text in case image doesn't load */
         .logo-fallback {
             display: none;
             background: #0b2a4e;
@@ -73,7 +70,6 @@
         }
         .logo-fallback span { color: #b68b40; }
 
-        /* Show fallback text when image fails to load */
         .logo-image:not([src]), 
         .logo-image[src=""],
         .logo-image[src*="error"] {
@@ -105,7 +101,7 @@
         }
         .header-tag i { color: #b68b40; }
 
-        /* ----- TABS ----- */
+        /* ----- TABS (clickable) ----- */
         .tab-bar {
             display: flex;
             gap: 0.5rem;
@@ -125,29 +121,45 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            cursor: default;
+            cursor: pointer;
             letter-spacing: 0.01em;
+            border: none;
+            transition: all 0.15s ease;
+            user-select: none;
         }
         .tab i { font-size: 0.9rem; opacity: 0.7; }
+        .tab:hover { background: #dce6f0; }
         .tab.active {
             background: #0b2a4e;
             color: white;
             box-shadow: 0 4px 10px rgba(11, 42, 78, 0.12);
+            cursor: default;
         }
         .tab.placeholder {
             background: transparent;
             border: 1px dashed #b6c8db;
             color: #2f4b74;
             opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .tab.placeholder:hover { background: transparent; }
+
+        /* ----- LEVER CONTENT (show/hide) ----- */
+        .lever-content {
+            display: none;
+        }
+        .lever-content.active {
+            display: block;
         }
 
-        /* ----- GRID ----- */
+        /* ----- GRID: consistent 2-column layout ----- */
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.8rem;
         }
 
+        /* ----- CARDS: consistent styling ----- */
         .card {
             background: white;
             border-radius: 24px;
@@ -156,6 +168,11 @@
             border: 1px solid #e9eff5;
         }
 
+        .card-full {
+            grid-column: 1 / -1;
+        }
+
+        /* ----- CARD TITLES: consistent naming ----- */
         .card-title {
             font-size: 1rem;
             font-weight: 700;
@@ -174,6 +191,7 @@
             width: 1.8rem;
         }
 
+        /* ----- REUSABLE STYLES ----- */
         .tag {
             display: inline-block;
             background: #e5edf7;
@@ -247,6 +265,8 @@
             line-height: 1.2;
         }
         .stat-number.gold { color: #b68b40; }
+        .stat-number.green { color: #0c6b4b; }
+        .stat-number.red { color: #b34040; }
         .stat-label {
             font-size: 0.78rem;
             color: #2f4b74;
@@ -279,7 +299,7 @@
 
         .grid-full { grid-column: 1 / -1; }
 
-        /* Pricing */
+        /* Pricing grids */
         .pricing-grid {
             display: flex;
             flex-wrap: wrap;
@@ -303,7 +323,7 @@
             font-weight: 600;
         }
 
-        /* Assumptions - clean list */
+        /* Assumptions */
         .assumption-list {
             list-style: none;
             margin: 0;
@@ -340,6 +360,85 @@
             letter-spacing: 0.02em;
         }
 
+        /* ----- SLIDERS ----- */
+        .slider-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 1.8rem;
+            margin-top: 0.5rem;
+        }
+        .slider-item {
+            flex: 1 1 180px;
+            min-width: 150px;
+        }
+        .slider-item label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #0b2a4e;
+            margin-bottom: 0.2rem;
+        }
+        .slider-item label span {
+            color: #b68b40;
+            font-weight: 700;
+        }
+        .slider-item input[type="range"] {
+            width: 100%;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #dce5ef;
+            border-radius: 4px;
+            outline: none;
+            transition: background 0.2s;
+        }
+        .slider-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #0b2a4e;
+            cursor: pointer;
+            border: 2px solid #b68b40;
+        }
+        .slider-item input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #0b2a4e;
+            cursor: pointer;
+            border: 2px solid #b68b40;
+        }
+        .slider-value {
+            font-weight: 600;
+            color: #0b2a4e;
+            font-size: 0.85rem;
+        }
+
+        /* Reset button */
+        .reset-btn {
+            background: #0b2a4e;
+            color: white;
+            border: none;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .reset-btn:hover {
+            background: #1a3f6a;
+        }
+        .reset-btn i {
+            color: #b68b40;
+        }
+
         /* Bottom */
         .bottom-bar {
             display: flex;
@@ -366,6 +465,7 @@
         @media (max-width: 1000px) {
             .grid { grid-template-columns: 1fr; gap: 1.5rem; }
             .two-col { grid-template-columns: 1fr; }
+            .slider-item { flex: 1 1 100%; }
         }
         @media (max-width: 600px) {
             .infographic { padding: 1.2rem; }
@@ -379,192 +479,494 @@
 
 <div class="infographic">
 
-    <!-- ===== HEADER WITH LOGO ===== -->
+    <!-- ===== HEADER ===== -->
     <div class="header-bar">
         <div class="logo-area">
-            <!-- Logo image: using the path you provided -->
             <img 
                 class="logo-image" 
                 src="https://rayiu921.github.io/carpark/linklogo.jpeg" 
                 alt="Link REIT Logo"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
             />
-            <!-- Fallback text (shown if image fails to load) -->
             <span class="logo-fallback">Link <span>REIT</span></span>
             <span class="logo-sub">· Car Park Portfolio</span>
         </div>
         <div class="header-tag">
-            <i class="fas fa-flag"></i> Lever 1 · Park & Fly
+            <i class="fas fa-flag"></i> Strategic Levers
         </div>
     </div>
 
     <!-- ===== TABS ===== -->
     <div class="tab-bar">
-        <span class="tab active"><i class="fas fa-plane-departure"></i> Lever 1 · Park & Fly</span>
-        <span class="tab placeholder"><i class="fas fa-plus-circle"></i> Lever 2 · EV</span>
-        <span class="tab placeholder"><i class="fas fa-chart-pie"></i> Business models</span>
+        <button class="tab active" data-lever="lever1">
+            <i class="fas fa-plane-departure"></i> Lever 1 · Park & Fly
+        </button>
+        <button class="tab" data-lever="lever2">
+            <i class="fas fa-share-alt"></i> Lever 2 · Park-Slash
+        </button>
+        <span class="tab placeholder">
+            <i class="fas fa-chart-pie"></i> Business models
+        </span>
     </div>
 
-    <!-- ===== GRID ===== -->
-    <div class="grid">
+    <!-- ============================================================ -->
+    <!-- LEVER 1 CONTENT -->
+    <!-- ============================================================ -->
+    <div id="lever1" class="lever-content active">
+        <div class="grid">
 
-        <!-- LEFT: Opportunities + Considerations -->
-        <div class="card">
-            <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
-            <ul>
-                <li><i class="fas fa-circle"></i> <span><strong>HKIA long-stay pain</strong> · CP4 5d HK$1,162 / 7d HK$1,674</span></li>
-                <li><i class="fas fa-location-dot"></i> <span><strong>Tung Chung asset arbitrage</strong> · Link REIT car parks (Fu Tung, Yat Tung, Mun Tung) 8–10 min from airport, unlock high-floor low‑use spaces</span></li>
-                <li><i class="fas fa-tag"></i> <span><strong>Price‑sensitive segment</strong> · convert airport parkers & taxi users via disruptive pricing + seamless service</span></li>
-            </ul>
-
-            <div class="card-title" style="margin-top: 1.8rem;"><i class="fas fa-scale-balanced"></i> Considerations</div>
-            <ul>
-                <li><i class="fas fa-arrow-trend-down"></i> <span><strong>Standard daily rate lacks punch</strong> (HK$130/155 → only ~20% saving). <span class="tag">Regressive tariff</span> 5–6折 vs airport</span></li>
-                <li><i class="fas fa-receipt"></i> <span><strong>Tiered rebate</strong> 5%–10% (avg 7.5%) to incentivise valet operators, based on annual volume</span></li>
-                <li><i class="fas fa-gavel"></i> <span><strong>Legal shield</strong> · Cap. 374 <em>“illegal carriage for hire”</em> risk. <span class="badge">Compliance</span> <strong>owner‑drives</strong> to T1 (valet as passenger); on return passenger drives from CP4 to Tung Chung. Zero illegal‑hire exposure.</span></li>
-                <li><i class="fas fa-clock"></i> <span><strong>Peak manpower</strong> · reservation system + Tung Chung gig drivers (surge team) + dynamic peak pricing</span></li>
-            </ul>
-
-            <!-- Regressive tariff -->
-            <div style="margin-top: 1.2rem; border-top: 1px solid #e3ebf4; padding-top: 1rem;">
-                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.3rem;">
-                    <i class="fas fa-tags" style="color: #b68b40;"></i>
-                    <span style="font-weight: 600; font-size: 0.9rem; color: #0b2a4e;">Regressive tariff · 5‑day avg HK$98/d</span>
-                </div>
-                <div class="pricing-grid">
-                    <span class="pricing-item"><strong>D1</strong> HK$130/155</span>
-                    <span class="pricing-item"><strong>D2‑3</strong> HK$100/d</span>
-                    <span class="pricing-item"><strong>D4+</strong> <span class="highlight">HK$80/d</span></span>
-                    <span class="pricing-item"><strong>5‑day avg</strong> HK$98/d</span>
-                    <span class="pricing-item"><span class="tag tag-gold">vs HKIA HK$1,162</span></span>
-                </div>
+            <!-- Card 1: Opportunities -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
+                <ul>
+                    <li><i class="fas fa-circle"></i> <span><strong>HKIA long-stay pain</strong> · CP4 5d HK$1,162 / 7d HK$1,674</span></li>
+                    <li><i class="fas fa-location-dot"></i> <span><strong>Tung Chung asset arbitrage</strong> · Link REIT car parks 8–10 min from airport</span></li>
+                    <li><i class="fas fa-tag"></i> <span><strong>Price‑sensitive segment</strong> · convert airport parkers & taxi users</span></li>
+                </ul>
             </div>
-        </div>
 
-        <!-- RIGHT: Operations + Assumptions -->
-        <div class="card">
-            <div class="card-title"><i class="fas fa-route"></i> Operations · Zero‑shuttle valet</div>
-            <div style="background: #eef5fb; border-radius: 20px; padding: 0.8rem 1.2rem; margin-bottom: 1rem;">
-                <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; align-items: center; font-size: 0.82rem;">
-                    <span class="flow-step"><i class="fas fa-car"></i> Passenger drives to Link car park</span>
-                    <span class="arrow">→</span>
-                    <span class="flow-step">Valet boards, drives pax & luggage to T1</span>
-                    <span class="arrow">→</span>
-                    <span class="flow-step">Drop‑off, valet returns car to Link lot</span>
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; align-items: center; font-size: 0.82rem; margin-top: 0.5rem;">
-                    <span class="flow-step"><i class="fas fa-undo-alt"></i> Return: valet brings car to CP4 (30min free)</span>
-                    <span class="arrow">→</span>
-                    <span class="flow-step">Passenger picks up, drives to Link reception</span>
-                    <span class="arrow">→</span>
-                    <span class="flow-step">Settle bill, handover</span>
+            <!-- Card 2: Considerations -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
+                <ul>
+                    <li><i class="fas fa-arrow-trend-down"></i> <span><strong>Standard daily rate lacks punch</strong> · <span class="tag">Regressive tariff</span> 5–6折 vs airport</span></li>
+                    <li><i class="fas fa-receipt"></i> <span><strong>Tiered rebate</strong> 5%–10% (avg 7.5%) to incentivise valet operators</span></li>
+                    <li><i class="fas fa-gavel"></i> <span><strong>Legal shield</strong> · owner‑drives to T1, valet as passenger – zero illegal‑hire</span></li>
+                    <li><i class="fas fa-clock"></i> <span><strong>Peak manpower</strong> · reservation + gig drivers + dynamic pricing</span></li>
+                </ul>
+            </div>
+
+            <!-- Card 3: Operations (full width) -->
+            <div class="card card-full">
+                <div class="card-title"><i class="fas fa-route"></i> Operations · Zero‑shuttle valet</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; align-items: center;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; align-items: center; font-size: 0.82rem;">
+                        <span class="flow-step"><i class="fas fa-car"></i> Passenger drives to Link car park</span>
+                        <span class="arrow">→</span>
+                        <span class="flow-step">Valet drives pax & luggage to T1</span>
+                        <span class="arrow">→</span>
+                        <span class="flow-step">Valet returns car to Link lot</span>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; align-items: center; font-size: 0.82rem;">
+                        <span class="flow-step"><i class="fas fa-undo-alt"></i> Return: valet brings car to CP4 (30min free)</span>
+                        <span class="arrow">→</span>
+                        <span class="flow-step">Passenger drives to Link reception</span>
+                        <span class="arrow">→</span>
+                        <span class="flow-step">Settle bill, handover</span>
+                    </div>
                 </div>
                 <div style="margin-top: 0.7rem; font-size: 0.75rem; background: #dce8f5; border-radius: 40px; padding: 0.15rem 1rem; display: inline-block;">
                     <i class="fas fa-check-circle" style="color: #1f6f4a;"></i> 100% resource efficiency · no shuttle bus
                 </div>
             </div>
 
-            <!-- Assumptions -->
-            <div class="highlight-box">
-                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem;">
-                    <i class="fas fa-flag-checkered" style="color: #b68b40;"></i>
-                    <strong style="color: #0b2a4e; font-size: 0.95rem;">Assumptions</strong>
-                </div>
+            <!-- Card 4: Assumptions + Sliders -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions & Sensitivity</div>
                 <ul class="assumption-list">
                     <li><strong>Regressive tariff:</strong> D1 HK$130/155; D2‑3 HK$100/d; D4+ <span class="inline-tag">HK$80/d</span> → 5‑day avg <strong>HK$98/d</strong></li>
                     <li><strong>Compliance:</strong> passenger drives to T1 &amp; from CP4 (valet as passenger) – fully legal</li>
-                    <li><strong>Rebate:</strong> 7.5% avg to valet; dynamic valet fee HK$180 off‑peak / HK$230 peak (avg)</li>
                     <li><strong>Staff:</strong> 4‑5 full‑time + gig drivers for peak</li>
                 </ul>
-                <div style="margin-top: 0.8rem; padding-top: 0.6rem; border-top: 1px dashed #dce6f0; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
-                    <span style="font-size: 0.8rem; color: #2f4b74; font-weight: 500;">Avg valet fee</span>
-                    <span class="valet-fee-badge">HK$200</span>
+
+                <div style="margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid #e3ebf4;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.3rem;">
+                        <div style="font-size: 0.78rem; font-weight: 600; color: #0b2a4e;">
+                            <i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust parameters · financials update live
+                        </div>
+                        <button class="reset-btn" id="resetLever1"><i class="fas fa-undo"></i> Reset to default</button>
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-item">
+                            <label>Daily trips <span id="l1TripsValue">45</span></label>
+                            <input type="range" id="l1TripsSlider" min="15" max="90" value="45" step="1">
+                        </div>
+                        <div class="slider-item">
+                            <label>Avg valet fee (HK$) <span id="l1FeeValue">200</span></label>
+                            <input type="range" id="l1FeeSlider" min="120" max="300" value="200" step="5">
+                        </div>
+                        <div class="slider-item">
+                            <label>Rebate rate <span id="l1RebateValue">7.5%</span></label>
+                            <input type="range" id="l1RebateSlider" min="3" max="12" value="7.5" step="0.5">
+                        </div>
+                        <div class="slider-item">
+                            <label>Cost per trip (HK$) <span id="l1CostValue">150</span></label>
+                            <input type="range" id="l1CostSlider" min="100" max="220" value="150" step="5">
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- Card 5: Financial Estimates (live-updating) -->
+            <div class="card" id="lever1Financials">
+                <div class="card-title"><i class="fas fa-chart-simple"></i> Financial estimates</div>
+                <div id="lever1Stats" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                    <!-- dynamically updated by JavaScript -->
+                </div>
+            </div>
+
         </div>
+    </div>
 
-        <!-- FINANCIAL ESTIMATES -->
-        <div class="card grid-full">
-            <div class="card-title"><i class="fas fa-chart-simple"></i> Financial estimates</div>
-            <div class="two-col">
-                <!-- Customer -->
-                <div class="stat-block">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="stat-label"><i class="fas fa-user"></i> Customer (5‑day trip)</span>
-                        <span style="background: #f1e9d8; border-radius: 30px; padding: 0.1rem 0.8rem; font-size: 0.7rem; font-weight: 600; color: #7a5f2e;">save 42.3%</span>
+    <!-- ============================================================ -->
+    <!-- LEVER 2 CONTENT -->
+    <!-- ============================================================ -->
+    <div id="lever2" class="lever-content">
+        <div class="grid">
+
+            <!-- Card 1: Opportunities -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
+                <ul>
+                    <li><i class="fas fa-circle"></i> <span><strong>Single-estate origin, network-wide redemption</strong> · Sheung Tak Estate (500 bays) passes valid at <strong>any Link REIT car park</strong></span></li>
+                    <li><i class="fas fa-mobile-screen"></i> <span><strong>WeChat Mini-Program / H5</strong> · Zero-download friction · WhatsApp/WeChat sharing</span></li>
+                    <li><i class="fas fa-clock"></i> <span><strong>Hourly rent credit</strong> · Referring tenants earn <strong>HK$2.0/hour</strong> rent deduction</span></li>
+                    <li><i class="fas fa-store"></i> <span><strong>Retail flywheel</strong> · Drives HK$284k/month incremental retail sales</span></li>
+                </ul>
+            </div>
+
+            <!-- Card 2: Considerations -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
+                <ul>
+                    <li><i class="fas fa-clock"></i> <span><strong>Off-peak isolation</strong> · Free passes valid only <strong>weekdays 10:00–15:00</strong></span></li>
+                    <li><i class="fas fa-water"></i> <span><strong>10% free-rider leakage</strong> · Zero-consumption trips fully modelled as cost</span></li>
+                    <li><i class="fas fa-tags"></i> <span><strong>Spend-privilege overlap</strong> · HK$300 spend → HK$5/hr discounts stacked</span></li>
+                    <li><i class="fas fa-robot"></i> <span><strong>Anti-fraud automation</strong> · ANPR + receipt-upload for spend validation</span></li>
+                </ul>
+            </div>
+
+            <!-- Card 3: Operations (full width) -->
+            <div class="card card-full">
+                <div class="card-title"><i class="fas fa-route"></i> Operations · Auto-pilot</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; align-items: center;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; align-items: center; font-size: 0.82rem;">
+                        <span class="flow-step"><i class="fas fa-share"></i> Tenant shares Pass link</span>
+                        <span class="arrow">→</span>
+                        <span class="flow-step">Guest binds plate via H5</span>
+                        <span class="arrow">→</span>
+                        <span class="flow-step">ANPR auto-checks in</span>
                     </div>
-                    <div style="display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 0.3rem;">
-                        <div><span class="stat-label">HKIA total</span> <div class="stat-number">HK$1,162</div></div>
-                        <div><span class="stat-label">Park & Fly</span> <div class="stat-number" style="color: #0c6b4b;">HK$670</div></div>
-                        <div><span class="stat-label">Saving</span> <div class="stat-number gold">HK$492</div></div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; align-items: center; font-size: 0.82rem;">
+                        <span class="flow-step"><i class="fas fa-receipt"></i> 1st hour free; extra auto-billed</span>
+                        <span class="arrow">→</span>
+                        <span class="flow-step">Receipt upload for HK$5/hr</span>
+                        <span class="arrow">→</span>
+                        <span class="flow-step">Rent credit auto-credited</span>
                     </div>
-                    <div style="font-size: 0.7rem; color: #1f4d6e; margin-top: 0.2rem;">(HK$490 parking + HK$180 valet)</div>
                 </div>
-
-                <!-- Valet Co. -->
-                <div class="stat-block">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span class="stat-label"><i class="fas fa-building"></i> Valet Co. (45 trips/day · 7.5% rebate)</span>
-                        <span style="background: #d9e6f0; border-radius: 30px; padding: 0.1rem 0.7rem; font-size: 0.7rem;">margin 36.6%</span>
-                    </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.8rem 1.5rem; margin-top: 0.2rem;">
-                        <div><span class="stat-label">Revenue / trip</span> <div class="stat-number">HK$236.75</div></div>
-                        <div><span class="stat-label">Cost / trip</span> <div class="stat-number" style="color: #1f4d6e;">HK$150</div></div>
-                        <div><span class="stat-label">Profit / trip</span> <div class="stat-number gold">HK$86.75</div></div>
-                    </div>
-                    <div style="font-size: 0.75rem; margin-top: 0.2rem;"><i class="fas fa-circle-dollar"></i> <strong>Annual net profit</strong> HK$1.425M</div>
-                </div>
-
-                <!-- Link REIT -->
-                <div class="stat-block">
-                    <span class="stat-label"><i class="fas fa-building-columns"></i> Link REIT · asset return</span>
-                    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: baseline; margin-top: 0.2rem;">
-                        <div><span class="stat-label">Net / day / space</span> <div class="stat-number">HK$90.65</div></div>
-                        <div><span class="stat-label">Annual net rent</span> <div class="stat-number" style="color: #0c5e7a;">HK$7.445M</div></div>
-                    </div>
-                    <div style="font-size: 0.7rem; color: #1f4d6e; margin-top: 0.2rem;"><i class="fas fa-circle-check"></i> zero CapEx · zero manpower risk</div>
-                </div>
-
-                <!-- Key ratios -->
-                <div class="stat-block" style="background: #f3f8fe;">
-                    <span class="stat-label"><i class="fas fa-arrows-spin"></i> Key ratios</span>
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.3rem;">
-                        <div><span class="stat-label">Avg valet fee</span> <strong>HK$200</strong></div>
-                        <div><span class="stat-label">Rebate</span> <strong>7.5%</strong></div>
-                        <div><span class="stat-label">Occupancy</span> <strong>75%</strong> (45 trips/d)</div>
-                    </div>
-                    <div style="margin-top: 0.2rem; font-size: 0.7rem;"><i class="fas fa-arrow-right"></i> Based on 300 spaces</div>
+                <div style="margin-top: 0.7rem; font-size: 0.75rem; background: #dce8f5; border-radius: 40px; padding: 0.15rem 1rem; display: inline-block;">
+                    <i class="fas fa-check-circle" style="color: #1f6f4a;"></i> Fully automated · receipt-upload validation
                 </div>
             </div>
 
-            <!-- Compliance note -->
-            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-top: 0.7rem; background: #f1f7fe; border-radius: 40px; padding: 0.4rem 1.2rem;">
-                <span><i class="fas fa-check-circle" style="color: #006b3e;"></i> <strong>Compliance</strong> · passenger drives own car to T1 & from CP4 – zero illegal‑hire</span>
-                <span class="footnote"><i class="far fa-clock"></i> Peak surge · gig driver pool</span>
+            <!-- Card 4: Assumptions + Sliders -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions & Sensitivity</div>
+                <ul class="assumption-list">
+                    <li><strong>5‑Tier driver mix:</strong> 10% Tier 0 · 35% Tier A · 30% Tier B · 15% Tier C · 10% Tier D</li>
+                    <li><strong>Rent credit:</strong> HK$2.0/hr · <strong>Cap:</strong> HK$200/mo</li>
+                    <li><strong>Free-rider leakage:</strong> 10% · <strong>Turnover rent:</strong> 12%</li>
+                    <li><strong>Tech OpEx:</strong> HK$3,500/mo · <strong>Dev CapEx:</strong> HK$250k</li>
+                </ul>
+
+                <div style="margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid #e3ebf4;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.3rem;">
+                        <div style="font-size: 0.78rem; font-weight: 600; color: #0b2a4e;">
+                            <i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust parameters · financials update live
+                        </div>
+                        <button class="reset-btn" id="resetLever2"><i class="fas fa-undo"></i> Reset to default</button>
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-item">
+                            <label>Monthly trips <span id="l2TripsValue">1,500</span></label>
+                            <input type="range" id="l2TripsSlider" min="500" max="3000" value="1500" step="50">
+                        </div>
+                        <div class="slider-item">
+                            <label>Rent credit (HK$/hr) <span id="l2CreditValue">2.00</span></label>
+                            <input type="range" id="l2CreditSlider" min="1.0" max="3.5" value="2.0" step="0.1">
+                        </div>
+                        <div class="slider-item">
+                            <label>Free-rider leakage <span id="l2LeakageValue">10%</span></label>
+                            <input type="range" id="l2LeakageSlider" min="5" max="20" value="10" step="1">
+                        </div>
+                        <div class="slider-item">
+                            <label>Turnover rent rate <span id="l2TurnoverValue">12%</span></label>
+                            <input type="range" id="l2TurnoverSlider" min="8" max="18" value="12" step="0.5">
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Card 5: Financial Estimates (live-updating) -->
+            <div class="card" id="lever2Financials">
+                <div class="card-title"><i class="fas fa-chart-simple"></i> Financial estimates · Sheung Tak pilot</div>
+                <div id="lever2Stats" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                    <!-- dynamically updated by JavaScript -->
+                </div>
+            </div>
+
         </div>
-
-        <!-- Bottom flow -->
-        <div class="card grid-full" style="background: #fafdff; border: 1px solid #dfe9f2;">
-            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem;">
-                <div><i class="fas fa-arrow-right-arrow-left" style="color: #b68b40;"></i> <strong>Two‑way valet flow</strong> (driver rides passenger’s car)</div>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; font-size: 0.8rem;">
-                    <span><span class="tag">Outbound</span> Passenger drives to T1 (valet as passenger) → valet returns car</span>
-                    <span><span class="tag">Return</span> Valet brings car to CP4 → passenger drives to reception</span>
-                </div>
-                <span style="background: #d7e5f2; border-radius: 30px; padding: 0.1rem 1rem; font-size: 0.7rem;"><i class="fas fa-bolt"></i> zero shuttle · max efficiency</span>
-            </div>
-        </div>
-
-    </div> <!-- end grid -->
+    </div>
 
     <!-- Footer -->
     <div class="bottom-bar">
-        <span class="left"><i class="far fa-file-lines"></i> Lever 1 · Park & Fly · ready for Lever 2 & business models</span>
+        <span class="left"><i class="far fa-file-lines"></i> Two strategic levers · click tabs to switch · sliders update live</span>
         <span class="right"><i class="fas fa-building-columns" style="color: #b68b40;"></i> Link REIT · Car Park Portfolio</span>
     </div>
 
 </div> <!-- end infographic -->
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // ----- TAB SWITCHING -----
+        const tabs = document.querySelectorAll('.tab[data-lever]');
+        const contents = {
+            lever1: document.getElementById('lever1'),
+            lever2: document.getElementById('lever2')
+        };
+
+        function switchLever(leverId) {
+            tabs.forEach(tab => {
+                const isActive = tab.dataset.lever === leverId;
+                tab.classList.toggle('active', isActive);
+            });
+            Object.keys(contents).forEach(key => {
+                contents[key].classList.toggle('active', key === leverId);
+            });
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const leverId = this.dataset.lever;
+                if (leverId) {
+                    switchLever(leverId);
+                }
+            });
+        });
+        switchLever('lever1');
+
+        // ================================================================
+        // LEVER 1 SENSITIVITY
+        // ================================================================
+        const l1Defaults = {
+            trips: 45,
+            fee: 200,
+            rebate: 7.5,
+            cost: 150
+        };
+
+        function updateLever1() {
+            const trips = parseInt(document.getElementById('l1TripsSlider').value);
+            const fee = parseFloat(document.getElementById('l1FeeSlider').value);
+            const rebate = parseFloat(document.getElementById('l1RebateSlider').value);
+            const cost = parseFloat(document.getElementById('l1CostSlider').value);
+
+            document.getElementById('l1TripsValue').textContent = trips;
+            document.getElementById('l1FeeValue').textContent = fee;
+            document.getElementById('l1RebateValue').textContent = rebate + '%';
+            document.getElementById('l1CostValue').textContent = cost;
+
+            // Calculations
+            const dailyTrips = trips;
+            const monthlyTrips = dailyTrips * 30;
+            const annualTrips = monthlyTrips * 12;
+
+            const rebatePerTrip = fee * (rebate / 100);
+            const revenuePerTrip = fee + rebatePerTrip;
+            const profitPerTrip = revenuePerTrip - cost;
+            const monthlyProfit = profitPerTrip * monthlyTrips;
+            const annualProfit = monthlyProfit * 12;
+            const netMargin = (profitPerTrip / revenuePerTrip) * 100;
+
+            // Customer saving (5-day trip)
+            const hkiaCost = 1162;
+            const parkingCost = 490;
+            const valetCost = fee;
+            const parkFlyTotal = parkingCost + valetCost;
+            const saving = hkiaCost - parkFlyTotal;
+            const savingPct = (saving / hkiaCost) * 100;
+
+            // Link REIT asset return (per space per day)
+            const dailyRebate = (rebate / 100) * 90.65;
+            const netPerSpace = 90.65 - dailyRebate;
+            const annualRent = netPerSpace * 300 * 365;
+
+            const container = document.getElementById('lever1Stats');
+            container.innerHTML = `
+                <div class="stat-block" style="margin:0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="stat-label"><i class="fas fa-user"></i> Customer (5‑day trip)</span>
+                        <span style="background: #f1e9d8; border-radius: 30px; padding: 0.1rem 0.8rem; font-size: 0.7rem; font-weight: 600; color: #7a5f2e;">save ${savingPct.toFixed(1)}%</span>
+                    </div>
+                    <div style="display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 0.3rem;">
+                        <div><span class="stat-label">HKIA total</span> <div class="stat-number">HK$${hkiaCost.toLocaleString()}</div></div>
+                        <div><span class="stat-label">Park & Fly</span> <div class="stat-number green">HK$${parkFlyTotal.toLocaleString()}</div></div>
+                        <div><span class="stat-label">Saving</span> <div class="stat-number gold">HK$${Math.round(saving).toLocaleString()}</div></div>
+                    </div>
+                    <div style="font-size:0.7rem;color:#1f4d6e;margin-top:0.2rem;">(HK$490 parking + HK$${valetCost} valet)</div>
+                </div>
+                <div class="stat-block" style="margin:0;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span class="stat-label"><i class="fas fa-building"></i> Valet Co. (${dailyTrips} trips/day · ${rebate}% rebate)</span>
+                        <span style="background: #d9e6f0; border-radius: 30px; padding: 0.1rem 0.7rem; font-size: 0.7rem;">margin ${netMargin.toFixed(1)}%</span>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.8rem 1.5rem; margin-top: 0.2rem;">
+                        <div><span class="stat-label">Revenue / trip</span> <div class="stat-number">HK$${revenuePerTrip.toFixed(2)}</div></div>
+                        <div><span class="stat-label">Cost / trip</span> <div class="stat-number" style="color:#1f4d6e;">HK$${cost}</div></div>
+                        <div><span class="stat-label">Profit / trip</span> <div class="stat-number gold">HK$${profitPerTrip.toFixed(2)}</div></div>
+                    </div>
+                    <div style="font-size: 0.75rem; margin-top: 0.2rem;">
+                        <i class="fas fa-circle-dollar"></i> <strong>Monthly net profit</strong> HK$${Math.round(monthlyProfit).toLocaleString()} · 
+                        <strong>Annual</strong> HK$${Math.round(annualProfit).toLocaleString()}
+                    </div>
+                </div>
+                <div class="stat-block" style="margin:0; background:#f3f8fe;">
+                    <span class="stat-label"><i class="fas fa-building-columns"></i> Link REIT · asset return</span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: baseline; margin-top: 0.2rem;">
+                        <div><span class="stat-label">Net / day / space</span> <div class="stat-number">HK$${netPerSpace.toFixed(2)}</div></div>
+                        <div><span class="stat-label">Annual net rent</span> <div class="stat-number green">HK$${Math.round(annualRent).toLocaleString()}</div></div>
+                    </div>
+                    <div style="font-size: 0.7rem; color: #1f4d6e; margin-top: 0.2rem;"><i class="fas fa-circle-check"></i> zero CapEx · zero manpower risk</div>
+                </div>
+            `;
+        }
+
+        // Attach Lever 1 sliders
+        ['l1TripsSlider', 'l1FeeSlider', 'l1RebateSlider', 'l1CostSlider'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateLever1);
+        });
+
+        // Lever 1 Reset
+        document.getElementById('resetLever1').addEventListener('click', function() {
+            document.getElementById('l1TripsSlider').value = l1Defaults.trips;
+            document.getElementById('l1FeeSlider').value = l1Defaults.fee;
+            document.getElementById('l1RebateSlider').value = l1Defaults.rebate;
+            document.getElementById('l1CostSlider').value = l1Defaults.cost;
+            updateLever1();
+        });
+
+        // Initial Lever 1 update
+        updateLever1();
+
+        // ================================================================
+        // LEVER 2 SENSITIVITY
+        // ================================================================
+        const l2Defaults = {
+            trips: 1500,
+            credit: 2.0,
+            leakage: 10,
+            turnover: 12
+        };
+
+        function updateLever2() {
+            const trips = parseInt(document.getElementById('l2TripsSlider').value);
+            const creditPerHour = parseFloat(document.getElementById('l2CreditSlider').value);
+            const leakagePct = parseInt(document.getElementById('l2LeakageSlider').value);
+            const turnoverRate = parseFloat(document.getElementById('l2TurnoverSlider').value);
+
+            document.getElementById('l2TripsValue').textContent = trips.toLocaleString();
+            document.getElementById('l2CreditValue').textContent = creditPerHour.toFixed(2);
+            document.getElementById('l2LeakageValue').textContent = leakagePct + '%';
+            document.getElementById('l2TurnoverValue').textContent = turnoverRate + '%';
+
+            // Fixed parameters
+            const tierPcts = [0.10, 0.35, 0.30, 0.15, 0.10];
+            const parkingRevenue = [0, 20, 40, 5, 10];
+            const retailSpend = [0, 200, 200, 350, 350];
+            const hoursPerTrip = [1.0, 1.5, 2.5, 2.0, 2.5];
+            const participatingTenants = 125;
+            const techOpEx = 3500;
+
+            const tripsPerTier = tierPcts.map(p => Math.round(trips * p));
+
+            let totalParkingRevenue = 0;
+            for (let i = 0; i < 5; i++) {
+                totalParkingRevenue += tripsPerTier[i] * parkingRevenue[i];
+            }
+
+            const extraLeakage = Math.max(0, (leakagePct - 10) / 100);
+            let adjustedRetailSpend = 0;
+            for (let i = 0; i < 5; i++) {
+                let spend = tripsPerTier[i] * retailSpend[i];
+                if (i > 0) {
+                    spend = spend * (1 - extraLeakage);
+                }
+                adjustedRetailSpend += spend;
+            }
+            const turnoverRent = adjustedRetailSpend * (turnoverRate / 100);
+
+            let totalCredits = 0;
+            for (let i = 0; i < 5; i++) {
+                totalCredits += tripsPerTier[i] * hoursPerTrip[i] * creditPerHour;
+            }
+            const maxTotalCredits = participatingTenants * 200;
+            totalCredits = Math.min(totalCredits, maxTotalCredits);
+
+            const netMonthly = totalParkingRevenue + turnoverRent - totalCredits - techOpEx;
+            const annualized = netMonthly * 12;
+
+            const scaleFactor = 30;
+            const scaledTrips = trips * scaleFactor;
+            const scaledNet = netMonthly * scaleFactor;
+            const scaledAnnual = scaledNet * 12;
+
+            const container = document.getElementById('lever2Stats');
+            container.innerHTML = `
+                <div class="stat-block" style="margin:0;">
+                    <span class="stat-label"><i class="fas fa-building-columns"></i> Link REIT net monthly cash flow</span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; margin-top: 0.2rem;">
+                        <div><span class="stat-label">Paid parking</span> <div class="stat-number">HK$${totalParkingRevenue.toLocaleString()}</div></div>
+                        <div><span class="stat-label">Retail rent</span> <div class="stat-number">HK$${Math.round(turnoverRent).toLocaleString()}</div></div>
+                        <div><span class="stat-label">Rent credits</span> <div class="stat-number" style="color:#b68b40;">-HK$${Math.round(totalCredits).toLocaleString()}</div></div>
+                        <div><span class="stat-label">Tech OpEx</span> <div class="stat-number" style="color:#b68b40;">-HK$${techOpEx.toLocaleString()}</div></div>
+                    </div>
+                    <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #e6edf5;">
+                        <span class="stat-label">Net monthly cash</span>
+                        <div class="stat-number gold">HK$${Math.round(netMonthly).toLocaleString()}</div>
+                        <div style="font-size: 0.7rem; color: #1f4d6e;">Annualised <strong>HK$${Math.round(annualized).toLocaleString()}</strong></div>
+                    </div>
+                </div>
+                <div class="stat-block" style="margin:0; background:#f3f8fe;">
+                    <span class="stat-label"><i class="fas fa-arrows-spin"></i> Scale-up · 30 estates</span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; margin-top: 0.2rem;">
+                        <div><span class="stat-label">Monthly trips</span> <div class="stat-number">${scaledTrips.toLocaleString()}</div></div>
+                        <div><span class="stat-label">Net monthly cash</span> <div class="stat-number gold">HK$${Math.round(scaledNet).toLocaleString()}</div></div>
+                        <div><span class="stat-label">Annualised</span> <div class="stat-number gold">HK$${Math.round(scaledAnnual).toLocaleString()}</div></div>
+                    </div>
+                    <div style="font-size: 0.7rem; color: #1f4d6e; margin-top: 0.2rem;">
+                        <i class="fas fa-arrow-right"></i> ${participatingTenants} tenants · ${tripsPerTier.reduce((a,b) => a+b, 0)} total trips
+                    </div>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.7rem; color: #2f4b74; background: #f1f7fe; border-radius: 30px; padding: 0.3rem 1rem; margin-top:0.2rem;">
+                    <span><strong>Avg parking/trip:</strong> HK$${(totalParkingRevenue / trips).toFixed(2)}</span>
+                    <span><strong>Avg retail/trip:</strong> HK$${(adjustedRetailSpend / trips).toFixed(0)}</span>
+                    <span><strong>Avg credit/trip:</strong> HK$${(totalCredits / trips).toFixed(2)}</span>
+                </div>
+            `;
+        }
+
+        // Attach Lever 2 sliders
+        ['l2TripsSlider', 'l2CreditSlider', 'l2LeakageSlider', 'l2TurnoverSlider'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateLever2);
+        });
+
+        // Lever 2 Reset
+        document.getElementById('resetLever2').addEventListener('click', function() {
+            document.getElementById('l2TripsSlider').value = l2Defaults.trips;
+            document.getElementById('l2CreditSlider').value = l2Defaults.credit;
+            document.getElementById('l2LeakageSlider').value = l2Defaults.leakage;
+            document.getElementById('l2TurnoverSlider').value = l2Defaults.turnover;
+            updateLever2();
+        });
+
+        // Initial Lever 2 update
+        updateLever2();
+
+    });
+</script>
 
 </body>
 </html>
