@@ -6,1246 +6,251 @@
     <title>Link REIT · Car Park Portfolio Strategy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-        body {
-            background: #eef2f7;
-            display: flex;
-            justify-content: center;
-            padding: 0.8rem 1rem;
-        }
-        .infographic {
-            max-width: 1500px;
-            width: 100%;
-            background: #ffffff;
-            border-radius: 22px;
-            box-shadow: 0 18px 36px -6px rgba(10, 30, 50, 0.08);
-            padding: 1.2rem 1.6rem 1.4rem;
-            border: 1px solid #dce4ed;
-            max-height: 99vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .fixed-header {
-            flex-shrink: 0;
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 10;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #eef3f8;
-        }
-        .header-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.4rem;
-            flex-wrap: wrap;
-            gap: 0.3rem;
-        }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .logo-image {
-            height: 36px;
-            width: auto;
-            display: block;
-        }
-        .logo-fallback {
-            display: none;
-            background: #0b2a4e;
-            padding: 0.25rem 0.8rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-        .logo-fallback span {
-            color: #b68b40;
-        }
-        .logo-image:not([src]),
-        .logo-image[src=""],
-        .logo-image[src*="error"] {
-            display: none;
-        }
-        .logo-image:not([src])+.logo-fallback,
-        .logo-image[src=""]+.logo-fallback,
-        .logo-image[src*="error"]+.logo-fallback {
-            display: inline-block;
-        }
-        .logo-sub {
-            font-size: 1.1rem;
-            color: #4d6f92;
-            font-weight: 500;
-            letter-spacing: 0.03em;
-        }
-        .header-tag {
-            font-size: 1.1rem;
-            color: #4d6f92;
-            background: #eef3f9;
-            padding: 0.15rem 1.0rem;
-            border-radius: 40px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        .header-tag i {
-            color: #b68b40;
-        }
-        .tab-bar {
-            display: flex;
-            gap: 0.4rem;
-            padding-bottom: 0.4rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .tab {
-            font-weight: 600;
-            font-size: 0.85rem;
-            padding: 0.2rem 0.8rem;
-            border-radius: 40px;
-            background: #eef3f9;
-            color: #1f3a5f;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            letter-spacing: 0.01em;
-            border: none;
-            transition: all 0.15s ease;
-            user-select: none;
-        }
-        .tab i {
-            font-size: 0.75rem;
-            opacity: 0.7;
-        }
-        .tab:hover {
-            background: #dce6f0;
-        }
-        .tab.active {
-            background: #0b2a4e;
-            color: white;
-            box-shadow: 0 2px 6px rgba(11, 42, 78, 0.10);
-            cursor: default;
-        }
-        .tab-dots {
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: #b6c8db;
-            letter-spacing: 2px;
-            padding: 0 0.2rem;
-            user-select: none;
-        }
-        .scrollable-content {
-            flex: 1;
-            overflow-y: scroll;
-            padding-right: 4px;
-            margin-top: 0.5rem;
-        }
-        .scrollable-content::-webkit-scrollbar {
-            width: 4px;
-        }
-        .scrollable-content::-webkit-scrollbar-thumb {
-            background: #b68b40;
-            border-radius: 4px;
-        }
-        .scrollable-content::-webkit-scrollbar-track {
-            background: #eef3f9;
-            border-radius: 4px;
-        }
-        .lever-content {
-            display: none;
-        }
-        .lever-content.active {
-            display: block;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.8rem;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 0.8rem 1.0rem;
-            box-shadow: 0 2px 8px rgba(0, 20, 40, 0.02);
-            border: 1px solid #e9eff5;
-        }
-        .card-full {
-            grid-column: 1 / -1;
-        }
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #0b2a4e;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 0.4rem;
-            border-bottom: 2px solid #dce5ef;
-            padding-bottom: 0.25rem;
-            cursor: pointer;
-        }
-        .card-title i {
-            color: #b68b40;
-            font-size: 1.2rem;
-            width: 1.6rem;
-        }
-        .card-title .site-remark {
-            font-size: 0.7rem;
-            font-weight: 400;
-            color: #5c7899;
-            margin-left: 0.2rem;
-        }
-        .card-title .expand-hint {
-            font-size: 0.7rem;
-            font-weight: 400;
-            color: #b68b40;
-            margin-left: auto;
-            opacity: 0.7;
-        }
-        ul,
-        .list {
-            list-style: none;
-            margin: 0;
-        }
-        li {
-            margin-bottom: 0.2rem;
-            font-size: 0.95rem;
-            line-height: 1.4;
-            color: #1f3349;
-            display: flex;
-            gap: 0.4rem;
-            align-items: flex-start;
-        }
-        li i {
-            color: #b68b40;
-            font-size: 0.75rem;
-            margin-top: 0.1rem;
-            width: 1.2rem;
-            text-align: center;
-        }
-        .tag {
-            display: inline-block;
-            background: #e5edf7;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 0.03rem 0.5rem;
-            color: #1a4670;
-        }
-        .tag-gold {
-            background: #f1e9d8;
-            color: #7a5f2e;
-        }
-        .tag-green {
-            background: #d8f0e6;
-            color: #0c6b4b;
-        }
-        .tag-blue {
-            background: #d8e8f5;
-            color: #1a5a7a;
-        }
-        .stat-block {
-            background: #fafcfe;
-            border-radius: 8px;
-            padding: 0.4rem 0.6rem;
-            border: 1px solid #e6edf5;
-        }
-        .stat-number {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #0b2a4e;
-            letter-spacing: -0.2px;
-            line-height: 1.2;
-        }
-        .stat-number.gold {
-            color: #b68b40;
-        }
-        .stat-number.green {
-            color: #0c6b4b;
-        }
-        .stat-number.red {
-            color: #b34040;
-        }
-        .stat-label {
-            font-size: 0.7rem;
-            color: #2f4b74;
-            font-weight: 500;
-            opacity: 0.8;
-        }
-        .slider-group-vertical {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-            margin-top: 0.25rem;
-        }
-        .slider-item {
-            width: 100%;
-        }
-        .slider-item label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #0b2a4e;
-            margin-bottom: 0.03rem;
-        }
-        .slider-item label span {
-            color: #b68b40;
-            font-weight: 700;
-        }
-        .slider-item input[type="range"] {
-            width: 100%;
-            height: 4px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: #dce5ef;
-            border-radius: 4px;
-            outline: none;
-        }
-        .slider-item input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #0b2a4e;
-            cursor: pointer;
-            border: 2px solid #b68b40;
-        }
-        .slider-item input[type="range"]::-moz-range-thumb {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #0b2a4e;
-            cursor: pointer;
-            border: 2px solid #b68b40;
-        }
-        .reset-btn {
-            background: #0b2a4e;
-            color: white;
-            border: none;
-            padding: 0.1rem 0.7rem;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.2rem;
-        }
-        .reset-btn:hover {
-            background: #1a3f6a;
-        }
-        .reset-btn i {
-            color: #b68b40;
-            font-size: 0.7rem;
-        }
-        .working-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-        }
-        .working-table th {
-            background: #0b2a4e;
-            color: white;
-            padding: 0.12rem 0.3rem;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-        .working-table td {
-            padding: 0.1rem 0.3rem;
-            border-bottom: 1px solid #e6edf5;
-            font-size: 0.8rem;
-        }
-        .working-table tr:nth-child(even) td {
-            background: #f8fafc;
-        }
-        .working-table .highlight-row td {
-            background: #f1e9d8;
-            font-weight: 700;
-        }
-        .working-expand {
-            display: none;
-            margin-top: 0.4rem;
-            padding-top: 0.4rem;
-            border-top: 2px solid #b68b40;
-        }
-        .working-expand.open {
-            display: block;
-        }
-        .bottom-bar {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.3rem;
-            margin-top: 0.4rem;
-            padding-top: 0.3rem;
-            border-top: 1px solid #e3eaf2;
-            flex-shrink: 0;
-        }
-        .bottom-bar .left {
-            font-size: 0.7rem;
-            color: #5c7899;
-        }
-        .bottom-bar .right {
-            display: flex;
-            gap: 0.4rem;
-            font-size: 0.7rem;
-            color: #5c7899;
-        }
-        .link-reit-banner {
-            background: #0b2a4e;
-            border-radius: 10px;
-            padding: 0.35rem 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.2rem;
-            margin-top: 0.1rem;
-            border-left: 4px solid #b68b40;
-        }
-        .link-reit-banner .label {
-            color: #b68b40;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .link-reit-banner .amount {
-            color: white;
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-        .link-reit-banner .amount .sub {
-            font-size: 0.7rem;
-            color: #b68b40;
-            font-weight: 400;
-        }
-        .link-reit-banner .amount .annual {
-            color: #b68b40;
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-        .link-reit-banner .amount .annual .sub {
-            font-size: 0.7rem;
-            color: #b68b40;
-            font-weight: 400;
-        }
-        .link-reit-banner .capacity-warning {
-            color: #ff6b6b;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        .flow-step {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #0b2a4e;
-            background: white;
-            padding: 0.06rem 0.6rem;
-            border-radius: 30px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-            white-space: nowrap;
-        }
-        .arrow {
-            color: #b68b40;
-            font-weight: 300;
-            margin: 0 0.05rem;
-            font-size: 0.85rem;
-        }
-        .matrix-image-wrapper {
-            display: block;
-            max-height: none;
-            min-height: auto;
-            text-align: center;
-            background: #fafcfe;
-            border-radius: 8px;
-            padding: 0.2rem;
-            border: 1px solid #e6edf5;
-        }
-        .matrix-image-wrapper img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 6px;
-            display: block;
-            margin: 0 auto;
-        }
-        .matrix-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 0.4rem;
-            min-height: 200px;
-            max-height: 260px;
-        }
-        .matrix-quadrant {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 0.3rem 0.5rem;
-            border: 1px solid #dce5ef;
-            min-height: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .matrix-quadrant .quadrant-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #4d6f92;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            margin-bottom: 0.08rem;
-        }
-        .matrix-quadrant .quadrant-sub {
-            font-size: 0.65rem;
-            color: #5c7899;
-            font-weight: 400;
-            text-transform: none;
-            letter-spacing: 0.02em;
-        }
-        .matrix-bubble {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            color: white;
-            font-weight: 700;
-            padding: 0.15rem;
-            margin: 0.06rem;
-            text-align: center;
-            line-height: 1.15;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            cursor: default;
-            vertical-align: middle;
-            position: relative;
-            transition: transform 0.1s;
-        }
-        .matrix-bubble .lever-code {
-            font-size: inherit;
-            font-weight: 800;
-            line-height: 1.1;
-        }
-        .matrix-bubble .lever-name {
-            font-size: 0.35rem;
-            font-weight: 400;
-            opacity: 0.9;
-            line-height: 1.1;
-            max-width: 100%;
-            text-align: center;
-            word-break: break-word;
-            margin-top: 0.04rem;
-        }
-        .matrix-bubble.small {
-            width: 42px;
-            height: 42px;
-            font-size: 0.65rem;
-        }
-        .matrix-bubble.small .lever-name {
-            font-size: 0.30rem;
-        }
-        .matrix-bubble.medium {
-            width: 54px;
-            height: 54px;
-            font-size: 0.75rem;
-        }
-        .matrix-bubble.medium .lever-name {
-            font-size: 0.32rem;
-        }
-        .matrix-bubble.large {
-            width: 66px;
-            height: 66px;
-            font-size: 0.85rem;
-        }
-        .matrix-bubble.large .lever-name {
-            font-size: 0.35rem;
-        }
-        .matrix-bubble.xlarge {
-            width: 80px;
-            height: 80px;
-            font-size: 0.95rem;
-        }
-        .matrix-bubble.xlarge .lever-name {
-            font-size: 0.38rem;
-        }
-        .matrix-bubble.q1 {
-            background: #0c6b4b;
-            border-color: #b68b40;
-        }
-        .matrix-bubble.q2 {
-            background: #b68b40;
-            border-color: #0b2a4e;
-        }
-        .matrix-bubble.q3 {
-            background: #1a6f7a;
-            border-color: #b68b40;
-        }
-        .matrix-bubble.q4 {
-            background: #7a2e3a;
-            border-color: #b68b40;
-        }
-        .framework-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-        }
-        .framework-table th {
-            background: #0b2a4e;
-            color: white;
-            padding: 0.12rem 0.3rem;
-            text-align: left;
-            font-weight: 600;
-        }
-        .framework-table td {
-            padding: 0.1rem 0.3rem;
-            border-bottom: 1px solid #e6edf5;
-        }
-        .framework-table .total-row {
-            background: #f1e9d8;
-            font-weight: 700;
-        }
-        .framework-table .gold-text {
-            color: #b68b40;
-            font-weight: 700;
-        }
-        .revpab-bar {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 0.12rem 0;
-        }
-        .revpab-bar .label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #2f4b74;
-            width: 65px;
-            flex-shrink: 0;
-        }
-        .revpab-bar .track {
-            flex: 1;
-            height: 18px;
-            background: #eef3f9;
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
-        .revpab-bar .fill {
-            height: 100%;
-            border-radius: 6px;
-            background: #0b2a4e;
-            transition: width 0.5s;
-        }
-        .revpab-bar .fill.gold {
-            background: #b68b40;
-        }
-        .revpab-bar .fill.green {
-            background: #0c6b4b;
-        }
-        .revpab-bar .value {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #0b2a4e;
-            width: 70px;
-            text-align: right;
-            flex-shrink: 0;
-        }
-        .waterflow-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.08rem;
-            margin-top: 0.2rem;
-        }
-        .waterflow-row {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        .waterflow-row .wf-label {
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: #2f4b74;
-            width: 60px;
-            flex-shrink: 0;
-        }
-        .waterflow-row .wf-bar {
-            flex: 1;
-            height: 22px;
-            border-radius: 4px;
-            background: #eef3f9;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        .waterflow-row .wf-bar .wf-segment {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.5rem;
-            font-weight: 600;
-            color: white;
-            transition: width 0.5s;
-        }
-        .waterflow-row .wf-value {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #0b2a4e;
-            width: 55px;
-            text-align: right;
-            flex-shrink: 0;
-        }
-        .wf-legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.2rem 0.6rem;
-            margin-top: 0.15rem;
-            padding-top: 0.1rem;
-            border-top: 1px solid #e3eaf2;
-        }
-        .wf-legend span {
-            font-size: 0.55rem;
-            display: flex;
-            align-items: center;
-            gap: 0.2rem;
-        }
-        .wf-legend .dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 3px;
-        }
-        .revpab-detail {
-            font-size: 0.7rem;
-            color: #4d6f92;
-            line-height: 1.5;
-            margin-top: 0.1rem;
-            padding: 0.1rem 0.3rem;
-            background: #f8fafc;
-            border-radius: 4px;
-            border-left: 3px solid #b68b40;
-        }
-        .spillover-card {
-            background: #fafcfe;
-            border-radius: 8px;
-            padding: 0.5rem 0.7rem;
-            border: 1px solid #e6edf5;
-            margin-bottom: 0.25rem;
-            transition: box-shadow 0.1s;
-        }
-        .spillover-card .row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.1rem;
-        }
-        .spillover-card .label {
-            font-size: 1.0rem;
-            font-weight: 700;
-            color: #0b2a4e;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        .spillover-card .label i {
-            color: #b68b40;
-            font-size: 0.9rem;
-        }
-        .spillover-card .amount {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #b68b40;
-        }
-        .spillover-card .detail {
-            font-size: 0.8rem;
-            color: #4d6f92;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .spillover-card .detail .pill {
-            background: #eef3f9;
-            border-radius: 20px;
-            padding: 0.02rem 0.5rem;
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: #1f3a5f;
-        }
-        .spillover-card .calc {
-            font-weight: 600;
-            color: #0b2a4e;
-            background: #f1f7fe;
-            padding: 0.05rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
-        .spillover-formula {
-            font-size: 0.85rem;
-            color: #2f4b74;
-            line-height: 1.6;
-            margin-top: 0.1rem;
-            padding: 0.15rem 0.5rem;
-            background: #f8fafc;
-            border-radius: 4px;
-            border-left: 3px solid #0c6b4b;
-        }
-        .stage-box {
-            background: #f8fafc;
-            border-radius: 6px;
-            padding: 0.25rem 0.4rem;
-            border: 1px solid #dce5ef;
-        }
-        .stage-box .stage-title {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #0b2a4e;
-            margin-bottom: 0.05rem;
-        }
-        .stage-box .stage-sub {
-            font-size: 0.6rem;
-            color: #5c7899;
-        }
-        .assumption-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .assumption-list li {
-            display: block;
-            margin-bottom: 0.1rem;
-            font-size: 0.85rem;
-            line-height: 1.35;
-            color: #1f3349;
-            padding-left: 0;
-        }
-        .assumption-list li strong {
-            color: #0b2a4e;
-            font-weight: 600;
-        }
-        .assumption-list li .inline-tag {
-            display: inline-block;
-            background: #f1e9d8;
-            color: #7a5f2e;
-            font-weight: 600;
-            padding: 0.02rem 0.4rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-        }
-        .stakeholder-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.2rem;
-            margin-top: 0.1rem;
-        }
-        .stakeholder-item {
-            background: #fafcfe;
-            border-radius: 6px;
-            padding: 0.2rem 0.4rem;
-            border: 1px solid #e6edf5;
-        }
-        .stakeholder-item .stakeholder-name {
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: #0b2a4e;
-        }
-        .stakeholder-item .stakeholder-value {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #b68b40;
-        }
-        .stakeholder-item .stakeholder-detail {
-            font-size: 0.55rem;
-            color: #4d6f92;
-        }
-        .two-stage-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.4rem;
-            margin-top: 0.1rem;
-        }
-        .two-stage-grid .stage-col {
-            background: #fafcfe;
-            border-radius: 8px;
-            padding: 0.4rem 0.5rem;
-            border: 1px solid #dce5ef;
-        }
-        .two-stage-grid .stage-col .stage-label {
-            font-size: 0.6rem;
-            font-weight: 700;
-            color: #0b2a4e;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            margin-bottom: 0.1rem;
-        }
-        .two-stage-grid .stage-col .stage-amount {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #0b2a4e;
-        }
-        .two-stage-grid .stage-col .stage-amount.gold {
-            color: #b68b40;
-        }
-        .two-stage-grid .stage-col .stage-amount.green {
-            color: #0c6b4b;
-        }
-        .two-stage-grid .stage-col .stage-detail {
-            font-size: 0.55rem;
-            color: #4d6f92;
-        }
-        .two-stage-grid .stage-col .stage-divider {
-            border-top: 1px dashed #dce5ef;
-            margin: 0.15rem 0;
-        }
-        .sensitivity-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.7rem;
-            margin-top: 0.2rem;
-        }
-        .sensitivity-table th {
-            background: #0b2a4e;
-            color: white;
-            padding: 0.1rem 0.25rem;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.7rem;
-        }
-        .sensitivity-table td {
-            padding: 0.08rem 0.25rem;
-            border-bottom: 1px solid #e6edf5;
-            font-size: 0.68rem;
-        }
-        .sensitivity-table .highlight-row td {
-            background: #f1e9d8;
-            font-weight: 700;
-        }
-        .sensitivity-table .total-row td {
-            background: #f1e9d8;
-            font-weight: 700;
-            border-top: 2px solid #b68b40;
-        }
-        .phasing-row {
-            display: flex;
-            gap: 0.3rem;
-            margin-top: 0.15rem;
-            flex-wrap: wrap;
-        }
-        .phasing-col {
-            flex: 1;
-            min-width: 120px;
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 0.25rem 0.4rem;
-            border: 1px solid #dce5ef;
-        }
-        .phasing-col .phase-title {
-            font-size: 0.55rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-        .phasing-col .phase-levers {
-            font-size: 0.5rem;
-            color: #4d6f92;
-        }
-        .phasing-col .phase-amount {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #0b2a4e;
-        }
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.75rem;
-            margin-top: 0.2rem;
-        }
-        .comparison-table th {
-            background: #0b2a4e;
-            color: white;
-            padding: 0.1rem 0.25rem;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.7rem;
-        }
-        .comparison-table td {
-            padding: 0.08rem 0.25rem;
-            border-bottom: 1px solid #e6edf5;
-            font-size: 0.7rem;
-        }
-        .comparison-table .highlight-row td {
-            background: #f1e9d8;
-            font-weight: 700;
-        }
-        .comparison-table .best-row td {
-            background: #d8f0e6;
-            font-weight: 600;
-            color: #0c6b4b;
-        }
-        .customer-segment-box {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 0.3rem 0.5rem;
-            border: 1px solid #dce5ef;
-            margin-bottom: 0.15rem;
-        }
-        .customer-segment-box .segment-title {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #0b2a4e;
-        }
-        .customer-segment-box .segment-desc {
-            font-size: 0.6rem;
-            color: #4d6f92;
-        }
-        .customer-segment-box .segment-verdict {
-            font-size: 0.6rem;
-            font-weight: 600;
-        }
-        .waterfall-img {
-            width: 100%;
-            max-height: 300px;
-            object-fit: contain;
-            border-radius: 8px;
-            border: 1px solid #e6edf5;
-            background: #fafcfe;
-            display: block;
-            margin: 0 auto;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background: #eef2f7; display: flex; justify-content: center; padding: 0.8rem 1rem; }
+        .infographic { max-width: 1500px; width: 100%; background: #ffffff; border-radius: 22px; box-shadow: 0 18px 36px -6px rgba(10,30,50,0.08); padding: 1.2rem 1.6rem 1.4rem; border: 1px solid #dce4ed; max-height: 99vh; display: flex; flex-direction: column; }
+        .fixed-header { flex-shrink: 0; position: sticky; top: 0; background: white; z-index: 10; padding-bottom: 0.5rem; border-bottom: 1px solid #eef3f8; }
+        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.3rem; }
+        .logo-area { display: flex; align-items: center; gap: 0.5rem; }
+        .logo-image { height: 36px; width: auto; display: block; }
+        .logo-fallback { display: none; background: #0b2a4e; padding: 0.25rem 0.8rem; border-radius: 8px; color: white; font-weight: 700; font-size: 1.2rem; }
+        .logo-fallback span { color: #b68b40; }
+        .logo-image:not([src]), .logo-image[src=""], .logo-image[src*="error"] { display: none; }
+        .logo-image:not([src]) + .logo-fallback, .logo-image[src=""] + .logo-fallback, .logo-image[src*="error"] + .logo-fallback { display: inline-block; }
+        .logo-sub { font-size: 1.1rem; color: #4d6f92; font-weight: 500; letter-spacing: 0.03em; }
+        .header-tag { font-size: 1.1rem; color: #4d6f92; background: #eef3f9; padding: 0.15rem 1.0rem; border-radius: 40px; font-weight: 500; display: flex; align-items: center; gap: 0.3rem; }
+        .header-tag i { color: #b68b40; }
+        .tab-bar { display: flex; gap: 0.4rem; padding-bottom: 0.4rem; flex-wrap: wrap; align-items: center; }
+        .tab { font-weight: 600; font-size: 0.85rem; padding: 0.2rem 0.8rem; border-radius: 40px; background: #eef3f9; color: #1f3a5f; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; letter-spacing: 0.01em; border: none; transition: all 0.15s ease; user-select: none; }
+        .tab i { font-size: 0.75rem; opacity: 0.7; }
+        .tab:hover { background: #dce6f0; }
+        .tab.active { background: #0b2a4e; color: white; box-shadow: 0 2px 6px rgba(11,42,78,0.10); cursor: default; }
+        .tab-dots { font-weight: 600; font-size: 1.2rem; color: #b6c8db; letter-spacing: 2px; padding: 0 0.2rem; user-select: none; }
+        .scrollable-content { flex: 1; overflow-y: scroll; padding-right: 4px; margin-top: 0.5rem; }
+        .scrollable-content::-webkit-scrollbar { width: 4px; }
+        .scrollable-content::-webkit-scrollbar-thumb { background: #b68b40; border-radius: 4px; }
+        .scrollable-content::-webkit-scrollbar-track { background: #eef3f9; border-radius: 4px; }
+        .lever-content { display: none; }
+        .lever-content.active { display: block; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+        .card { background: white; border-radius: 12px; padding: 0.8rem 1.0rem; box-shadow: 0 2px 8px rgba(0,20,40,0.02); border: 1px solid #e9eff5; }
+        .card-full { grid-column: 1 / -1; }
+        .card-title { font-size: 1.2rem; font-weight: 700; color: #0b2a4e; display: flex; align-items: center; gap: 5px; margin-bottom: 0.4rem; border-bottom: 2px solid #dce5ef; padding-bottom: 0.25rem; cursor: pointer; }
+        .card-title i { color: #b68b40; font-size: 1.2rem; width: 1.6rem; }
+        .card-title .site-remark { font-size: 0.7rem; font-weight: 400; color: #5c7899; margin-left: 0.2rem; }
+        .card-title .expand-hint { font-size: 0.7rem; font-weight: 400; color: #b68b40; margin-left: auto; opacity: 0.7; }
+        ul, .list { list-style: none; margin: 0; }
+        li { margin-bottom: 0.2rem; font-size: 0.95rem; line-height: 1.4; color: #1f3349; display: flex; gap: 0.4rem; align-items: flex-start; }
+        li i { color: #b68b40; font-size: 0.75rem; margin-top: 0.1rem; width: 1.2rem; text-align: center; }
+        .tag { display: inline-block; background: #e5edf7; border-radius: 40px; font-size: 0.7rem; font-weight: 600; padding: 0.03rem 0.5rem; color: #1a4670; }
+        .tag-gold { background: #f1e9d8; color: #7a5f2e; }
+        .tag-green { background: #d8f0e6; color: #0c6b4b; }
+        .tag-blue { background: #d8e8f5; color: #1a5a7a; }
+        .stat-block { background: #fafcfe; border-radius: 8px; padding: 0.4rem 0.6rem; border: 1px solid #e6edf5; }
+        .stat-number { font-size: 1.3rem; font-weight: 700; color: #0b2a4e; letter-spacing: -0.2px; line-height: 1.2; }
+        .stat-number.gold { color: #b68b40; }
+        .stat-number.green { color: #0c6b4b; }
+        .stat-number.red { color: #b34040; }
+        .stat-label { font-size: 0.7rem; color: #2f4b74; font-weight: 500; opacity: 0.8; }
+        .slider-group-vertical { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.25rem; }
+        .slider-item { width: 100%; }
+        .slider-item label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 500; color: #0b2a4e; margin-bottom: 0.03rem; }
+        .slider-item label span { color: #b68b40; font-weight: 700; }
+        .slider-item input[type="range"] { width: 100%; height: 4px; -webkit-appearance: none; appearance: none; background: #dce5ef; border-radius: 4px; outline: none; }
+        .slider-item input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #0b2a4e; cursor: pointer; border: 2px solid #b68b40; }
+        .slider-item input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #0b2a4e; cursor: pointer; border: 2px solid #b68b40; }
+        .reset-btn { background: #0b2a4e; color: white; border: none; padding: 0.1rem 0.7rem; border-radius: 40px; font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 0.2rem; }
+        .reset-btn:hover { background: #1a3f6a; }
+        .reset-btn i { color: #b68b40; font-size: 0.7rem; }
+        .working-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 0.25rem; }
+        .working-table th { background: #0b2a4e; color: white; padding: 0.12rem 0.3rem; text-align: left; font-weight: 600; font-size: 0.8rem; }
+        .working-table td { padding: 0.1rem 0.3rem; border-bottom: 1px solid #e6edf5; font-size: 0.8rem; }
+        .working-table tr:nth-child(even) td { background: #f8fafc; }
+        .working-table .highlight-row td { background: #f1e9d8; font-weight: 700; }
+        .working-expand { display: none; margin-top: 0.4rem; padding-top: 0.4rem; border-top: 2px solid #b68b40; }
+        .working-expand.open { display: block; }
+        .bottom-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.3rem; margin-top: 0.4rem; padding-top: 0.3rem; border-top: 1px solid #e3eaf2; flex-shrink: 0; }
+        .bottom-bar .left { font-size: 0.7rem; color: #5c7899; }
+        .bottom-bar .right { display: flex; gap: 0.4rem; font-size: 0.7rem; color: #5c7899; }
+        .link-reit-banner { background: #0b2a4e; border-radius: 10px; padding: 0.35rem 0.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.2rem; margin-top: 0.1rem; border-left: 4px solid #b68b40; }
+        .link-reit-banner .label { color: #b68b40; font-size: 0.9rem; font-weight: 600; }
+        .link-reit-banner .amount { color: white; font-size: 1.4rem; font-weight: 700; }
+        .link-reit-banner .amount .sub { font-size: 0.7rem; color: #b68b40; font-weight: 400; }
+        .link-reit-banner .amount .annual { color: #b68b40; font-size: 1.2rem; font-weight: 700; }
+        .link-reit-banner .amount .annual .sub { font-size: 0.7rem; color: #b68b40; font-weight: 400; }
+        .link-reit-banner .capacity-warning { color: #ff6b6b; font-size: 0.7rem; font-weight: 600; }
+        .flow-step { font-size: 0.85rem; font-weight: 500; color: #0b2a4e; background: white; padding: 0.06rem 0.6rem; border-radius: 30px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); white-space: nowrap; }
+        .arrow { color: #b68b40; font-weight: 300; margin: 0 0.05rem; font-size: 0.85rem; }
+        .matrix-image-wrapper { display: block; max-height: none; min-height: auto; text-align: center; background: #fafcfe; border-radius: 8px; padding: 0.2rem; border: 1px solid #e6edf5; }
+        .matrix-image-wrapper img { max-width: 100%; height: auto; border-radius: 6px; display: block; margin: 0 auto; }
+        .matrix-container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 0.4rem; min-height: 200px; max-height: 260px; }
+        .matrix-quadrant { background: #f8fafc; border-radius: 8px; padding: 0.3rem 0.5rem; border: 1px solid #dce5ef; min-height: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .matrix-quadrant .quadrant-label { font-size: 0.75rem; font-weight: 700; color: #4d6f92; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.08rem; }
+        .matrix-quadrant .quadrant-sub { font-size: 0.65rem; color: #5c7899; font-weight: 400; text-transform: none; letter-spacing: 0.02em; }
+        .matrix-bubble { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; color: white; font-weight: 700; padding: 0.15rem; margin: 0.06rem; text-align: center; line-height: 1.15; border: 2px solid rgba(255,255,255,0.3); cursor: default; vertical-align: middle; position: relative; transition: transform 0.1s; }
+        .matrix-bubble .lever-code { font-size: inherit; font-weight: 800; line-height: 1.1; }
+        .matrix-bubble .lever-name { font-size: 0.35rem; font-weight: 400; opacity: 0.9; line-height: 1.1; max-width: 100%; text-align: center; word-break: break-word; margin-top: 0.04rem; }
+        .matrix-bubble.small { width: 42px; height: 42px; font-size: 0.65rem; }
+        .matrix-bubble.small .lever-name { font-size: 0.30rem; }
+        .matrix-bubble.medium { width: 54px; height: 54px; font-size: 0.75rem; }
+        .matrix-bubble.medium .lever-name { font-size: 0.32rem; }
+        .matrix-bubble.large { width: 66px; height: 66px; font-size: 0.85rem; }
+        .matrix-bubble.large .lever-name { font-size: 0.35rem; }
+        .matrix-bubble.xlarge { width: 80px; height: 80px; font-size: 0.95rem; }
+        .matrix-bubble.xlarge .lever-name { font-size: 0.38rem; }
+        .matrix-bubble.q1 { background: #0c6b4b; border-color: #b68b40; }
+        .matrix-bubble.q2 { background: #b68b40; border-color: #0b2a4e; }
+        .matrix-bubble.q3 { background: #1a6f7a; border-color: #b68b40; }
+        .matrix-bubble.q4 { background: #7a2e3a; border-color: #b68b40; }
+        .framework-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .framework-table th { background: #0b2a4e; color: white; padding: 0.12rem 0.3rem; text-align: left; font-weight: 600; }
+        .framework-table td { padding: 0.1rem 0.3rem; border-bottom: 1px solid #e6edf5; }
+        .framework-table .total-row { background: #f1e9d8; font-weight: 700; }
+        .framework-table .gold-text { color: #b68b40; font-weight: 700; }
+        .revpab-bar { display: flex; align-items: center; gap: 0.5rem; margin: 0.12rem 0; }
+        .revpab-bar .label { font-size: 0.85rem; font-weight: 600; color: #2f4b74; width: 65px; flex-shrink: 0; }
+        .revpab-bar .track { flex: 1; height: 18px; background: #eef3f9; border-radius: 6px; overflow: hidden; position: relative; }
+        .revpab-bar .fill { height: 100%; border-radius: 6px; background: #0b2a4e; transition: width 0.5s; }
+        .revpab-bar .fill.gold { background: #b68b40; }
+        .revpab-bar .fill.green { background: #0c6b4b; }
+        .revpab-bar .value { font-size: 0.85rem; font-weight: 700; color: #0b2a4e; width: 70px; text-align: right; flex-shrink: 0; }
+        .waterflow-container { display: flex; flex-direction: column; gap: 0.08rem; margin-top: 0.2rem; }
+        .waterflow-row { display: flex; align-items: center; gap: 0.3rem; }
+        .waterflow-row .wf-label { font-size: 0.65rem; font-weight: 600; color: #2f4b74; width: 60px; flex-shrink: 0; }
+        .waterflow-row .wf-bar { flex: 1; height: 22px; border-radius: 4px; background: #eef3f9; overflow: hidden; position: relative; display: flex; align-items: center; }
+        .waterflow-row .wf-bar .wf-segment { height: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.5rem; font-weight: 600; color: white; transition: width 0.5s; }
+        .waterflow-row .wf-value { font-size: 0.7rem; font-weight: 700; color: #0b2a4e; width: 55px; text-align: right; flex-shrink: 0; }
+        .wf-legend { display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; margin-top: 0.15rem; padding-top: 0.1rem; border-top: 1px solid #e3eaf2; }
+        .wf-legend span { font-size: 0.55rem; display: flex; align-items: center; gap: 0.2rem; }
+        .wf-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; }
+        .revpab-detail { font-size: 0.7rem; color: #4d6f92; line-height: 1.5; margin-top: 0.1rem; padding: 0.1rem 0.3rem; background: #f8fafc; border-radius: 4px; border-left: 3px solid #b68b40; }
+        .spillover-card { background: #fafcfe; border-radius: 8px; padding: 0.5rem 0.7rem; border: 1px solid #e6edf5; margin-bottom: 0.25rem; transition: box-shadow 0.1s; }
+        .spillover-card .row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.1rem; }
+        .spillover-card .label { font-size: 1.0rem; font-weight: 700; color: #0b2a4e; display: flex; align-items: center; gap: 0.3rem; }
+        .spillover-card .label i { color: #b68b40; font-size: 0.9rem; }
+        .spillover-card .amount { font-size: 1.2rem; font-weight: 700; color: #b68b40; }
+        .spillover-card .detail { font-size: 0.8rem; color: #4d6f92; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .spillover-card .detail .pill { background: #eef3f9; border-radius: 20px; padding: 0.02rem 0.5rem; font-size: 0.7rem; font-weight: 500; color: #1f3a5f; }
+        .spillover-card .calc { font-weight: 600; color: #0b2a4e; background: #f1f7fe; padding: 0.05rem 0.6rem; border-radius: 20px; font-size: 0.85rem; }
+        .spillover-formula { font-size: 0.85rem; color: #2f4b74; line-height: 1.6; margin-top: 0.1rem; padding: 0.15rem 0.5rem; background: #f8fafc; border-radius: 4px; border-left: 3px solid #0c6b4b; }
+        .stage-box { background: #f8fafc; border-radius: 6px; padding: 0.25rem 0.4rem; border: 1px solid #dce5ef; }
+        .stage-box .stage-title { font-size: 0.8rem; font-weight: 700; color: #0b2a4e; margin-bottom: 0.05rem; }
+        .stage-box .stage-sub { font-size: 0.6rem; color: #5c7899; }
+        .assumption-list { list-style: none; margin: 0; padding: 0; }
+        .assumption-list li { display: block; margin-bottom: 0.1rem; font-size: 0.85rem; line-height: 1.35; color: #1f3349; padding-left: 0; }
+        .assumption-list li strong { color: #0b2a4e; font-weight: 600; }
+        .assumption-list li .inline-tag { display: inline-block; background: #f1e9d8; color: #7a5f2e; font-weight: 600; padding: 0.02rem 0.4rem; border-radius: 20px; font-size: 0.75rem; }
+        .stakeholder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.2rem; margin-top: 0.1rem; }
+        .stakeholder-item { background: #fafcfe; border-radius: 6px; padding: 0.2rem 0.4rem; border: 1px solid #e6edf5; }
+        .stakeholder-item .stakeholder-name { font-size: 0.65rem; font-weight: 600; color: #0b2a4e; }
+        .stakeholder-item .stakeholder-value { font-size: 0.9rem; font-weight: 700; color: #b68b40; }
+        .stakeholder-item .stakeholder-detail { font-size: 0.55rem; color: #4d6f92; }
+        .two-stage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-top: 0.1rem; }
+        .two-stage-grid .stage-col { background: #fafcfe; border-radius: 8px; padding: 0.4rem 0.5rem; border: 1px solid #dce5ef; }
+        .two-stage-grid .stage-col .stage-label { font-size: 0.6rem; font-weight: 700; color: #0b2a4e; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.1rem; }
+        .two-stage-grid .stage-col .stage-amount { font-size: 1.1rem; font-weight: 700; color: #0b2a4e; }
+        .two-stage-grid .stage-col .stage-amount.gold { color: #b68b40; }
+        .two-stage-grid .stage-col .stage-amount.green { color: #0c6b4b; }
+        .two-stage-grid .stage-col .stage-detail { font-size: 0.55rem; color: #4d6f92; }
+        .two-stage-grid .stage-col .stage-divider { border-top: 1px dashed #dce5ef; margin: 0.15rem 0; }
+        .sensitivity-table { width: 100%; border-collapse: collapse; font-size: 0.7rem; margin-top: 0.2rem; }
+        .sensitivity-table th { background: #0b2a4e; color: white; padding: 0.1rem 0.25rem; text-align: left; font-weight: 600; font-size: 0.7rem; }
+        .sensitivity-table td { padding: 0.08rem 0.25rem; border-bottom: 1px solid #e6edf5; font-size: 0.68rem; }
+        .sensitivity-table .highlight-row td { background: #f1e9d8; font-weight: 700; }
+        .sensitivity-table .total-row td { background: #f1e9d8; font-weight: 700; border-top: 2px solid #b68b40; }
+        .phasing-row { display: flex; gap: 0.3rem; margin-top: 0.15rem; flex-wrap: wrap; }
+        .phasing-col { flex: 1; min-width: 120px; background: #f8fafc; border-radius: 8px; padding: 0.25rem 0.4rem; border: 1px solid #dce5ef; }
+        .phasing-col .phase-title { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+        .phasing-col .phase-levers { font-size: 0.5rem; color: #4d6f92; }
+        .phasing-col .phase-amount { font-size: 0.7rem; font-weight: 700; color: #0b2a4e; }
+        .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 0.2rem; }
+        .comparison-table th { background: #0b2a4e; color: white; padding: 0.1rem 0.25rem; text-align: left; font-weight: 600; font-size: 0.7rem; }
+        .comparison-table td { padding: 0.08rem 0.25rem; border-bottom: 1px solid #e6edf5; font-size: 0.7rem; }
+        .comparison-table .highlight-row td { background: #f1e9d8; font-weight: 700; }
+        .comparison-table .best-row td { background: #d8f0e6; font-weight: 600; color: #0c6b4b; }
+        .customer-segment-box { background: #f8fafc; border-radius: 8px; padding: 0.3rem 0.5rem; border: 1px solid #dce5ef; margin-bottom: 0.15rem; }
+        .customer-segment-box .segment-title { font-size: 0.7rem; font-weight: 700; color: #0b2a4e; }
+        .customer-segment-box .segment-desc { font-size: 0.6rem; color: #4d6f92; }
+        .customer-segment-box .segment-verdict { font-size: 0.6rem; font-weight: 600; }
+        .waterfall-img { width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px; border: 1px solid #e6edf5; background: #fafcfe; display: block; margin: 0 auto; }
 
-        /* --- EXECUTIVE SUMMARY 字体放大50% --- */
-        #executive-summary {
-            font-size: 1.5em;
-        }
-        #executive-summary .card-title {
-            font-size: 1.2rem;
-        }
-        #executive-summary .card-title i {
-            font-size: 1.2rem;
-            width: 1.8rem;
-        }
-        #executive-summary .stat-number {
-            font-size: 1.2rem;
-        }
-        #executive-summary .stat-label {
-            font-size: 0.7rem;
-        }
-        #executive-summary .matrix-quadrant .quadrant-label {
-            font-size: 0.8rem;
-        }
-        #executive-summary .matrix-quadrant .quadrant-sub {
-            font-size: 0.7rem;
-        }
-        #executive-summary .matrix-bubble {
-            font-size: 1rem;
-        }
-        #executive-summary .matrix-bubble .lever-code {
-            font-size: 1.2rem;
-        }
-        #executive-summary .matrix-bubble .lever-name {
-            font-size: 0.55rem;
-        }
-        #executive-summary .matrix-bubble.xlarge .lever-code {
-            font-size: 1.4rem;
-        }
-        #executive-summary .matrix-bubble.xlarge .lever-name {
-            font-size: 0.6rem;
-        }
-        #executive-summary .matrix-bubble.large .lever-code {
-            font-size: 1.2rem;
-        }
-        #executive-summary .matrix-bubble.large .lever-name {
-            font-size: 0.55rem;
-        }
-        #executive-summary .matrix-bubble.medium .lever-code {
-            font-size: 1.0rem;
-        }
-        #executive-summary .matrix-bubble.medium .lever-name {
-            font-size: 0.45rem;
-        }
-        #executive-summary .matrix-bubble.small .lever-code {
-            font-size: 0.8rem;
-        }
-        #executive-summary .matrix-bubble.small .lever-name {
-            font-size: 0.4rem;
-        }
-        #executive-summary .matrix-bubble.small {
-            width: 48px;
-            height: 48px;
-        }
-        #executive-summary .matrix-bubble.medium {
-            width: 60px;
-            height: 60px;
-        }
-        #executive-summary .matrix-bubble.large {
-            width: 74px;
-            height: 74px;
-        }
-        #executive-summary .matrix-bubble.xlarge {
-            width: 88px;
-            height: 88px;
-        }
-        #executive-summary .phasing-col .phase-title {
-            font-size: 0.65rem;
-        }
-        #executive-summary .phasing-col .phase-levers {
-            font-size: 0.6rem;
-        }
-        #executive-summary .phasing-col .phase-amount {
-            font-size: 0.85rem;
-        }
-        #executive-summary .waterflow-row .wf-label {
-            font-size: 0.8rem;
-        }
-        #executive-summary .waterflow-row .wf-value {
-            font-size: 0.85rem;
-        }
-        #executive-summary .wf-legend span {
-            font-size: 0.7rem;
-        }
-        #executive-summary .revpab-detail {
-            font-size: 0.85rem;
-        }
-        #executive-summary .link-reit-banner .label {
-            font-size: 0.9rem;
-        }
-        #executive-summary .link-reit-banner .amount {
-            font-size: 1.4rem;
-        }
-        #executive-summary .link-reit-banner .amount .sub {
-            font-size: 0.7rem;
-        }
-        #executive-summary .link-reit-banner .amount .annual {
-            font-size: 1.2rem;
-        }
-        #executive-summary .link-reit-banner .amount .annual .sub {
-            font-size: 0.7rem;
-        }
-        #executive-summary .bottom-bar .left,
-        #executive-summary .bottom-bar .right {
-            font-size: 0.8rem;
-        }
-        #executive-summary .framework-table {
-            font-size: 0.9rem;
-        }
-        #executive-summary .framework-table th {
-            font-size: 0.9rem;
-        }
-        #executive-summary .framework-table td {
-            font-size: 0.85rem;
-        }
-        #executive-summary .comparison-table {
-            font-size: 0.85rem;
-        }
-        #executive-summary .comparison-table th {
-            font-size: 0.85rem;
-        }
-        #executive-summary .comparison-table td {
-            font-size: 0.8rem;
-        }
-        #executive-summary .sensitivity-table {
-            font-size: 0.8rem;
-        }
-        #executive-summary .sensitivity-table th {
-            font-size: 0.8rem;
-        }
-        #executive-summary .sensitivity-table td {
-            font-size: 0.75rem;
-        }
-        #executive-summary .assumption-list li {
-            font-size: 0.9rem;
-        }
-        #executive-summary .two-stage-grid .stage-col .stage-label {
-            font-size: 0.7rem;
-        }
-        #executive-summary .two-stage-grid .stage-col .stage-amount {
-            font-size: 1.2rem;
-        }
-        #executive-summary .two-stage-grid .stage-col .stage-detail {
-            font-size: 0.65rem;
-        }
-        #executive-summary .stakeholder-item .stakeholder-name {
-            font-size: 0.75rem;
-        }
-        #executive-summary .stakeholder-item .stakeholder-value {
-            font-size: 1.0rem;
-        }
-        #executive-summary .stakeholder-item .stakeholder-detail {
-            font-size: 0.65rem;
-        }
-        #executive-summary .matrix-container {
-            min-height: 220px;
-            max-height: 280px;
-        }
-        #executive-summary .waterfall-img {
-            max-height: 380px;
-        }
-        #executive-summary .matrix-image-wrapper {
-            max-height: 480px;
-            overflow: hidden;
-        }
-        #executive-summary .matrix-image-wrapper img {
-            max-height: 460px;
-            width: auto;
-        }
+        #executive-summary { font-size: 1.5em; }
+        #executive-summary .card-title { font-size: 1.2rem; }
+        #executive-summary .card-title i { font-size: 1.2rem; width: 1.8rem; }
+        #executive-summary .stat-number { font-size: 1.2rem; }
+        #executive-summary .stat-label { font-size: 0.7rem; }
+        #executive-summary .matrix-quadrant .quadrant-label { font-size: 0.8rem; }
+        #executive-summary .matrix-quadrant .quadrant-sub { font-size: 0.7rem; }
+        #executive-summary .matrix-bubble { font-size: 1rem; }
+        #executive-summary .matrix-bubble .lever-code { font-size: 1.2rem; }
+        #executive-summary .matrix-bubble .lever-name { font-size: 0.55rem; }
+        #executive-summary .matrix-bubble.xlarge .lever-code { font-size: 1.4rem; }
+        #executive-summary .matrix-bubble.xlarge .lever-name { font-size: 0.6rem; }
+        #executive-summary .matrix-bubble.large .lever-code { font-size: 1.2rem; }
+        #executive-summary .matrix-bubble.large .lever-name { font-size: 0.55rem; }
+        #executive-summary .matrix-bubble.medium .lever-code { font-size: 1.0rem; }
+        #executive-summary .matrix-bubble.medium .lever-name { font-size: 0.45rem; }
+        #executive-summary .matrix-bubble.small .lever-code { font-size: 0.8rem; }
+        #executive-summary .matrix-bubble.small .lever-name { font-size: 0.4rem; }
+        #executive-summary .matrix-bubble.small { width: 48px; height: 48px; }
+        #executive-summary .matrix-bubble.medium { width: 60px; height: 60px; }
+        #executive-summary .matrix-bubble.large { width: 74px; height: 74px; }
+        #executive-summary .matrix-bubble.xlarge { width: 88px; height: 88px; }
+        #executive-summary .phasing-col .phase-title { font-size: 0.65rem; }
+        #executive-summary .phasing-col .phase-levers { font-size: 0.6rem; }
+        #executive-summary .phasing-col .phase-amount { font-size: 0.85rem; }
+        #executive-summary .waterflow-row .wf-label { font-size: 0.8rem; }
+        #executive-summary .waterflow-row .wf-value { font-size: 0.85rem; }
+        #executive-summary .wf-legend span { font-size: 0.7rem; }
+        #executive-summary .revpab-detail { font-size: 0.85rem; }
+        #executive-summary .link-reit-banner .label { font-size: 0.9rem; }
+        #executive-summary .link-reit-banner .amount { font-size: 1.4rem; }
+        #executive-summary .link-reit-banner .amount .sub { font-size: 0.7rem; }
+        #executive-summary .link-reit-banner .amount .annual { font-size: 1.2rem; }
+        #executive-summary .link-reit-banner .amount .annual .sub { font-size: 0.7rem; }
+        #executive-summary .bottom-bar .left, #executive-summary .bottom-bar .right { font-size: 0.8rem; }
+        #executive-summary .framework-table { font-size: 0.9rem; }
+        #executive-summary .framework-table th { font-size: 0.9rem; }
+        #executive-summary .framework-table td { font-size: 0.85rem; }
+        #executive-summary .comparison-table { font-size: 0.85rem; }
+        #executive-summary .comparison-table th { font-size: 0.85rem; }
+        #executive-summary .comparison-table td { font-size: 0.8rem; }
+        #executive-summary .sensitivity-table { font-size: 0.8rem; }
+        #executive-summary .sensitivity-table th { font-size: 0.8rem; }
+        #executive-summary .sensitivity-table td { font-size: 0.75rem; }
+        #executive-summary .assumption-list li { font-size: 0.9rem; }
+        #executive-summary .two-stage-grid .stage-col .stage-label { font-size: 0.7rem; }
+        #executive-summary .two-stage-grid .stage-col .stage-amount { font-size: 1.2rem; }
+        #executive-summary .two-stage-grid .stage-col .stage-detail { font-size: 0.65rem; }
+        #executive-summary .stakeholder-item .stakeholder-name { font-size: 0.75rem; }
+        #executive-summary .stakeholder-item .stakeholder-value { font-size: 1.0rem; }
+        #executive-summary .stakeholder-item .stakeholder-detail { font-size: 0.65rem; }
+        #executive-summary .matrix-container { min-height: 220px; max-height: 280px; }
+        #executive-summary .waterfall-img { max-height: 380px; }
+        #executive-summary .matrix-image-wrapper { max-height: 480px; overflow: hidden; }
+        #executive-summary .matrix-image-wrapper img { max-height: 460px; width: auto; }
 
-        /* 优化后的 Friendly Reminders 样式（放大20%，清晰可读） */
-        .reminders-box {
-            background: #f0f7fe;
-            border-left: 4px solid #0b2a4e;
-            padding: 0.6rem 0.9rem;
-            border-radius: 6px;
-            margin-bottom: 0.8rem;
-            font-size: 0.85rem;
-            color: #1f3a5f;
-            line-height: 1.5;
-        }
-        .reminders-box .reminder-title {
-            font-weight: 700;
-            font-size: 1.0rem;
-            color: #0b2a4e;
-            margin-bottom: 0.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        .reminders-box .reminder-title i {
-            color: #b68b40;
-            font-size: 1.0rem;
-        }
-        .reminders-box ul {
-            list-style: none;
-            padding-left: 0.2rem;
-            margin: 0;
-        }
-        .reminders-box ul li {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            margin-bottom: 0.15rem;
-            padding-left: 1.2rem;
-            position: relative;
-            color: #1f3a5f;
-        }
-        .reminders-box ul li::before {
-            content: "•";
-            color: #b68b40;
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
+        .reminders-box { background: #f0f7fe; border-left: 4px solid #0b2a4e; padding: 0.6rem 0.9rem; border-radius: 6px; margin-bottom: 0.8rem; font-size: 0.85rem; color: #1f3a5f; line-height: 1.5; }
+        .reminders-box .reminder-title { font-weight: 700; font-size: 1.0rem; color: #0b2a4e; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.4rem; }
+        .reminders-box .reminder-title i { color: #b68b40; font-size: 1.0rem; }
+        .reminders-box ul { list-style: none; padding-left: 0.2rem; margin: 0; }
+        .reminders-box ul li { font-size: 0.85rem; line-height: 1.5; margin-bottom: 0.15rem; padding-left: 1.2rem; position: relative; color: #1f3a5f; }
+        .reminders-box ul li::before { content: "•"; color: #b68b40; font-weight: bold; position: absolute; left: 0; }
 
-        /* --- L12 working fonts +30% (仅展开内容) --- */
+        .waterfall-note { margin-top: 0.3rem; padding: 0.4rem 0.7rem; background: #f8fafc; border-radius: 6px; border-left: 3px solid #b68b40; font-size: 0.75rem; color: #2f4b74; line-height: 1.5; }
+        .waterfall-note i { color: #b68b40; margin-right: 0.3rem; }
+
+        .banner-blue { background: #0b2a4e; color: white; border-radius: 8px; padding: 0.4rem 0.7rem; border-left: 4px solid #b68b40; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .banner-blue .label { color: #b68b40; font-weight: 600; font-size: 0.85rem; }
+        .banner-blue .value { font-weight: 700; font-size: 1.2rem; }
+        .banner-gold { background: #b68b40; color: white; border-radius: 8px; padding: 0.4rem 0.7rem; border-left: 4px solid #0b2a4e; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .banner-gold .label { color: #0b2a4e; font-weight: 600; font-size: 0.85rem; }
+        .banner-gold .value { font-weight: 700; font-size: 1.2rem; }
+        .banner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-top: 0.2rem; }
+
+        .model-note { font-size: 0.7rem; color: #5c7899; background: #f8fafc; border-radius: 4px; padding: 0.2rem 0.5rem; border-left: 3px solid #b68b40; margin-bottom: 0.2rem; line-height: 1.4; }
+        .model-note i { color: #b68b40; margin-right: 0.2rem; }
+
         #lever12 .working-expand,
         #lever12 .working-expand *,
         #lever12 .working-expand .working-table,
@@ -1256,152 +261,53 @@
         #lever12 .working-expand .sensitivity-table td,
         #lever12 .working-expand .comparison-table,
         #lever12 .working-expand .comparison-table th,
-        #lever12 .working-expand .comparison-table td {
-            font-size: 1.3em;
-        }
+        #lever12 .working-expand .comparison-table td { font-size: 1.3em; }
 
         @media (max-width: 1100px) {
-            .grid {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-            .matrix-container {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto;
-                max-height: none;
-            }
-            .two-stage-grid {
-                grid-template-columns: 1fr;
-            }
-            .phasing-row {
-                flex-direction: column;
-            }
-            #executive-summary .matrix-container {
-                max-height: none;
-            }
-            #executive-summary .matrix-bubble.small {
-                width: 44px;
-                height: 44px;
-            }
-            #executive-summary .matrix-bubble.medium {
-                width: 54px;
-                height: 54px;
-            }
-            #executive-summary .matrix-bubble.large {
-                width: 64px;
-                height: 64px;
-            }
-            #executive-summary .matrix-bubble.xlarge {
-                width: 76px;
-                height: 76px;
-            }
-            #executive-summary .waterfall-img {
-                max-height: 220px;
-            }
-            #executive-summary .matrix-image-wrapper {
-                max-height: none;
-            }
-            #executive-summary .matrix-image-wrapper img {
-                max-height: none;
-                width: 100%;
-            }
+            .grid { grid-template-columns: 1fr; gap: 0.5rem; }
+            .matrix-container { grid-template-columns: 1fr; grid-template-rows: auto; max-height: none; }
+            .two-stage-grid { grid-template-columns: 1fr; }
+            .phasing-row { flex-direction: column; }
+            #executive-summary .matrix-container { max-height: none; }
+            #executive-summary .matrix-bubble.small { width: 44px; height: 44px; }
+            #executive-summary .matrix-bubble.medium { width: 54px; height: 54px; }
+            #executive-summary .matrix-bubble.large { width: 64px; height: 64px; }
+            #executive-summary .matrix-bubble.xlarge { width: 76px; height: 76px; }
+            #executive-summary .waterfall-img { max-height: 220px; }
+            #executive-summary .matrix-image-wrapper { max-height: none; }
+            #executive-summary .matrix-image-wrapper img { max-height: none; width: 100%; }
+            .banner-grid { grid-template-columns: 1fr; gap: 0.2rem; }
         }
         @media (max-width: 800px) {
-            .stakeholder-grid {
-                grid-template-columns: 1fr;
-            }
-            #executive-summary .matrix-bubble.small {
-                width: 40px;
-                height: 40px;
-            }
-            #executive-summary .matrix-bubble.medium {
-                width: 50px;
-                height: 50px;
-            }
-            #executive-summary .matrix-bubble.large {
-                width: 60px;
-                height: 60px;
-            }
-            #executive-summary .matrix-bubble.xlarge {
-                width: 72px;
-                height: 72px;
-            }
-            #executive-summary .waterfall-img {
-                max-height: 180px;
-            }
+            .stakeholder-grid { grid-template-columns: 1fr; }
+            #executive-summary .matrix-bubble.small { width: 40px; height: 40px; }
+            #executive-summary .matrix-bubble.medium { width: 50px; height: 50px; }
+            #executive-summary .matrix-bubble.large { width: 60px; height: 60px; }
+            #executive-summary .matrix-bubble.xlarge { width: 72px; height: 72px; }
+            #executive-summary .waterfall-img { max-height: 180px; }
         }
         @media (max-width: 600px) {
-            .infographic {
-                padding: 0.5rem;
-                max-height: 100vh;
-            }
-            .card {
-                padding: 0.4rem 0.5rem;
-            }
-            .framework-table {
-                font-size: 0.6rem;
-            }
-            .tab {
-                font-size: 0.7rem;
-                padding: 0.12rem 0.5rem;
-            }
-            li {
-                font-size: 0.8rem;
-            }
-            .flow-step {
-                font-size: 0.7rem;
-                white-space: normal;
-            }
-            .sensitivity-table {
-                font-size: 0.55rem;
-            }
-            .sensitivity-table th {
-                font-size: 0.55rem;
-            }
-            .sensitivity-table td {
-                font-size: 0.5rem;
-            }
-            .comparison-table {
-                font-size: 0.6rem;
-            }
-            .comparison-table th {
-                font-size: 0.6rem;
-            }
-            .comparison-table td {
-                font-size: 0.55rem;
-            }
-            #executive-summary .card-title {
-                font-size: 1.0rem;
-            }
-            #executive-summary .card-title i {
-                font-size: 1.0rem;
-                width: 1.4rem;
-            }
-            #executive-summary .matrix-bubble.small {
-                width: 34px;
-                height: 34px;
-            }
-            #executive-summary .matrix-bubble.medium {
-                width: 44px;
-                height: 44px;
-            }
-            #executive-summary .matrix-bubble.large {
-                width: 54px;
-                height: 54px;
-            }
-            #executive-summary .matrix-bubble.xlarge {
-                width: 64px;
-                height: 64px;
-            }
-            #executive-summary .matrix-bubble .lever-code {
-                font-size: 0.8rem !important;
-            }
-            #executive-summary .matrix-bubble .lever-name {
-                font-size: 0.35rem !important;
-            }
-            #executive-summary .waterfall-img {
-                max-height: 140px;
-            }
+            .infographic { padding: 0.5rem; max-height: 100vh; }
+            .card { padding: 0.4rem 0.5rem; }
+            .framework-table { font-size: 0.6rem; }
+            .tab { font-size: 0.7rem; padding: 0.12rem 0.5rem; }
+            li { font-size: 0.8rem; }
+            .flow-step { font-size: 0.7rem; white-space: normal; }
+            .sensitivity-table { font-size: 0.55rem; }
+            .sensitivity-table th { font-size: 0.55rem; }
+            .sensitivity-table td { font-size: 0.5rem; }
+            .comparison-table { font-size: 0.6rem; }
+            .comparison-table th { font-size: 0.6rem; }
+            .comparison-table td { font-size: 0.55rem; }
+            #executive-summary .card-title { font-size: 1.0rem; }
+            #executive-summary .card-title i { font-size: 1.0rem; width: 1.4rem; }
+            #executive-summary .matrix-bubble.small { width: 34px; height: 34px; }
+            #executive-summary .matrix-bubble.medium { width: 44px; height: 44px; }
+            #executive-summary .matrix-bubble.large { width: 54px; height: 54px; }
+            #executive-summary .matrix-bubble.xlarge { width: 64px; height: 64px; }
+            #executive-summary .matrix-bubble .lever-code { font-size: 0.8rem !important; }
+            #executive-summary .matrix-bubble .lever-name { font-size: 0.35rem !important; }
+            #executive-summary .waterfall-img { max-height: 140px; }
             #lever12 .working-expand,
             #lever12 .working-expand *,
             #lever12 .working-expand .working-table,
@@ -1409,809 +315,857 @@
             #lever12 .working-expand .working-table td,
             #lever12 .working-expand .sensitivity-table,
             #lever12 .working-expand .sensitivity-table th,
-            #lever12 .working-expand .sensitivity-table td {
-                font-size: 1.0em;
-            }
-            .reminders-box {
-                font-size: 0.75rem;
-                padding: 0.4rem 0.6rem;
-            }
-            .reminders-box ul li {
-                font-size: 0.75rem;
-            }
+            #lever12 .working-expand .sensitivity-table td { font-size: 1.0em; }
+            .reminders-box { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
+            .reminders-box ul li { font-size: 0.75rem; }
+            .waterfall-note { font-size: 0.65rem; padding: 0.3rem 0.5rem; }
+            .banner-blue, .banner-gold { font-size: 0.8rem; padding: 0.3rem 0.5rem; }
+            .banner-blue .value, .banner-gold .value { font-size: 1.0rem; }
+            .banner-grid { grid-template-columns: 1fr; }
+            .model-note { font-size: 0.6rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="infographic">
+<div class="infographic">
 
-        <div class="fixed-header">
-            <div class="header-bar">
-                <div class="logo-area">
-                    <img class="logo-image" src="https://rayiu921.github.io/carpark/linklogo.jpeg" alt="Link REIT Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" />
-                    <span class="logo-fallback">Link <span>REIT</span></span>
-                    <span class="logo-sub">· Car Park Portfolio</span>
-                </div>
-                <div class="header-tag"><i class="fas fa-flag"></i> Possible Revenue Growth Levers</div>
+    <div class="fixed-header">
+        <div class="header-bar">
+            <div class="logo-area">
+                <img class="logo-image" src="https://rayiu921.github.io/carpark/linklogo.jpeg" alt="Link REIT Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" />
+                <span class="logo-fallback">Link <span>REIT</span></span>
+                <span class="logo-sub">· Car Park Portfolio</span>
             </div>
-            <div class="tab-bar">
-                <button class="tab active" data-lever="executive-summary"><i class="fas fa-chart-pie"></i> Executive Summary</button>
-                <button class="tab" data-lever="lever1"><i class="fas fa-plane-departure"></i> L1 · Save to Fly</button>
-                <button class="tab" data-lever="lever2"><i class="fas fa-share-alt"></i> L2 · Park Duo Duo</button>
-                <span class="tab-dots">⋯</span>
-                <button class="tab" data-lever="lever12"><i class="fas fa-robot"></i> L12 · AVP Sandbox</button>
-            </div>
+            <div class="header-tag"><i class="fas fa-flag"></i> Possible Revenue Growth Levers</div>
         </div>
-
-        <div class="scrollable-content">
-
-            <!-- ========================================================== -->
-            <!-- EXECUTIVE SUMMARY                                          -->
-            <!-- ========================================================== -->
-            <div id="executive-summary" class="lever-content active">
-                <!--  Friendly Reminders  -->
-                <div class="reminders-box">
-                    <div class="reminder-title"><i class="fas fa-info-circle"></i> Friendly Reminders</div>
-                    <ul>
-                        <li>This summary contains two diagrams only to facilitate easy understanding and discussion.</li>
-                        <li>The ideas and figures represent a directional business case only.</li>
-                        <li>All strategic and financial estimates are based on public information and industry benchmarks.</li>
-                        <li>Significant calibration is expected post-alignment with Link REIT's internal leadership and data.</li>
-                        <li>Continued and collaborative conversations, along with amendments, will be required to avoid confusion and misconception.</li>
-                    </ul>
-                </div>
-
-                <div class="grid">
-
-                    <!-- Diagram A: 3-Year Waterfall Chart (放在首位) -->
-                    <div class="card card-full">
-                        <div class="card-title"><i class="fas fa-chart-waterfall"></i> Diagram A · 3‑Year Incremental Revenue by Lever</div>
-                        <div style="font-size:0.7rem;color:#4d6f92;margin-bottom:0.1rem;">Annualised NOI build‑up across 12 levers</div>
-                        <img class="waterfall-img" src="https://rayiu921.github.io/carpark/Revenue%20incremental%20of%2012%20levers.png" alt="3-Year Incremental Revenue by Lever" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-                        <div style="display:none;background:#f8fafc;border-radius:8px;padding:0.6rem;text-align:center;border:1px solid #dce5ef;margin-top:0.2rem;font-size:0.8rem;color:#4d6f92;">
-                            <i class="fas fa-image" style="color:#b68b40;font-size:1.2rem;"></i> Waterfall chart image not available — please ensure "Revenue incremental of 12 levers.png" is in the same directory as the logo.
-                        </div>
-                    </div>
-
-                    <!-- Diagram B: Strategic Prioritisation Matrix (气泡图，放在第二位) -->
-                    <div class="card card-full">
-                        <div class="card-title"><i class="fas fa-th"></i> Diagram B · Strategic Prioritisation Matrix</div>
-                        <div style="font-size:0.7rem;color:#4d6f92;margin-bottom:0.1rem;">Impact vs. Feasibility · Bubble size = 3-Yr Revenue Potential</div>
-                        <div class="matrix-image-wrapper">
-                            <img src="https://rayiu921.github.io/carpark/bubble%20diagram%20to%20compare%20the%20levers.png" alt="Strategic Prioritisation Matrix - Bubble Diagram" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-                            <div style="display:none; background:#f8fafc; border-radius:8px; padding:0.6rem; text-align:center; border:1px solid #dce5ef; margin-top:0.2rem; font-size:0.8rem; color:#4d6f92;">
-                                <i class="fas fa-image" style="color:#b68b40;font-size:1.2rem;"></i> Bubble chart image not available — please ensure "bubble diagram to compare the levers.png" is in the same directory as the logo.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Portfolio Summary -->
-                    <div style="background:#0b2a4e;border-radius:10px;padding:0.3rem 0.6rem;margin-top:0.1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.15rem;border-left:4px solid #b68b40;grid-column:1/-1;">
-                        <div><div style="font-size:0.45rem;color:#b68b40;font-weight:600;letter-spacing:0.04em;">PORTFOLIO SUMMARY</div><div style="font-size:0.8rem;font-weight:700;color:white;">HK$126.54M <span style="font-size:0.5rem;font-weight:400;color:#b68b40;">3-Yr Annualised NOI</span></div></div>
-                        <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
-                            <div style="text-align:center;"><div style="font-size:0.4rem;color:#b68b40;text-transform:uppercase;">Year 1</div><div style="font-size:0.6rem;font-weight:700;color:white;">HK$55.14M</div></div>
-                            <div style="text-align:center;"><div style="font-size:0.4rem;color:#b68b40;text-transform:uppercase;">Year 2</div><div style="font-size:0.6rem;font-weight:700;color:white;">HK$104.94M</div></div>
-                            <div style="text-align:center;"><div style="font-size:0.4rem;color:#b68b40;text-transform:uppercase;">Year 3</div><div style="font-size:0.6rem;font-weight:700;color:#b68b40;">HK$126.54M</div></div>
-                            <div style="text-align:center;"><div style="font-size:0.4rem;color:#b68b40;text-transform:uppercase;">Sites</div><div style="font-size:0.6rem;font-weight:700;color:white;">~252</div></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- ========================================================== -->
-            <!-- LEVER 1: SAVE TO FLY                                       -->
-            <!-- ========================================================== -->
-            <div id="lever1" class="lever-content">
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
-                        <ul>
-                            <li><i class="fas fa-circle"></i> <span><strong>HKAA long-stay pain</strong> · CP4 5d HK$982 / 7d HK$1,494</span></li>
-                            <li><i class="fas fa-taxi"></i> <span><strong>vs 2x Taxi (5-6 pax):</strong> Save up to HK$1,000+ · No surge pricing</span></li>
-                            <li><i class="fas fa-clock"></i> <span><strong>vs Uber XL:</strong> Guaranteed vehicle · No wait time · Fixed price</span></li>
-                            <li><i class="fas fa-location-dot"></i> <span><strong>Tung Chung asset arbitrage</strong> · 8–10 min from airport</span></li>
-                            <li><i class="fas fa-users"></i> <span><strong>Target: 5-6 pax families</strong> · 7-8 seater vehicles · 5-14 day trips</span></li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
-                        <ul>
-                            <li><i class="fas fa-arrow-trend-down"></i> <span><strong>Standard daily rate lacks punch</strong> · <span class="tag">Regressive tariff</span> required</span></li>
-                            <li><i class="fas fa-receipt"></i> <span><strong>Tiered rebate</strong> 5%–10% (avg 7.5%) → 36.6% net margin</span></li>
-                            <li><i class="fas fa-gavel"></i> <span><strong>Legal shield</strong> · owner‑drives to/from T1, valet as passenger</span></li>
-                            <li><i class="fas fa-clock"></i> <span><strong>Peak manpower</strong> · 24hr booking + gig drivers</span></li>
-                            <li><i class="fas fa-users"></i> <span><strong>Customer segment:</strong> 5-6 pax families are <strong>core target</strong> · 1-2 pax are <strong>not</strong></span></li>
-                        </ul>
-                    </div>
-                    <div class="card card-full">
-                        <div class="card-title"><i class="fas fa-route"></i> Operations · Zero‑shuttle valet</div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; align-items: center;">
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.15rem 0.3rem; align-items: center; font-size: 0.85rem;">
-                                <span class="flow-step"><i class="fas fa-car"></i> Traveler drives to Link carpark</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">Valet as passenger to T1</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">Valet returns car to Link lot</span>
-                            </div>
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.15rem 0.3rem; align-items: center; font-size: 0.85rem;">
-                                <span class="flow-step"><i class="fas fa-undo-alt"></i> Return: valet brings car to CP4 (30min free)</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">Traveler drives to Link reception</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">Settle bill, handover</span>
-                            </div>
-                        </div>
-                        <div style="margin-top: 0.2rem; font-size: 0.7rem; background: #dce8f5; border-radius: 40px; padding: 0.05rem 0.7rem; display: inline-block;">
-                            <i class="fas fa-check-circle" style="color: #1f6f4a;"></i> 100% resource efficiency · no shuttle bus
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions & Sensitivity</div>
-                        <ul class="assumption-list">
-                            <li><strong>Total Lantau:</strong> 1,400 bays · <strong>Monthly:</strong> 60% (840 bays)</li>
-                            <li><strong>Available:</strong> <span style="font-weight:700;color:#0b2a4e;">560 bays</span></li>
-                            <li><strong>Regressive tariff:</strong> D1 HK$130; D2‑3 HK$100/d; D4+ <span class="inline-tag">HK$80/d</span></li>
-                            <li><strong>Long-stay discount (7+ days):</strong> HK$70/d from Day 8 · HK$65/d from Day 15</li>
-                            <li><strong>Gig driver:</strong> +HK$10/trip when daily trips > 45</li>
-                            <li><strong>Core target:</strong> 5-6 pax families (7-8 seaters) · 5-14 day trips</li>
-                        </ul>
-                        <div style="margin-top: 0.3rem; padding-top: 0.25rem; border-top: 1px solid #e3ebf4;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.15rem; flex-wrap: wrap; gap: 0.15rem;">
-                                <div style="font-size: 0.8rem; font-weight: 600; color: #0b2a4e;"><i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust</div>
-                                <button class="reset-btn" id="resetLever1"><i class="fas fa-undo"></i> Reset</button>
-                            </div>
-                            <div class="slider-group-vertical">
-                                <div class="slider-item"><label>Daily trips <span id="l1TripsValue">45</span></label><input type="range" id="l1TripsSlider" min="10" max="112" value="45" step="1"></div>
-                                <div class="slider-item"><label>Avg stay (days) <span id="l1StayValue">5</span></label><input type="range" id="l1StaySlider" min="3" max="14" value="5" step="1"></div>
-                                <div class="slider-item"><label>Valet fee (HK$) <span id="l1FeeValue">200</span></label><input type="range" id="l1FeeSlider" min="120" max="300" value="200" step="5"></div>
-                                <div class="slider-item"><label>Rebate rate <span id="l1RebateValue">7.5%</span></label><input type="range" id="l1RebateSlider" min="3" max="12" value="7.5" step="0.5"></div>
-                                <div class="slider-item"><label>Cost/trip <span id="l1CostValue">150</span></label><input type="range" id="l1CostSlider" min="100" max="220" value="150" step="5"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card" id="lever1Financials">
-                        <div class="card-title" onclick="toggleWorking('lever1')">
-                            <i class="fas fa-chart-simple"></i> Financial estimates <span class="site-remark">(3 Lantau carparks)</span>
-                            <span class="expand-hint">▼</span>
-                        </div>
-                        <div id="lever1Stats" style="display: flex; flex-direction: column; gap: 0.25rem;"></div>
-                        <div id="lever1Working" class="working-expand"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ========================================================== -->
-            <!-- LEVER 2: PARK DUO DUO (FULLY DYNAMIC)                     -->
-            <!-- ========================================================== -->
-            <div id="lever2" class="lever-content">
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
-                        <ul>
-                            <li><i class="fas fa-circle"></i> <span><strong>Single-estate, network-wide</strong> · Sheung Tak (500 bays) → <strong>any Link REIT</strong></span></li>
-                            <li><i class="fas fa-mobile-screen"></i> <span><strong>WeChat Mini-Program / H5</strong> · Zero-download · WhatsApp sharing</span></li>
-                            <li><i class="fas fa-clock"></i> <span><strong>Hourly rent credit</strong> · Referrers earn <strong>HK$2.0/hour</strong> (cap HK$200/mo)</span></li>
-                            <li><i class="fas fa-store"></i> <span><strong>Retail flywheel</strong> · HK$284k/month incremental retail sales</span></li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
-                        <ul>
-                            <li><i class="fas fa-clock"></i> <span><strong>Off-peak isolation</strong> · <strong>Weekdays 10:00–15:00</strong></span></li>
-                            <li><i class="fas fa-water"></i> <span><strong>Free-rider leakage</strong> · Zero-consumption modelled as cost</span></li>
-                            <li><i class="fas fa-tags"></i> <span><strong>Spend-privilege overlap</strong> · HK$300 → HK$5/hr stacking</span></li>
-                            <li><i class="fas fa-robot"></i> <span><strong>Anti-fraud</strong> · ANPR + receipt-upload</span></li>
-                        </ul>
-                    </div>
-                    <div class="card card-full">
-                        <div class="card-title"><i class="fas fa-route"></i> Operations · Auto-pilot H5/WeChat</div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; align-items: center;">
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.15rem 0.3rem; align-items: center; font-size: 0.85rem;">
-                                <span class="flow-step"><i class="fas fa-share"></i> Tenant shares Pass link</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">Guest binds plate via H5</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">ANPR checks in</span>
-                            </div>
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.15rem 0.3rem; align-items: center; font-size: 0.85rem;">
-                                <span class="flow-step"><i class="fas fa-receipt"></i> 1st hour free; extra billed</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">Receipt upload for HK$5/hr</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">Rent credit auto-credited</span>
-                            </div>
-                        </div>
-                        <div style="margin-top: 0.2rem; font-size: 0.7rem; background: #dce8f5; border-radius: 40px; padding: 0.05rem 0.7rem; display: inline-block;">
-                            <i class="fas fa-check-circle" style="color: #1f6f4a;"></i> Fully automated · zero app download
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions & Sensitivity</div>
-                        <ul class="assumption-list">
-                            <li><strong>5‑Tier mix:</strong> <span id="l2TierDisplay">10% · 35% · 30% · 15% · 10%</span> <span style="font-size:0.6rem;color:#4d6f92;">(dynamic)</span></li>
-                            <li><strong>Rent credit:</strong> HK$2.0/hr · <strong>Cap:</strong> HK$200/mo</li>
-                            <li><strong>Tech OpEx:</strong> HK$3,500/mo · <strong>Dev CapEx:</strong> HK$250k</li>
-                            <li><strong>Referral formula:</strong> <span class="inline-tag">125 tenants × 4 referrals × 3 visits = 1,500 trips</span></li>
-                            <li><strong>Average Guest Saving:</strong> <span class="inline-tag" id="l2AvgSavingDisplay">HK$24.50</span> <span style="font-size:0.6rem;color:#4d6f92;">(dynamic)</span></li>
-                            <li><strong>Hourly rate (fixed):</strong> HK$20/hr · <strong>Spend privilege:</strong> HK$5/hr</li>
-                        </ul>
-                        <div style="margin-top: 0.3rem; padding-top: 0.25rem; border-top: 1px solid #e3ebf4;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.15rem; flex-wrap: wrap; gap: 0.15rem;">
-                                <div style="font-size: 0.8rem; font-weight: 600; color: #0b2a4e;"><i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust</div>
-                                <button class="reset-btn" id="resetLever2"><i class="fas fa-undo"></i> Reset</button>
-                            </div>
-                            <div class="slider-group-vertical">
-                                <div class="slider-item"><label>Monthly trips <span id="l2TripsValue">1,500</span></label><input type="range" id="l2TripsSlider" min="500" max="3000" value="1500" step="50"></div>
-                                <div class="slider-item"><label>Free-rider leakage <span id="l2LeakageValue">10%</span></label><input type="range" id="l2LeakageSlider" min="5" max="20" value="10" step="1"></div>
-                                <div class="slider-item"><label>Rent credit (HK$/hr) <span id="l2CreditValue">2.00</span></label><input type="range" id="l2CreditSlider" min="1.0" max="3.5" value="2.0" step="0.1"></div>
-                                <div class="slider-item"><label>Turnover rent rate <span id="l2TurnoverValue">12%</span></label><input type="range" id="l2TurnoverSlider" min="8" max="18" value="12" step="0.5"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" id="lever2Financials">
-                        <div class="card-title" onclick="toggleWorking('lever2')">
-                            <i class="fas fa-chart-simple"></i> Financial estimates <span class="site-remark">(Sheung Tak pilot)</span>
-                            <span class="expand-hint">▼</span>
-                        </div>
-                        <div id="lever2Stats" style="display: flex; flex-direction: column; gap: 0.25rem;"></div>
-                        <div id="lever2Working" class="working-expand"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ========================================================== -->
-            <!-- LEVER 12: AVP SANDBOX                                      -->
-            <!-- ========================================================== -->
-            <div id="lever12" class="lever-content">
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
-                        <ul>
-                            <li><i class="fas fa-circle"></i> <span><strong>Strategic site: Shatin/Tai Po MSCP</strong> · HKSTP proximity</span></li>
-                            <li><i class="fas fa-layer-group"></i> <span><strong>Upper-floor yield</strong> · L5 & L6 (200 bays) · Zero public impact</span></li>
-                            <li><i class="fas fa-mountain"></i> <span><strong>HK extreme edge cases</strong> · 2.3m × 5.0m bays · 1:7.5 ramps · GPS-denied</span></li>
-                            <li><i class="fas fa-star"></i> <span><strong>Future premium pricing</strong> · Customers pay for drop‑off & auto‑park convenience</span></li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
-                        <ul>
-                            <li><i class="fas fa-gavel"></i> <span><strong>Regulatory</strong> · AV Pilot Licence · <span class="tag tag-gold">6‑month TD lobbying</span></span></li>
-                            <li><i class="fas fa-shield"></i> <span><strong>Liability</strong> · Tenant insurance · indemnity clauses</span></li>
-                            <li><i class="fas fa-lock"></i> <span><strong>Privacy</strong> · Edge AI anonymisation · PDPO compliant</span></li>
-                            <li><i class="fas fa-arrows-up-down"></i> <span><strong>Isolation</strong> · Bollards at L4/L5 · clear signage</span></li>
-                        </ul>
-                    </div>
-                    <div class="card card-full">
-                        <div class="card-title"><i class="fas fa-route"></i> Operations · Two‑stage model</div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; align-items: center;">
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.1rem 0.3rem; align-items: center; font-size: 0.8rem;">
-                                <span class="flow-step" style="background:#b68b40;color:white;border-color:#b68b40;"><i class="fas fa-flask"></i> Stage 1: Sandbox (Y1-5)</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step"><i class="fas fa-handshake"></i> M1–6: TD lobbying</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step"><i class="fas fa-file-signature"></i> M7–12: Master Lease</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step"><i class="fas fa-play"></i> Y2–5: Pilot ops</span>
-                            </div>
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.1rem 0.3rem; align-items: center; font-size: 0.8rem; margin-top:0.2rem;">
-                                <span class="flow-step" style="background:#0c6b4b;color:white;border-color:#0c6b4b;"><i class="fas fa-rocket"></i> Stage 2: Commercial (Y6+)</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">AVP goes public</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">Customer premium pricing</span>
-                                <span class="arrow">→</span>
-                                <span class="flow-step">Scalable to 130+ sites</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions</div>
-                        <ul class="assumption-list">
-                            <li><strong>Zero CapEx for Link:</strong> EV partners fund all hardware</li>
-                            <li><strong>5‑year Master Lease:</strong> B2B wholesale · fixed term</li>
-                            <li><strong>Two‑stage model:</strong> Sandbox (Y1-5) → Commercial (Y6+)</li>
-                            <li><strong>Year 3 allocation:</strong> Strategic bet · regulatory timeline</li>
-                        </ul>
-                        <div style="margin-top: 0.3rem; padding-top: 0.25rem; border-top: 1px solid #e3ebf4;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.15rem; flex-wrap: wrap; gap: 0.15rem;">
-                                <div style="font-size: 0.8rem; font-weight: 600; color: #0b2a4e;"><i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust</div>
-                                <button class="reset-btn" id="resetLever12"><i class="fas fa-undo"></i> Reset</button>
-                            </div>
-                            <div class="slider-group-vertical">
-                                <div class="slider-item"><label>Sandbox bays leased <span id="l12BaysValue">200</span></label><input type="range" id="l12BaysSlider" min="100" max="400" value="200" step="10"></div>
-                                <div class="slider-item"><label>Sandbox monthly rent (HK$/bay) <span id="l12RentValue">500</span></label><input type="range" id="l12RentSlider" min="300" max="1500" value="500" step="50"></div>
-                                <div class="slider-item"><label>Commercial roll‑out bays <span id="l12RolloutBaysValue">400</span></label><input type="range" id="l12RolloutBaysSlider" min="100" max="600" value="400" step="10"></div>
-                                <div class="slider-item"><label>Customer premium (%) <span id="l12PremiumValue">15%</span></label><input type="range" id="l12PremiumSlider" min="5" max="35" value="15" step="1"></div>
-                                <div class="slider-item"><label>Current market rate (HK$/bay/mo) <span id="l12MarketValue">2,000</span></label><input type="range" id="l12MarketSlider" min="1500" max="3000" value="2000" step="50"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" id="lever12Financials">
-                        <div class="card-title" onclick="toggleWorking('lever12')">
-                            <i class="fas fa-chart-simple"></i> Financial estimates <span class="site-remark">(1 site · 2‑stage)</span>
-                            <span class="expand-hint">▼</span>
-                        </div>
-                        <div id="lever12Stats" style="display: flex; flex-direction: column; gap: 0.25rem;"></div>
-                        <div id="lever12Working" class="working-expand"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="bottom-bar">
-                <span class="left"><i class="far fa-file-lines"></i> 4 tabs · Executive Summary · L1-L2 detailed · L12 AVP Sandbox</span>
-                <span class="right"><i class="fas fa-building-columns" style="color: #b68b40;"></i> Link REIT · Car Park Portfolio</span>
-            </div>
-
+        <div class="tab-bar">
+            <button class="tab active" data-lever="executive-summary"><i class="fas fa-chart-pie"></i> Executive Summary</button>
+            <button class="tab" data-lever="lever1"><i class="fas fa-plane-departure"></i> L1 · Save to Fly</button>
+            <button class="tab" data-lever="lever2"><i class="fas fa-share-alt"></i> L2 · Park Duo Duo</button>
+            <span class="tab-dots">⋯</span>
+            <button class="tab" data-lever="lever12"><i class="fas fa-robot"></i> L12 · AVP Sandbox</button>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    <div class="scrollable-content">
 
-            // ----- TAB SWITCHING -----
-            const tabs = document.querySelectorAll('.tab');
-            const contents = {
-                'executive-summary': document.getElementById('executive-summary'),
-                'lever1': document.getElementById('lever1'),
-                'lever2': document.getElementById('lever2'),
-                'lever12': document.getElementById('lever12')
-            };
+        <!-- ========================================================== -->
+        <!-- EXECUTIVE SUMMARY                                          -->
+        <!-- ========================================================== -->
+        <div id="executive-summary" class="lever-content active">
+            <div class="reminders-box">
+                <div class="reminder-title"><i class="fas fa-info-circle"></i> Friendly Reminders</div>
+                <ul>
+                    <li>This summary contains two diagrams only, with the intent to facilitate easy understanding and discussion.</li>
+                    <li>Only three levers (L1 · Save to Fly, L2 · Park Duo Duo, and L12 · AVP Sandbox) are detailed in the clickable tabs for initial review and discussions.</li>
+                    <li>The ideas and figures represent a directional business case only.</li>
+                    <li>All strategic and financial estimates are based on public information and industry benchmarks.</li>
+                    <li>Significant calibration is expected post-alignment with Link REIT's internal leadership and data.</li>
+                    <li>Continued and collaborative conversations, along with amendments, will be required to avoid confusion and misconception.</li>
+                </ul>
+            </div>
 
-            function switchLever(id) {
-                tabs.forEach(t => {
-                    const isActive = t.dataset.lever === id;
-                    t.classList.toggle('active', isActive);
-                });
-                Object.keys(contents).forEach(k => {
-                    contents[k].classList.toggle('active', k === id);
-                });
-            }
+            <div class="grid">
+                <!-- Diagram A: 3-Year Waterfall Chart -->
+                <div class="card card-full">
+                    <div class="card-title"><i class="fas fa-chart-waterfall"></i> Diagram A · 3‑Year Incremental Revenue by Lever</div>
+                    <div style="font-size:0.7rem;color:#4d6f92;margin-bottom:0.1rem;">Annualised NOI build‑up across 12 levers</div>
+                    <img class="waterfall-img" src="https://rayiu921.github.io/carpark/Revenue%20incremental%20of%2012%20levers.png" alt="3-Year Incremental Revenue by Lever" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                    <div style="display:none;background:#f8fafc;border-radius:8px;padding:0.6rem;text-align:center;border:1px solid #dce5ef;margin-top:0.2rem;font-size:0.8rem;color:#4d6f92;">
+                        <i class="fas fa-image" style="color:#b68b40;font-size:1.2rem;"></i> Waterfall chart image not available — please ensure "Revenue incremental of 12 levers.png" is in the same directory as the logo.
+                    </div>
+                    <div class="waterfall-note">
+                        <i class="fas fa-info-circle"></i> 
+                        <strong>Chart interpretation:</strong> The waterfall chart illustrates the <strong>marginal incremental trend</strong> of each lever; column heights are not strictly scaled to annual totals. 
+                        For precise figures, please refer to the detailed tabs. 
+                        <span style="display:inline-block; margin-top:0.2rem; background:#eef3f9; padding:0.1rem 0.5rem; border-radius:12px; font-size:0.7rem;">
+                            L1 = HK$55.14M · L2 = HK$12.50M · L12 = HK$5.60M (annualised, as shown in tabs)
+                        </span>
+                    </div>
+                </div>
 
-            tabs.forEach(t => t.addEventListener('click', function() {
-                const id = this.dataset.lever;
-                if (id && contents[id]) {
-                    switchLever(id);
-                }
-            }));
-
-            // ----- WORKING EXPAND TOGGLE -----
-            window.toggleWorking = function(leverId) {
-                const workingDiv = document.getElementById(leverId + 'Working');
-                if (workingDiv) {
-                    workingDiv.classList.toggle('open');
-                    const hint = workingDiv.previousElementSibling.querySelector('.expand-hint');
-                    if (hint) {
-                        hint.textContent = workingDiv.classList.contains('open') ? '▲' : '▼';
-                    }
-                }
-            };
-
-            // Default: Executive Summary active
-            switchLever('executive-summary');
-
-            // ================================================================
-            // LEVER 1: SAVE TO FLY (UPDATED)
-            // ================================================================
-            const TOTAL_LANTAU = 1400;
-            const MONTHLY_DEDICATED = 0.6;
-            const AVAILABLE_PARK_FLY = TOTAL_LANTAU * (1 - MONTHLY_DEDICATED);
-            const GIG_DRIVER_THRESHOLD = 45;
-            const GIG_DRIVER_ADD_COST = 10;
-
-            const l1D = { trips: 45, stay: 5, fee: 200, rebate: 7.5, cost: 150 };
-
-            function getParkingFee(stay) {
-                let fee = 0;
-                if (stay <= 0) return 0;
-                fee += 130;
-                const days2_3 = Math.min(stay - 1, 2);
-                fee += days2_3 * 100;
-                const remaining = stay - 1 - days2_3;
-                if (remaining > 0) {
-                    const days4_7 = Math.min(remaining, 4);
-                    fee += days4_7 * 80;
-                    const days8_14 = Math.min(Math.max(remaining - 4, 0), 7);
-                    fee += days8_14 * 70;
-                    const days15plus = Math.max(remaining - 4 - 7, 0);
-                    fee += days15plus * 65;
-                }
-                return fee;
-            }
-
-            function updateL1() {
-                const trips = parseInt(document.getElementById('l1TripsSlider').value);
-                const stay = parseInt(document.getElementById('l1StaySlider').value);
-                const fee = parseFloat(document.getElementById('l1FeeSlider').value);
-                const rebate = parseFloat(document.getElementById('l1RebateSlider').value);
-                const baseCost = parseFloat(document.getElementById('l1CostSlider').value);
-
-                document.getElementById('l1TripsValue').textContent = trips;
-                document.getElementById('l1StayValue').textContent = stay;
-                document.getElementById('l1FeeValue').textContent = fee;
-                document.getElementById('l1RebateValue').textContent = rebate + '%';
-                document.getElementById('l1CostValue').textContent = baseCost;
-
-                const effectiveCost = trips > GIG_DRIVER_THRESHOLD ? baseCost + GIG_DRIVER_ADD_COST : baseCost;
-                const parkingFee = getParkingFee(stay);
-                const totalCost = parkingFee + fee;
-                const hkiaCP4Cost = stay <= 3 ? 470 : 470 + 256 * (stay - 3);
-                const saving = hkiaCP4Cost - totalCost;
-                const savePct = (saving / hkiaCP4Cost) * 100;
-                const occupiedBays = trips * stay;
-                const effectiveOccupied = Math.min(occupiedBays, AVAILABLE_PARK_FLY);
-                const isOverCapacity = occupiedBays > AVAILABLE_PARK_FLY;
-                const avgRate = parkingFee / stay;
-                const netRate = avgRate * (1 - rebate / 100);
-                const annualRent = effectiveOccupied * netRate * 365;
-                const monthlyRent = annualRent / 12;
-                const annualTrips = trips * 365;
-                const rebatePerTrip = parkingFee * (rebate / 100);
-                const revenuePerTrip = fee + rebatePerTrip;
-                const profitPerTrip = revenuePerTrip - effectiveCost;
-                const annualProfit = profitPerTrip * annualTrips;
-                const netMargin = (profitPerTrip / revenuePerTrip) * 100;
-
-                const workingHTML = `
-                    <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Detailed Calculations</h5>
-                    <table class="working-table"><tr><th>Item</th><th>Value</th></tr>
-                        <tr><td>Daily trips</td><td>${trips}</td></tr>
-                        <tr><td>Avg stay</td><td>${stay} days</td></tr>
-                        <tr><td>Save to Fly parking fee</td><td>HK$${parkingFee.toLocaleString()}</td></tr>
-                        <tr><td>Valet fee</td><td>HK$${fee}</td></tr>
-                        <tr><td>Save to Fly total</td><td>HK$${totalCost.toLocaleString()}</td></tr>
-                        <tr><td>HKAA CP4 (${stay} days)</td><td>HK$${hkiaCP4Cost.toLocaleString()}</td></tr>
-                        <tr><td>Customer saving</td><td>HK$${saving.toLocaleString()} (${savePct.toFixed(0)}%)</td></tr>
-                    </table>
-
-                    <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Customer Segment: 5-6 pax families (7-8 seater)</h5>
-                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.3rem;margin-top:0.15rem;">
-                        <div class="customer-segment-box" style="border-left:3px solid #0c6b4b;">
-                            <div class="segment-title">✅ Core Target</div>
-                            <div class="segment-desc">5-6 pax · 7-8 seater · 5-14 days</div>
-                            <div class="segment-verdict" style="color:#0c6b4b;">Best value · Save HK${saving.toLocaleString()} vs HKAA</div>
-                        </div>
-                        <div class="customer-segment-box" style="border-left:3px solid #b68b40;">
-                            <div class="segment-title">⚠️ Secondary Target</div>
-                            <div class="segment-desc">3-4 pax · 5 seater · 3-7 days</div>
-                            <div class="segment-verdict" style="color:#b68b40;">Convenience play · Close to HKAA price</div>
-                        </div>
-                        <div class="customer-segment-box" style="border-left:3px solid #b34040;">
-                            <div class="segment-title">❌ Not Target</div>
-                            <div class="segment-desc">1-2 pax · any vehicle · any days</div>
-                            <div class="segment-verdict" style="color:#b34040;">Airport Express/Uber X cheaper</div>
+                <!-- Diagram B: Strategic Prioritisation Matrix -->
+                <div class="card card-full">
+                    <div class="card-title"><i class="fas fa-th"></i> Diagram B · Strategic Prioritisation Matrix</div>
+                    <div style="font-size:0.7rem;color:#4d6f92;margin-bottom:0.1rem;">Impact vs. Feasibility · Bubble size = 3-Yr Revenue Potential</div>
+                    <div class="matrix-image-wrapper">
+                        <img src="https://rayiu921.github.io/carpark/bubble%20diagram%20to%20compare%20the%20levers.png" alt="Strategic Prioritisation Matrix - Bubble Diagram" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                        <div style="display:none; background:#f8fafc; border-radius:8px; padding:0.6rem; text-align:center; border:1px solid #dce5ef; margin-top:0.2rem; font-size:0.8rem; color:#4d6f92;">
+                            <i class="fas fa-image" style="color:#b68b40;font-size:1.2rem;"></i> Bubble chart image not available — please ensure "bubble diagram to compare the levers.png" is in the same directory as the logo.
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Competitive Positioning (5-6 pax families)</h5>
-                    <table class="comparison-table">
-                        <thead><tr><th>Option</th><th>Est. Cost</th><th>Save to Fly vs</th><th>Key Advantage</th></tr></thead>
-                        <tbody>
-                            <tr class="best-row"><td><strong>Save to Fly</strong></td><td>HK$${totalCost.toLocaleString()}</td><td>—</td><td>Zero wait + luggage space</td></tr>
-                            <tr><td>HKAA CP4</td><td>HK$${hkiaCP4Cost.toLocaleString()}</td><td>${saving > 0 ? 'Save ' + saving.toLocaleString() : 'Cost ' + Math.abs(saving).toLocaleString() + ' more'}</td><td>Self-park</td></tr>
-                            <tr><td>Uber XL</td><td>~HK$900-1,200</td><td>${900 > totalCost ? 'Save ~' + (900 - totalCost).toLocaleString() : 'Cost ~' + (totalCost - 900).toLocaleString() + ' more'}</td><td>Door-to-door</td></tr>
-                            <tr><td>2× Taxi</td><td>~HK$1,200-1,600</td><td>Save ~${Math.round((1200 - totalCost)).toLocaleString()}</td><td>No parking</td></tr>
-                        </tbody>
-                    </table>
-                `;
-                document.getElementById('lever1Working').innerHTML = workingHTML;
-
-                document.getElementById('lever1Stats').innerHTML = `
-                    <div class="stat-block"><div style="display:flex;justify-content:space-between;align-items:center;"><span class="stat-label">Customer (${stay}-day)</span><span style="background:#f1e9d8;border-radius:30px;padding:0.02rem 0.4rem;font-size:0.55rem;font-weight:600;color:#7a5f2e;">save ${savePct.toFixed(0)}%</span></div><div style="display:flex;gap:0.4rem;flex-wrap:wrap;"><div><span class="stat-label">HKAA CP4</span><div class="stat-number">HK$${hkiaCP4Cost.toLocaleString()}</div></div><div><span class="stat-label">Save to Fly</span><div class="stat-number green">HK$${Math.round(totalCost).toLocaleString()}</div></div><div><span class="stat-label">Saving</span><div class="stat-number gold">HK$${Math.round(saving).toLocaleString()}</div></div></div></div>
-                    <div class="stat-block"><div style="display:flex;justify-content:space-between;"><span class="stat-label">Valet Co. (${trips}/day · ${rebate}% rebate)</span><span style="background:#d9e6f0;border-radius:30px;padding:0.02rem 0.4rem;font-size:0.55rem;">${netMargin.toFixed(1)}%</span></div><div style="display:flex;flex-wrap:wrap;gap:0.2rem 0.6rem;"><div><span class="stat-label">Revenue/trip</span><div class="stat-number">HK$${revenuePerTrip.toFixed(2)}</div></div><div><span class="stat-label">Cost/trip</span><div class="stat-number" style="color:#1f4d6e;">HK$${effectiveCost}</div></div><div><span class="stat-label">Profit/trip</span><div class="stat-number gold">HK$${profitPerTrip.toFixed(2)}</div></div></div><div style="font-size:0.55rem;"><strong>Annual profit:</strong> HK$${Math.round(annualProfit).toLocaleString()}</div></div>
-                    <div class="stat-block" style="background:#f3f8fe;"><span class="stat-label">Link REIT · asset return</span><div style="display:flex;flex-wrap:wrap;gap:0.4rem;"><div><span class="stat-label">In-use bays</span><div class="stat-number ${isOverCapacity ? 'red' : ''}">${effectiveOccupied.toLocaleString()} / ${Math.round(AVAILABLE_PARK_FLY).toLocaleString()}</div></div><div><span class="stat-label">Utilization</span><div class="stat-number ${isOverCapacity ? 'red' : ''}">${Math.min((occupiedBays / AVAILABLE_PARK_FLY * 100), 100).toFixed(0)}%</div></div></div></div>
-                    <div class="link-reit-banner"><span class="label">LINK REIT · INCREMENTAL</span><span class="amount">HK$${Math.round(monthlyRent).toLocaleString()} <span class="sub">/mo</span></span><span class="amount annual">HK$${Math.round(annualRent).toLocaleString()} <span class="sub">/yr</span></span>${isOverCapacity ? '<span class="capacity-warning">⚠️</span>' : ''}</div>
-                `;
-            }
-
-            ['l1TripsSlider', 'l1StaySlider', 'l1FeeSlider', 'l1RebateSlider', 'l1CostSlider'].forEach(id => {
-                document.getElementById(id).addEventListener('input', updateL1);
-            });
-
-            document.getElementById('resetLever1').addEventListener('click', function() {
-                ['l1TripsSlider', 'l1StaySlider', 'l1FeeSlider', 'l1RebateSlider', 'l1CostSlider'].forEach((id, i) => {
-                    document.getElementById(id).value = Object.values(l1D)[i];
-                });
-                updateL1();
-            });
-            updateL1();
-
-            // ================================================================
-            // LEVER 2: PARK DUO DUO
-            // ================================================================
-            const l2D = { trips: 1500, leakage: 10, credit: 2.0, turnover: 12 };
-            const HOURLY_RATE = 20;
-            const PRIVILEGE_RATE = 5;
-
-            function updateL2() {
-                const trips = parseInt(document.getElementById('l2TripsSlider').value);
-                const leakage = parseInt(document.getElementById('l2LeakageSlider').value);
-                const credit = parseFloat(document.getElementById('l2CreditSlider').value);
-                const turnover = parseFloat(document.getElementById('l2TurnoverSlider').value);
-
-                document.getElementById('l2TripsValue').textContent = trips.toLocaleString();
-                document.getElementById('l2LeakageValue').textContent = leakage + '%';
-                document.getElementById('l2CreditValue').textContent = credit.toFixed(2);
-                document.getElementById('l2TurnoverValue').textContent = turnover + '%';
-
-                const baseProportions = { tA: 0.35, tB: 0.30, tC: 0.15, tD: 0.10 };
-                const totalBase = 0.35 + 0.30 + 0.15 + 0.10;
-                const tier0Pct = leakage / 100;
-                const remaining = 1 - tier0Pct;
-                const tA = (baseProportions.tA / totalBase) * remaining;
-                const tB = (baseProportions.tB / totalBase) * remaining;
-                const tC = (baseProportions.tC / totalBase) * remaining;
-                const tD = (baseProportions.tD / totalBase) * remaining;
-                const pcts = [tier0Pct, tA, tB, tC, tD];
-
-                document.getElementById('l2TierDisplay').textContent =
-                    (tier0Pct * 100).toFixed(0) + '% · ' +
-                    (tA * 100).toFixed(1) + '% · ' +
-                    (tB * 100).toFixed(1) + '% · ' +
-                    (tC * 100).toFixed(1) + '% · ' +
-                    (tD * 100).toFixed(1) + '%';
-
-                const retailSpend = [0, 200, 200, 350, 350];
-                const hours = [1.0, 1.5, 2.5, 2.0, 2.5];
-                const tierNames = ['T0: Free Rider', 'TA: Moderate', 'TB: Long Stay', 'TC: HK$300+', 'TD: HK$300+'];
-                const paidHours = [0, 0.5, 1.5, 0, 0];
-                const tierRates = [0, HOURLY_RATE, HOURLY_RATE, PRIVILEGE_RATE, PRIVILEGE_RATE];
-                const parkRev = paidHours.map((h, i) => h * tierRates[i]);
-                const tenants = 125;
-                const techOpEx = 3500;
-                const tripsPer = pcts.map(p => Math.round(trips * p));
-                let totalPark = 0;
-                for (let i = 0; i < 5; i++) totalPark += tripsPer[i] * parkRev[i];
-                let baselinePark = 0;
-                for (let i = 0; i < 5; i++) baselinePark += tripsPer[i] * hours[i] * HOURLY_RATE;
-                let adjRetail = 0;
-                for (let i = 0; i < 5; i++) adjRetail += tripsPer[i] * retailSpend[i];
-                const turnRent = adjRetail * (turnover / 100);
-                let totalCredits = 0;
-                for (let i = 0; i < 5; i++) totalCredits += tripsPer[i] * hours[i] * credit;
-                totalCredits = Math.min(totalCredits, tenants * 200);
-                const netMon = totalPark + turnRent - totalCredits - techOpEx;
-                const ann = netMon * 12;
-                const avgCredit = totalCredits / tenants;
-                const avgSaving = (baselinePark - totalPark) / trips;
-                const avgRetailPerTrip = adjRetail / trips;
-
-                document.getElementById('l2AvgSavingDisplay').textContent = 'HK$' + avgSaving.toFixed(2);
-
-                let tierRows = '';
-                for (let i = 0; i < 5; i++) {
-                    tierRows += `<tr>
-                        <td>${tierNames[i]}</td>
-                        <td>${(pcts[i]*100).toFixed(1)}%</td>
-                        <td>${tripsPer[i]}</td>
-                        <td>${hours[i]}h</td>
-                        <td>HK$${parkRev[i].toFixed(0)}</td>
-                        <td>HK$${retailSpend[i]}</td>
-                        <td>HK$${Math.round(tripsPer[i] * parkRev[i]).toLocaleString()}</td>
-                        <td>HK$${Math.round(tripsPer[i] * retailSpend[i]).toLocaleString()}</td>
-                    </tr>`;
-                }
-
-                let sensitivityRows = '';
-                const testLeakages = [5, 8, 10, 12, 15, 20];
-                testLeakages.forEach(testLeak => {
-                    const t0 = testLeak / 100;
-                    const rem = 1 - t0;
-                    const tA2 = (baseProportions.tA / totalBase) * rem;
-                    const tB2 = (baseProportions.tB / totalBase) * rem;
-                    const tC2 = (baseProportions.tC / totalBase) * rem;
-                    const tD2 = (baseProportions.tD / totalBase) * rem;
-                    const p2 = [t0, tA2, tB2, tC2, tD2];
-                    const tp2 = p2.map(p => Math.round(trips * p));
-                    let park2 = 0;
-                    for (let i = 0; i < 5; i++) park2 += tp2[i] * parkRev[i];
-                    let base2 = 0;
-                    for (let i = 0; i < 5; i++) base2 += tp2[i] * hours[i] * HOURLY_RATE;
-                    let retail2 = 0;
-                    for (let i = 0; i < 5; i++) retail2 += tp2[i] * retailSpend[i];
-                    const rent2 = retail2 * (turnover / 100);
-                    let credits2 = 0;
-                    for (let i = 0; i < 5; i++) credits2 += tp2[i] * hours[i] * credit;
-                    credits2 = Math.min(credits2, tenants * 200);
-                    const net2 = park2 + rent2 - credits2 - techOpEx;
-                    const save2 = (base2 - park2) / trips;
-                    const isBase = testLeak === leakage;
-                    sensitivityRows += `<tr class="${isBase ? 'highlight-row' : ''}">
-                        <td>${testLeak}%</td>
-                        <td>HK$${Math.round(park2).toLocaleString()}</td>
-                        <td>HK$${save2.toFixed(2)}</td>
-                        <td>HK$${Math.round(net2).toLocaleString()}</td>
-                        <td>${isBase ? '← Current' : (net2 > netMon ? '+' + ((net2-netMon)/netMon*100).toFixed(0) + '%' : ((net2-netMon)/netMon*100).toFixed(0) + '%')}</td>
-                    </tr>`;
-                });
-
-                const workingHTML = `
-                    <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">5-Tier Matrix · ${trips.toLocaleString()} total trips/mo</h5>
-                    <div style="font-size:0.6rem;color:#4d6f92;margin-bottom:0.1rem;">
-                        Tier distribution: ${pcts.map((p,i) => tierNames[i] + ' ' + (p*100).toFixed(1)+'%').join(' · ')}
-                        <br/>Hourly rate: HK$${HOURLY_RATE}/hr · Privilege rate: HK$${PRIVILEGE_RATE}/hr (fixed)
-                    </div>
-                    <table class="working-table"><thead><tr><th>Tier</th><th>%</th><th>Trips</th><th>Hrs</th><th>Rev</th><th>Spend</th><th>Total Rev</th><th>Total Spend</th></tr></thead><tbody>${tierRows}<tr class="highlight-row"><td><strong>Total</strong></td><td>100%</td><td>${trips}</td><td>${(tripsPer.reduce((a,b,i) => a + b * hours[i], 0) / trips).toFixed(1)}h</td><td>HK$${(totalPark/trips).toFixed(2)}</td><td>HK$${(adjRetail/trips).toFixed(0)}</td><td><strong>HK$${totalPark.toLocaleString()}</strong></td><td><strong>HK$${Math.round(adjRetail).toLocaleString()}</strong></td></tr></tbody></table>
-
-                    <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Financial Breakdown</h5>
-                    <table class="working-table"><thead><tr><th>Item</th><th>Amount</th></tr></thead><tbody>
-                        <tr><td>Baseline parking (no discounts)</td><td>HK$${Math.round(baselinePark).toLocaleString()}</td></tr>
-                        <tr><td>Actual paid parking revenue</td><td>HK$${totalPark.toLocaleString()}</td></tr>
-                        <tr><td><strong>Guest Average Saving</strong></td><td><strong>HK$${avgSaving.toFixed(2)} per trip</strong></td></tr>
-                        <tr><td>Adjusted retail spend</td><td>HK$${Math.round(adjRetail).toLocaleString()}</td></tr>
-                        <tr><td>Turnover rent (${turnover}%)</td><td>HK$${Math.round(turnRent).toLocaleString()}</td></tr>
-                        <tr><td>Rent credits (HK$${credit}/hr)</td><td>HK$${Math.round(totalCredits).toLocaleString()}</td></tr>
-                        <tr><td>Tech OpEx</td><td>HK$${techOpEx.toLocaleString()}</td></tr>
-                        <tr class="highlight-row"><td><strong>Link REIT Net Monthly</strong></td><td><strong>HK$${Math.round(netMon).toLocaleString()}</strong></td></tr>
-                        <tr class="highlight-row"><td><strong>Link REIT Annual</strong></td><td><strong>HK$${Math.round(ann).toLocaleString()}</strong></td></tr>
-                    </tbody></table>
-
-                    <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Sensitivity: Free-Rider Leakage Impact</h5>
-                    <table class="sensitivity-table"><thead><tr><th>Leakage</th><th>Parking Revenue</th><th>Guest Avg Saving</th><th>Link Net Monthly</th><th>Change</th></tr></thead><tbody>${sensitivityRows}</tbody></table>
-
-                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.2rem;margin-top:0.2rem;padding-top:0.2rem;border-top:1px solid #e3eaf2;">
-                        <div style="background:#f1e9d8;border-radius:6px;padding:0.15rem 0.3rem;text-align:center;"><span style="font-size:0.55rem;color:#7a5f2e;">Avg Credit (per tenant)</span><div style="font-size:0.9rem;font-weight:700;">HK$${avgCredit.toFixed(1)}</div></div>
-                        <div style="background:#d8f0e6;border-radius:6px;padding:0.15rem 0.3rem;text-align:center;"><span style="font-size:0.55rem;color:#0c6b4b;">Guest Avg Saving</span><div style="font-size:0.9rem;font-weight:700;">HK$${avgSaving.toFixed(2)}</div></div>
-                        <div style="background:#d8e8f5;border-radius:6px;padding:0.15rem 0.3rem;text-align:center;"><span style="font-size:0.55rem;color:#1a5a7a;">Avg Retail / Trip</span><div style="font-size:0.9rem;font-weight:700;">HK$${avgRetailPerTrip.toFixed(0)}</div></div>
-                    </div>
-                    <div style="font-size:0.55rem;color:#4d6f92;margin-top:0.1rem;">${tenants} tenants · Scale-up 30x: <strong>HK$${Math.round(netMon*30).toLocaleString()}/mo</strong></div>
-                `;
-                document.getElementById('lever2Working').innerHTML = workingHTML;
-
-                document.getElementById('lever2Stats').innerHTML = `
-                    <div class="stakeholder-grid">
-                        <div class="stakeholder-item"><div class="stakeholder-name">Tenant (Referrer)</div><div class="stakeholder-value">HK$${avgCredit.toFixed(1)} <span style="font-size:0.6rem;font-weight:400;color:#4d6f92;">(avg)</span></div><div class="stakeholder-detail">Up to HK$200/mo · ${Math.round(avgCredit/200*100)}% utilized</div></div>
-                        <div class="stakeholder-item"><div class="stakeholder-name">Guest (Visitor)</div><div class="stakeholder-value">HK$${avgSaving.toFixed(2)} <span style="font-size:0.6rem;font-weight:400;color:#4d6f92;">(avg saving)</span></div><div class="stakeholder-detail">First hour free · up to 2.5h · dynamic</div></div>
-                        <div class="stakeholder-item"><div class="stakeholder-name">Retail Tenant</div><div class="stakeholder-value">HK$${Math.round(adjRetail).toLocaleString()} <span style="font-size:0.6rem;font-weight:400;color:#4d6f92;">/mo sales</span></div><div class="stakeholder-detail">${turnover}% rent share · HK$${Math.round(turnRent).toLocaleString()}/mo</div></div>
-                        <div class="stakeholder-item" style="background:#f3f8fe;border-color:#b68b40;"><div class="stakeholder-name">Link REIT</div><div class="stakeholder-value" style="color:#b68b40;">HK$${Math.round(netMon).toLocaleString()}</div><div class="stakeholder-detail">Parking + Rent - Credits - Tech</div></div>
-                    </div>
-                    <div class="link-reit-banner"><span class="label">LINK REIT · INCREMENTAL</span><span class="amount">HK$${Math.round(netMon).toLocaleString()} <span class="sub">/mo</span></span><span class="amount annual">HK$${Math.round(ann).toLocaleString()} <span class="sub">/yr</span></span><span style="color:#b68b40;font-size:0.6rem;">(Sheung Tak pilot)</span></div>
-                    <div style="display:flex;flex-wrap:wrap;gap:0.15rem;font-size:0.55rem;color:#2f4b74;background:#f1f7fe;border-radius:30px;padding:0.05rem 0.4rem;margin-top:0.05rem;">
-                        <span><strong>Avg parking:</strong> HK$${(totalPark/trips).toFixed(2)}</span>
-                        <span><strong>Guest saving:</strong> HK$${avgSaving.toFixed(2)}</span>
-                        <span><strong>Scale-up 30x:</strong> HK$${Math.round(netMon*30).toLocaleString()}/mo</span>
-                        <span><strong>Annual 30-site:</strong> HK$${Math.round(netMon*30*12).toLocaleString()}</span>
-                    </div>
-                `;
-            }
-
-            ['l2TripsSlider', 'l2LeakageSlider', 'l2CreditSlider', 'l2TurnoverSlider'].forEach(id => {
-                document.getElementById(id).addEventListener('input', updateL2);
-            });
-
-            document.getElementById('resetLever2').addEventListener('click', function() {
-                ['l2TripsSlider', 'l2LeakageSlider', 'l2CreditSlider', 'l2TurnoverSlider'].forEach((id, i) => {
-                    document.getElementById(id).value = Object.values(l2D)[i];
-                });
-                updateL2();
-            });
-            updateL2();
-
-            // ================================================================
-            // LEVER 12: AVP SANDBOX
-            // ================================================================
-            const l12D = { bays: 200, rent: 500, rolloutBays: 400, premium: 15, marketRate: 2000 };
-
-            function updateL12() {
-                const bays = parseInt(document.getElementById('l12BaysSlider').value);
-                const rent = parseFloat(document.getElementById('l12RentSlider').value);
-                const rolloutBays = parseInt(document.getElementById('l12RolloutBaysSlider').value);
-                const premium = parseFloat(document.getElementById('l12PremiumSlider').value);
-                const marketRate = parseFloat(document.getElementById('l12MarketSlider').value);
-
-                document.getElementById('l12BaysValue').textContent = bays;
-                document.getElementById('l12RentValue').textContent = rent.toLocaleString();
-                document.getElementById('l12RolloutBaysValue').textContent = rolloutBays.toLocaleString();
-                document.getElementById('l12PremiumValue').textContent = premium + '%';
-                document.getElementById('l12MarketValue').textContent = marketRate.toLocaleString();
-
-                const monthlySandbox = bays * rent;
-                const annualSandbox = monthlySandbox * 12;
-                const totalSandbox = annualSandbox * 5;
-                const upliftedRate = marketRate * (1 + premium / 100);
-                const incrementalPerBay = upliftedRate - marketRate;
-                const monthlyRollout = rolloutBays * incrementalPerBay;
-                const annualRollout = monthlyRollout * 12;
-                const totalRollout5yr = annualRollout * 5;
-                const evCapex = Math.round(bays * 40000);
-                const evTotalCost = totalSandbox + evCapex;
-                const evAnnualCost = (totalSandbox + evCapex) / 5;
-
-                const workingHTML = `
-                    <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Two-Stage Model</h5>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;">
-                        <div style="background:#f8fafc;border-radius:6px;padding:0.25rem 0.4rem;border:1px solid #dce5ef;">
-                            <div style="font-size:0.6rem;font-weight:700;color:#0b2a4e;">Stage 1: Sandbox (Years 1-5)</div>
-                            <div style="font-size:0.8rem;font-weight:700;">HK$${annualSandbox.toLocaleString()}<span style="font-size:0.5rem;font-weight:400;color:#4d6f92;">/yr</span></div>
-                            <div style="font-size:0.6rem;color:#4d6f92;">${bays} bays × HK$${rent}/bay × 12</div>
-                            <div style="font-size:0.6rem;color:#b68b40;font-weight:600;">5-yr total: HK$${totalSandbox.toLocaleString()}</div>
+        <!-- ========================================================== -->
+        <!-- LEVER 1: SAVE TO FLY (完全不变)                            -->
+        <!-- ========================================================== -->
+        <div id="lever1" class="lever-content">
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> <span><strong>HKAA long-stay pain</strong> · CP4 5d HK$982 / 7d HK$1,494</span></li>
+                        <li><i class="fas fa-taxi"></i> <span><strong>vs 2x Taxi (5-6 pax):</strong> Save up to HK$1,000+ · No surge pricing</span></li>
+                        <li><i class="fas fa-clock"></i> <span><strong>vs Uber XL:</strong> Guaranteed vehicle · No wait time · Fixed price</span></li>
+                        <li><i class="fas fa-location-dot"></i> <span><strong>Tung Chung asset arbitrage</strong> · 8–10 min from airport</span></li>
+                        <li><i class="fas fa-users"></i> <span><strong>Target: 5-6 pax families</strong> · 7-8 seater vehicles · 5-14 day trips</span></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
+                    <ul>
+                        <li><i class="fas fa-arrow-trend-down"></i> <span><strong>Standard daily rate lacks punch</strong> · <span class="tag">Regressive tariff</span> required</span></li>
+                        <li><i class="fas fa-receipt"></i> <span><strong>Tiered rebate</strong> 5%–10% (avg 7.5%) → 36.6% net margin</span></li>
+                        <li><i class="fas fa-gavel"></i> <span><strong>Legal shield</strong> · owner‑drives to/from T1, valet as passenger</span></li>
+                        <li><i class="fas fa-clock"></i> <span><strong>Peak manpower</strong> · 24hr booking + gig drivers</span></li>
+                        <li><i class="fas fa-users"></i> <span><strong>Customer segment:</strong> 5-6 pax families are <strong>core target</strong> · 1-2 pax are <strong>not</strong></span></li>
+                    </ul>
+                </div>
+                <div class="card card-full">
+                    <div class="card-title"><i class="fas fa-route"></i> Operations · Zero‑shuttle valet</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; align-items: center;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.15rem 0.3rem; align-items: center; font-size: 0.85rem;">
+                            <span class="flow-step"><i class="fas fa-car"></i> Traveler drives to Link carpark</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">Valet as passenger to T1</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">Valet returns car to Link lot</span>
                         </div>
-                        <div style="background:#f8fafc;border-radius:6px;padding:0.25rem 0.4rem;border:1px solid #b68b40;">
-                            <div style="font-size:0.6rem;font-weight:700;color:#b68b40;">Stage 2: Commercial (Year 6+)</div>
-                            <div style="font-size:0.8rem;font-weight:700;color:#b68b40;">HK$${annualRollout.toLocaleString()}<span style="font-size:0.5rem;font-weight:400;color:#4d6f92;">/yr</span></div>
-                            <div style="font-size:0.6rem;color:#4d6f92;">${rolloutBays} bays × HK$${incrementalPerBay.toFixed(0)} uplift</div>
-                            <div style="font-size:0.6rem;color:#b68b40;font-weight:600;">5-yr view: HK$${totalRollout5yr.toLocaleString()}</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.15rem 0.3rem; align-items: center; font-size: 0.85rem;">
+                            <span class="flow-step"><i class="fas fa-undo-alt"></i> Return: valet brings car to CP4 (30min free)</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">Traveler drives to Link reception</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">Settle bill, handover</span>
                         </div>
                     </div>
-
-                    <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">EV OEM Value Proposition</h5>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.6rem;">
-                        <div style="background:#f8fafc;border-radius:4px;padding:0.15rem 0.3rem;">
-                            <span style="font-weight:600;">5-yr lease cost:</span> HK$${totalSandbox.toLocaleString()}
+                    <div style="margin-top: 0.2rem; font-size: 0.7rem; background: #dce8f5; border-radius: 40px; padding: 0.05rem 0.7rem; display: inline-block;">
+                        <i class="fas fa-check-circle" style="color: #1f6f4a;"></i> 100% resource efficiency · no shuttle bus
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions & Sensitivity</div>
+                    <ul class="assumption-list">
+                        <li><strong>Total Lantau:</strong> 1,400 bays · <strong>Monthly:</strong> 60% (840 bays)</li>
+                        <li><strong>Available:</strong> <span style="font-weight:700;color:#0b2a4e;">560 bays</span></li>
+                        <li><strong>Regressive tariff:</strong> D1 HK$130; D2‑3 HK$100/d; D4+ <span class="inline-tag">HK$80/d</span></li>
+                        <li><strong>Long-stay discount (7+ days):</strong> HK$70/d from Day 8 · HK$65/d from Day 15</li>
+                        <li><strong>Gig driver:</strong> +HK$10/trip when daily trips > 45</li>
+                        <li><strong>Core target:</strong> 5-6 pax families (7-8 seaters) · 5-14 day trips</li>
+                    </ul>
+                    <div style="margin-top: 0.3rem; padding-top: 0.25rem; border-top: 1px solid #e3ebf4;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.15rem; flex-wrap: wrap; gap: 0.15rem;">
+                            <div style="font-size: 0.8rem; font-weight: 600; color: #0b2a4e;"><i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust</div>
+                            <button class="reset-btn" id="resetLever1"><i class="fas fa-undo"></i> Reset</button>
                         </div>
-                        <div style="background:#f8fafc;border-radius:4px;padding:0.15rem 0.3rem;">
-                            <span style="font-weight:600;">Hardware CapEx:</span> HK$${evCapex.toLocaleString()}
-                        </div>
-                        <div style="background:#f8fafc;border-radius:4px;padding:0.15rem 0.3rem;">
-                            <span style="font-weight:600;">Total investment:</span> HK$${evTotalCost.toLocaleString()}
-                        </div>
-                        <div style="background:#f8fafc;border-radius:4px;padding:0.15rem 0.3rem;">
-                            <span style="font-weight:600;">Annualised cost:</span> HK$${Math.round(evAnnualCost).toLocaleString()}/yr
+                        <div class="slider-group-vertical">
+                            <div class="slider-item"><label>Daily trips <span id="l1TripsValue">45</span></label><input type="range" id="l1TripsSlider" min="10" max="112" value="45" step="1"></div>
+                            <div class="slider-item"><label>Avg stay (days) <span id="l1StayValue">5</span></label><input type="range" id="l1StaySlider" min="3" max="14" value="5" step="1"></div>
+                            <div class="slider-item"><label>Valet fee (HK$) <span id="l1FeeValue">200</span></label><input type="range" id="l1FeeSlider" min="120" max="300" value="200" step="5"></div>
+                            <div class="slider-item"><label>Rebate rate <span id="l1RebateValue">7.5%</span></label><input type="range" id="l1RebateSlider" min="3" max="12" value="7.5" step="0.5"></div>
+                            <div class="slider-item"><label>Cost/trip <span id="l1CostValue">150</span></label><input type="range" id="l1CostSlider" min="100" max="220" value="150" step="5"></div>
                         </div>
                     </div>
-                    <div style="font-size:0.55rem;color:#2f4b74;margin-top:0.1rem;padding:0.1rem 0.3rem;background:#f1f7fe;border-radius:4px;border-left:3px solid #0c6b4b;">
-                        <strong>Why OEMs invest:</strong> HK extreme environment (2.3m bays · 1:7.5 ramps · GPS-denied) — scarce training asset. Algorithm acceleration + regulatory voice + premium subscription revenue.
+                </div>
+                <div class="card" id="lever1Financials">
+                    <div class="card-title" onclick="toggleWorking('lever1')">
+                        <i class="fas fa-chart-simple"></i> Financial estimates <span class="site-remark">(3 Lantau carparks)</span>
+                        <span class="expand-hint">▼</span>
                     </div>
-                `;
-                document.getElementById('lever12Working').innerHTML = workingHTML;
+                    <div id="lever1Stats" style="display: flex; flex-direction: column; gap: 0.25rem;"></div>
+                    <div id="lever1Working" class="working-expand"></div>
+                </div>
+            </div>
+        </div>
 
-                document.getElementById('lever12Stats').innerHTML = `
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;">
-                        <div style="background:#f8fafc;border-radius:8px;padding:0.4rem 0.5rem;border:1px solid #dce5ef;">
-                            <div style="font-size:0.75rem;font-weight:700;color:#0b2a4e;text-transform:uppercase;letter-spacing:0.04em;">Stage 1: Sandbox</div>
-                            <div style="font-size:1.1rem;font-weight:700;">HK$${annualSandbox.toLocaleString()}<span style="font-size:0.75rem;font-weight:400;color:#4d6f92;"> /yr</span></div>
-                            <div style="font-size:0.75rem;color:#4d6f92;">${bays} bays · HK$${rent}/bay/mo · 5‑yr term</div>
-                            <div style="border-top:1px dashed #dce5ef;margin:0.15rem 0;padding-top:0.1rem;">
-                                <span style="font-size:0.75rem;font-weight:600;color:#0b2a4e;">5-yr total:</span>
-                                <span style="font-size:1.0rem;font-weight:700;color:#b68b40;">HK$${totalSandbox.toLocaleString()}</span>
-                            </div>
+        <!-- ========================================================== -->
+        <!-- LEVER 2: PARK DUO DUO (调整 Tier 消费 + 站点数自动对齐)  -->
+        <!-- ========================================================== -->
+        <div id="lever2" class="lever-content">
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> <span><strong>Single-estate, network-wide</strong> · Sheung Tak (500 bays) → <strong>any Link REIT</strong></span></li>
+                        <li><i class="fas fa-mobile-screen"></i> <span><strong>WeChat Mini-Program / H5</strong> · Zero-download · WhatsApp sharing</span></li>
+                        <li><i class="fas fa-clock"></i> <span><strong>Hourly rent credit</strong> · Referrers earn <strong>HK$2.0/hour</strong> (cap HK$200/mo)</span></li>
+                        <li><i class="fas fa-store"></i> <span><strong>Retail flywheel</strong> · HK$284k/month incremental retail sales</span></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
+                    <ul>
+                        <li><i class="fas fa-clock"></i> <span><strong>Off-peak isolation</strong> · <strong>Weekdays 10:00–15:00</strong></span></li>
+                        <li><i class="fas fa-water"></i> <span><strong>Free-rider leakage</strong> · Zero-consumption modelled as cost</span></li>
+                        <li><i class="fas fa-tags"></i> <span><strong>Spend-privilege overlap</strong> · HK$300 → HK$5/hr stacking</span></li>
+                        <li><i class="fas fa-robot"></i> <span><strong>Anti-fraud</strong> · ANPR + receipt-upload</span></li>
+                    </ul>
+                </div>
+                <div class="card card-full">
+                    <div class="card-title"><i class="fas fa-route"></i> Operations · Auto-pilot H5/WeChat</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; align-items: center;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.15rem 0.3rem; align-items: center; font-size: 0.85rem;">
+                            <span class="flow-step"><i class="fas fa-share"></i> Tenant shares Pass link</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">Guest binds plate via H5</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">ANPR checks in</span>
                         </div>
-                        <div style="background:#f1e9d8;border-radius:8px;padding:0.4rem 0.5rem;border:1px solid #b68b40;">
-                            <div style="font-size:0.75rem;font-weight:700;color:#b68b40;text-transform:uppercase;letter-spacing:0.04em;">Stage 2: Commercial Roll-out</div>
-                            <div style="font-size:1.1rem;font-weight:700;color:#b68b40;">HK$${annualRollout.toLocaleString()}<span style="font-size:0.75rem;font-weight:400;color:#4d6f92;"> /yr</span></div>
-                            <div style="font-size:0.75rem;color:#4d6f92;">${rolloutBays} bays · ${premium}% premium · ${Math.round(incrementalPerBay)}/bay uplift</div>
-                            <div style="border-top:1px dashed #dce5ef;margin:0.15rem 0;padding-top:0.1rem;">
-                                <span style="font-size:0.75rem;font-weight:600;color:#0b2a4e;">5-yr view:</span>
-                                <span style="font-size:1.0rem;font-weight:700;color:#b68b40;">HK$${totalRollout5yr.toLocaleString()}</span>
-                            </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.15rem 0.3rem; align-items: center; font-size: 0.85rem;">
+                            <span class="flow-step"><i class="fas fa-receipt"></i> 1st hour free; extra billed</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">Receipt upload for HK$5/hr</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">Rent credit auto-credited</span>
                         </div>
                     </div>
-                    <div class="link-reit-banner" style="margin-top:0.1rem;">
-                        <span class="label">LINK REIT · INCREMENTAL</span>
-                        <span style="color:white;font-size:1.0rem;font-weight:700;">Sandbox: HK$${annualSandbox.toLocaleString()} <span style="font-size:0.7rem;color:#b68b40;">/yr</span></span>
-                        <span style="color:#b68b40;font-size:0.9rem;font-weight:700;">|</span>
-                        <span style="color:white;font-size:1.0rem;font-weight:700;">Roll-out: HK$${annualRollout.toLocaleString()} <span style="font-size:0.7rem;color:#b68b40;">/yr</span></span>
+                    <div style="margin-top: 0.2rem; font-size: 0.7rem; background: #dce8f5; border-radius: 40px; padding: 0.05rem 0.7rem; display: inline-block;">
+                        <i class="fas fa-check-circle" style="color: #1f6f4a;"></i> Fully automated · zero app download
                     </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:0.15rem;font-size:0.75rem;color:#2f4b74;background:#f1f7fe;border-radius:30px;padding:0.05rem 0.4rem;margin-top:0.05rem;">
-                        <span><strong>Sandbox:</strong> 5yr · HK$${rent}/bay</span>
-                        <span><strong>Roll-out premium:</strong> ${premium}%</span>
-                        <span><strong>Roll-out bays:</strong> ${rolloutBays.toLocaleString()}</span>
-                        <span><strong>Market rate:</strong> HK$${marketRate.toLocaleString()}</span>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions & Sensitivity</div>
+                    <ul class="assumption-list">
+                        <li><strong>5‑Tier mix:</strong> <span id="l2TierDisplay">10% · 35% · 30% · 15% · 10%</span> <span style="font-size:0.6rem;color:#4d6f92;">(dynamic)</span></li>
+                        <li><strong>Rent credit:</strong> HK$2.0/hr · <strong>Cap:</strong> HK$200/mo</li>
+                        <li><strong>Tech OpEx:</strong> HK$3,500/mo · <strong>Dev CapEx:</strong> HK$250k</li>
+                        <li><strong>Referral formula:</strong> <span class="inline-tag">125 tenants × 4 referrals × 3 visits = 1,500 trips</span></li>
+                        <li><strong>Average Guest Saving:</strong> <span class="inline-tag" id="l2AvgSavingDisplay">HK$24.50</span> <span style="font-size:0.6rem;color:#4d6f92;">(dynamic)</span></li>
+                        <li><strong>Hourly rate (fixed):</strong> HK$20/hr · <strong>Spend privilege:</strong> HK$5/hr</li>
+                        <li><strong>Billing rule:</strong> First hour free, then rounded up to the next full hour</li>
+                    </ul>
+                    <div style="margin-top: 0.3rem; padding-top: 0.25rem; border-top: 1px solid #e3ebf4;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.15rem; flex-wrap: wrap; gap: 0.15rem;">
+                            <div style="font-size: 0.8rem; font-weight: 600; color: #0b2a4e;"><i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust</div>
+                            <button class="reset-btn" id="resetLever2"><i class="fas fa-undo"></i> Reset</button>
+                        </div>
+                        <div class="slider-group-vertical">
+                            <div class="slider-item"><label>Monthly trips <span id="l2TripsValue">1,500</span></label><input type="range" id="l2TripsSlider" min="500" max="3000" value="1500" step="50"></div>
+                            <div class="slider-item"><label>Free-rider leakage <span id="l2LeakageValue">10%</span></label><input type="range" id="l2LeakageSlider" min="5" max="20" value="10" step="1"></div>
+                            <div class="slider-item"><label>Rent credit (HK$/hr) <span id="l2CreditValue">2.00</span></label><input type="range" id="l2CreditSlider" min="1.0" max="3.5" value="2.0" step="0.1"></div>
+                            <div class="slider-item"><label>Turnover rent rate <span id="l2TurnoverValue">12%</span></label><input type="range" id="l2TurnoverSlider" min="8" max="18" value="12" step="0.5"></div>
+                        </div>
                     </div>
-                `;
-            }
+                </div>
 
-            ['l12BaysSlider', 'l12RentSlider', 'l12RolloutBaysSlider', 'l12PremiumSlider', 'l12MarketSlider'].forEach(id => {
-                document.getElementById(id).addEventListener('input', updateL12);
-            });
+                <div class="card" id="lever2Financials">
+                    <div class="card-title" onclick="toggleWorking('lever2')">
+                        <i class="fas fa-chart-simple"></i> Financial estimates <span class="site-remark">(Sheung Tak pilot)</span>
+                        <span class="expand-hint">▼</span>
+                    </div>
+                    <div id="lever2Stats" style="display: flex; flex-direction: column; gap: 0.25rem;"></div>
+                    <div id="lever2Working" class="working-expand"></div>
+                </div>
+            </div>
+        </div>
 
-            document.getElementById('resetLever12').addEventListener('click', function() {
-                ['l12BaysSlider', 'l12RentSlider', 'l12RolloutBaysSlider', 'l12PremiumSlider', 'l12MarketSlider'].forEach((id, i) => {
-                    document.getElementById(id).value = Object.values(l12D)[i];
-                });
-                updateL12();
-            });
-            updateL12();
+        <!-- ========================================================== -->
+        <!-- LEVER 12: AVP SANDBOX (左右并排彩色横幅)                   -->
+        <!-- ========================================================== -->
+        <div id="lever12" class="lever-content">
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-bullseye"></i> Opportunities</div>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> <span><strong>Strategic site: Shatin/Tai Po MSCP</strong> · HKSTP proximity</span></li>
+                        <li><i class="fas fa-layer-group"></i> <span><strong>Upper-floor yield</strong> · L5 & L6 (200 bays) · Zero public impact</span></li>
+                        <li><i class="fas fa-mountain"></i> <span><strong>HK extreme edge cases</strong> · 2.3m × 5.0m bays · 1:7.5 ramps · GPS-denied</span></li>
+                        <li><i class="fas fa-star"></i> <span><strong>Future premium pricing</strong> · Customers pay for drop‑off & auto‑park convenience</span></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-scale-balanced"></i> Considerations</div>
+                    <ul>
+                        <li><i class="fas fa-gavel"></i> <span><strong>Regulatory</strong> · AV Pilot Licence · <span class="tag tag-gold">6‑month TD lobbying</span></span></li>
+                        <li><i class="fas fa-shield"></i> <span><strong>Liability</strong> · Tenant insurance · indemnity clauses</span></li>
+                        <li><i class="fas fa-lock"></i> <span><strong>Privacy</strong> · Edge AI anonymisation · PDPO compliant</span></li>
+                        <li><i class="fas fa-arrows-up-down"></i> <span><strong>Isolation</strong> · Bollards at L4/L5 · clear signage</span></li>
+                    </ul>
+                </div>
+                <div class="card card-full">
+                    <div class="card-title"><i class="fas fa-route"></i> Operations · Two‑stage model</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; align-items: center;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.1rem 0.3rem; align-items: center; font-size: 0.8rem;">
+                            <span class="flow-step" style="background:#b68b40;color:white;border-color:#b68b40;"><i class="fas fa-flask"></i> Stage 1: Sandbox (Y1-5)</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step"><i class="fas fa-handshake"></i> M1–6: TD lobbying</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step"><i class="fas fa-file-signature"></i> M7–12: Master Lease</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step"><i class="fas fa-play"></i> Y2–5: Pilot ops</span>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.1rem 0.3rem; align-items: center; font-size: 0.8rem; margin-top:0.2rem;">
+                            <span class="flow-step" style="background:#0c6b4b;color:white;border-color:#0c6b4b;"><i class="fas fa-rocket"></i> Stage 2: Commercial (Y6+)</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">AVP goes public</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">Customer premium pricing</span>
+                            <span class="arrow">→</span>
+                            <span class="flow-step">Scalable to 130+ sites</span>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-flag-checkered"></i> Assumptions</div>
+                    <ul class="assumption-list">
+                        <li><strong>Zero CapEx for Link:</strong> EV partners fund all hardware</li>
+                        <li><strong>5‑year Master Lease:</strong> B2B wholesale · fixed term</li>
+                        <li><strong>Two‑stage model:</strong> Sandbox (Y1-5) → Commercial (Y6+)</li>
+                        <li><strong>Year 3 allocation:</strong> Strategic bet · regulatory timeline</li>
+                    </ul>
+                    <div style="margin-top: 0.3rem; padding-top: 0.25rem; border-top: 1px solid #e3ebf4;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.15rem; flex-wrap: wrap; gap: 0.15rem;">
+                            <div style="font-size: 0.8rem; font-weight: 600; color: #0b2a4e;"><i class="fas fa-sliders" style="color: #b68b40;"></i> Adjust</div>
+                            <button class="reset-btn" id="resetLever12"><i class="fas fa-undo"></i> Reset</button>
+                        </div>
+                        <div class="slider-group-vertical">
+                            <div class="slider-item"><label>Sandbox bays leased <span id="l12BaysValue">200</span></label><input type="range" id="l12BaysSlider" min="100" max="400" value="200" step="10"></div>
+                            <div class="slider-item"><label>Sandbox monthly rent (HK$/bay) <span id="l12RentValue">500</span></label><input type="range" id="l12RentSlider" min="300" max="1500" value="500" step="50"></div>
+                            <div class="slider-item"><label>Commercial roll‑out bays <span id="l12RolloutBaysValue">400</span></label><input type="range" id="l12RolloutBaysSlider" min="100" max="600" value="400" step="10"></div>
+                            <div class="slider-item"><label>Customer premium (%) <span id="l12PremiumValue">15%</span></label><input type="range" id="l12PremiumSlider" min="5" max="35" value="15" step="1"></div>
+                            <div class="slider-item"><label>Current market rate (HK$/bay/mo) <span id="l12MarketValue">2,000</span></label><input type="range" id="l12MarketSlider" min="1500" max="3000" value="2000" step="50"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="lever12Financials">
+                    <div class="card-title" onclick="toggleWorking('lever12')">
+                        <i class="fas fa-chart-simple"></i> Financial estimates <span class="site-remark">(1 site · 2‑stage)</span>
+                        <span class="expand-hint">▼</span>
+                    </div>
+                    <div id="lever12Stats" style="display: flex; flex-direction: column; gap: 0.25rem;"></div>
+                    <div id="lever12Working" class="working-expand"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="bottom-bar">
+            <span class="left"><i class="far fa-file-lines"></i> 4 tabs · Executive Summary · L1-L2 detailed · L12 AVP Sandbox</span>
+            <span class="right"><i class="fas fa-building-columns" style="color: #b68b40;"></i> Link REIT · Car Park Portfolio</span>
+        </div>
+
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    // ----- TAB SWITCHING -----
+    const tabs = document.querySelectorAll('.tab');
+    const contents = {
+        'executive-summary': document.getElementById('executive-summary'),
+        'lever1': document.getElementById('lever1'),
+        'lever2': document.getElementById('lever2'),
+        'lever12': document.getElementById('lever12')
+    };
+
+    function switchLever(id) {
+        tabs.forEach(t => {
+            const isActive = t.dataset.lever === id;
+            t.classList.toggle('active', isActive);
         });
-    </script>
+        Object.keys(contents).forEach(k => {
+            contents[k].classList.toggle('active', k === id);
+        });
+    }
+
+    tabs.forEach(t => t.addEventListener('click', function() {
+        const id = this.dataset.lever;
+        if (id && contents[id]) {
+            switchLever(id);
+        }
+    }));
+
+    // ----- WORKING EXPAND TOGGLE -----
+    window.toggleWorking = function(leverId) {
+        const workingDiv = document.getElementById(leverId + 'Working');
+        if (workingDiv) {
+            workingDiv.classList.toggle('open');
+            const hint = workingDiv.previousElementSibling.querySelector('.expand-hint');
+            if (hint) {
+                hint.textContent = workingDiv.classList.contains('open') ? '▲' : '▼';
+            }
+        }
+    };
+
+    // Default: Executive Summary active
+    switchLever('executive-summary');
+
+    // ================================================================
+    // LEVER 1: SAVE TO FLY (完全不变)
+    // ================================================================
+    const TOTAL_LANTAU = 1400;
+    const MONTHLY_DEDICATED = 0.6;
+    const AVAILABLE_PARK_FLY = TOTAL_LANTAU * (1 - MONTHLY_DEDICATED);
+    const GIG_DRIVER_THRESHOLD = 45;
+    const GIG_DRIVER_ADD_COST = 10;
+
+    const l1D = { trips: 45, stay: 5, fee: 200, rebate: 7.5, cost: 150 };
+
+    function getParkingFee(stay) {
+        let fee = 0;
+        if (stay <= 0) return 0;
+        fee += 130;
+        const days2_3 = Math.min(stay - 1, 2);
+        fee += days2_3 * 100;
+        const remaining = stay - 1 - days2_3;
+        if (remaining > 0) {
+            const days4_7 = Math.min(remaining, 4);
+            fee += days4_7 * 80;
+            const days8_14 = Math.min(Math.max(remaining - 4, 0), 7);
+            fee += days8_14 * 70;
+            const days15plus = Math.max(remaining - 4 - 7, 0);
+            fee += days15plus * 65;
+        }
+        return fee;
+    }
+
+    function updateL1() {
+        const trips = parseInt(document.getElementById('l1TripsSlider').value);
+        const stay = parseInt(document.getElementById('l1StaySlider').value);
+        const fee = parseFloat(document.getElementById('l1FeeSlider').value);
+        const rebate = parseFloat(document.getElementById('l1RebateSlider').value);
+        const baseCost = parseFloat(document.getElementById('l1CostSlider').value);
+
+        document.getElementById('l1TripsValue').textContent = trips;
+        document.getElementById('l1StayValue').textContent = stay;
+        document.getElementById('l1FeeValue').textContent = fee;
+        document.getElementById('l1RebateValue').textContent = rebate + '%';
+        document.getElementById('l1CostValue').textContent = baseCost;
+
+        const effectiveCost = trips > GIG_DRIVER_THRESHOLD ? baseCost + GIG_DRIVER_ADD_COST : baseCost;
+        const parkingFee = getParkingFee(stay);
+        const totalCost = parkingFee + fee;
+        const hkiaCP4Cost = stay <= 3 ? 470 : 470 + 256 * (stay - 3);
+        const saving = hkiaCP4Cost - totalCost;
+        const savePct = (saving / hkiaCP4Cost) * 100;
+        const occupiedBays = trips * stay;
+        const effectiveOccupied = Math.min(occupiedBays, AVAILABLE_PARK_FLY);
+        const isOverCapacity = occupiedBays > AVAILABLE_PARK_FLY;
+        const avgRate = parkingFee / stay;
+        const netRate = avgRate * (1 - rebate / 100);
+        const annualRent = effectiveOccupied * netRate * 365;
+        const monthlyRent = annualRent / 12;
+        const annualTrips = trips * 365;
+        const rebatePerTrip = parkingFee * (rebate / 100);
+        const revenuePerTrip = fee + rebatePerTrip;
+        const profitPerTrip = revenuePerTrip - effectiveCost;
+        const annualProfit = profitPerTrip * annualTrips;
+        const netMargin = (profitPerTrip / revenuePerTrip) * 100;
+
+        const workingHTML = `
+            <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Detailed Calculations</h5>
+            <table class="working-table"><tr><th>Item</th><th>Value</th></tr>
+                <tr><td>Daily trips</td><td>${trips}</td></tr>
+                <tr><td>Avg stay</td><td>${stay} days</td></tr>
+                <tr><td>Save to Fly parking fee</td><td>HK$${parkingFee.toLocaleString()}</td></tr>
+                <tr><td>Valet fee</td><td>HK$${fee}</td></tr>
+                <tr><td>Save to Fly total</td><td>HK$${totalCost.toLocaleString()}</td></tr>
+                <tr><td>HKAA CP4 (${stay} days)</td><td>HK$${hkiaCP4Cost.toLocaleString()}</td></tr>
+                <tr><td>Customer saving</td><td>HK$${saving.toLocaleString()} (${savePct.toFixed(0)}%)</td></tr>
+            </table>
+
+            <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Customer Segment: 5-6 pax families (7-8 seater)</h5>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.3rem;margin-top:0.15rem;">
+                <div class="customer-segment-box" style="border-left:3px solid #0c6b4b;">
+                    <div class="segment-title">✅ Core Target</div>
+                    <div class="segment-desc">5-6 pax · 7-8 seater · 5-14 days</div>
+                    <div class="segment-verdict" style="color:#0c6b4b;">Best value · Save HK${saving.toLocaleString()} vs HKAA</div>
+                </div>
+                <div class="customer-segment-box" style="border-left:3px solid #b68b40;">
+                    <div class="segment-title">⚠️ Secondary Target</div>
+                    <div class="segment-desc">3-4 pax · 5 seater · 3-7 days</div>
+                    <div class="segment-verdict" style="color:#b68b40;">Convenience play · Close to HKAA price</div>
+                </div>
+                <div class="customer-segment-box" style="border-left:3px solid #b34040;">
+                    <div class="segment-title">❌ Not Target</div>
+                    <div class="segment-desc">1-2 pax · any vehicle · any days</div>
+                    <div class="segment-verdict" style="color:#b34040;">Airport Express/Uber X cheaper</div>
+                </div>
+            </div>
+
+            <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Competitive Positioning (5-6 pax families)</h5>
+            <table class="comparison-table">
+                <thead><tr><th>Option</th><th>Est. Cost</th><th>Save to Fly vs</th><th>Key Advantage</th></tr></thead>
+                <tbody>
+                    <tr class="best-row"><td><strong>Save to Fly</strong></td><td>HK$${totalCost.toLocaleString()}</td><td>—</td><td>Zero wait + luggage space</td></tr>
+                    <tr><td>HKAA CP4</td><td>HK$${hkiaCP4Cost.toLocaleString()}</td><td>${saving > 0 ? 'Save ' + saving.toLocaleString() : 'Cost ' + Math.abs(saving).toLocaleString() + ' more'}</td><td>Self-park</td></tr>
+                    <tr><td>Uber XL</td><td>~HK$900-1,200</td><td>${900 > totalCost ? 'Save ~' + (900 - totalCost).toLocaleString() : 'Cost ~' + (totalCost - 900).toLocaleString() + ' more'}</td><td>Door-to-door</td></tr>
+                    <tr><td>2× Taxi</td><td>~HK$1,200-1,600</td><td>Save ~${Math.round((1200 - totalCost)).toLocaleString()}</td><td>No parking</td></tr>
+                </tbody>
+            </table>
+        `;
+        document.getElementById('lever1Working').innerHTML = workingHTML;
+
+        document.getElementById('lever1Stats').innerHTML = `
+            <div class="stat-block"><div style="display:flex;justify-content:space-between;align-items:center;"><span class="stat-label">Customer (${stay}-day)</span><span style="background:#f1e9d8;border-radius:30px;padding:0.02rem 0.4rem;font-size:0.55rem;font-weight:600;color:#7a5f2e;">save ${savePct.toFixed(0)}%</span></div><div style="display:flex;gap:0.4rem;flex-wrap:wrap;"><div><span class="stat-label">HKAA CP4</span><div class="stat-number">HK$${hkiaCP4Cost.toLocaleString()}</div></div><div><span class="stat-label">Save to Fly</span><div class="stat-number green">HK$${Math.round(totalCost).toLocaleString()}</div></div><div><span class="stat-label">Saving</span><div class="stat-number gold">HK$${Math.round(saving).toLocaleString()}</div></div></div></div>
+            <div class="stat-block"><div style="display:flex;justify-content:space-between;"><span class="stat-label">Valet Co. (${trips}/day · ${rebate}% rebate)</span><span style="background:#d9e6f0;border-radius:30px;padding:0.02rem 0.4rem;font-size:0.55rem;">${netMargin.toFixed(1)}%</span></div><div style="display:flex;flex-wrap:wrap;gap:0.2rem 0.6rem;"><div><span class="stat-label">Revenue/trip</span><div class="stat-number">HK$${revenuePerTrip.toFixed(2)}</div></div><div><span class="stat-label">Cost/trip</span><div class="stat-number" style="color:#1f4d6e;">HK$${effectiveCost}</div></div><div><span class="stat-label">Profit/trip</span><div class="stat-number gold">HK$${profitPerTrip.toFixed(2)}</div></div></div><div style="font-size:0.55rem;"><strong>Annual profit:</strong> HK$${Math.round(annualProfit).toLocaleString()}</div></div>
+            <div class="stat-block" style="background:#f3f8fe;"><span class="stat-label">Link REIT · asset return</span><div style="display:flex;flex-wrap:wrap;gap:0.4rem;"><div><span class="stat-label">In-use bays</span><div class="stat-number ${isOverCapacity ? 'red' : ''}">${effectiveOccupied.toLocaleString()} / ${Math.round(AVAILABLE_PARK_FLY).toLocaleString()}</div></div><div><span class="stat-label">Utilization</span><div class="stat-number ${isOverCapacity ? 'red' : ''}">${Math.min((occupiedBays / AVAILABLE_PARK_FLY * 100), 100).toFixed(0)}%</div></div></div></div>
+            <div class="link-reit-banner"><span class="label">LINK REIT · INCREMENTAL</span><span class="amount">HK$${Math.round(monthlyRent).toLocaleString()} <span class="sub">/mo</span></span><span class="amount annual">HK$${Math.round(annualRent).toLocaleString()} <span class="sub">/yr</span></span>${isOverCapacity ? '<span class="capacity-warning">⚠️</span>' : ''}</div>
+        `;
+    }
+
+    ['l1TripsSlider','l1StaySlider','l1FeeSlider','l1RebateSlider','l1CostSlider'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updateL1);
+    });
+
+    document.getElementById('resetLever1').addEventListener('click', function() {
+        ['l1TripsSlider','l1StaySlider','l1FeeSlider','l1RebateSlider','l1CostSlider'].forEach((id,i) => {
+            document.getElementById(id).value = Object.values(l1D)[i];
+        });
+        updateL1();
+    });
+    updateL1();
+
+    // ================================================================
+    // LEVER 2: PARK DUO DUO (Tier A=50, Tier D=500, 站点数动态对齐)
+    // ================================================================
+    const l2D = { trips: 1500, leakage: 10, credit: 2.0, turnover: 12 };
+    const HOURLY_RATE = 20;
+    const PRIVILEGE_RATE = 5;
+
+    // 实际收费：首小时免费，超出部分向上取整
+    function calcActualParking(hours, rate) {
+        if (hours <= 1) return 0;
+        const extraHours = Math.ceil(hours - 1);
+        return extraHours * rate;
+    }
+
+    // 无 L2 时的正常收费：无首小时免费，整小时计费，HK$20/hr
+    function calcNormalParking(hours) {
+        return Math.ceil(hours) * 20;
+    }
+
+    function updateL2() {
+        const trips = parseInt(document.getElementById('l2TripsSlider').value);
+        const leakage = parseInt(document.getElementById('l2LeakageSlider').value);
+        const credit = parseFloat(document.getElementById('l2CreditSlider').value);
+        const turnover = parseFloat(document.getElementById('l2TurnoverSlider').value);
+
+        document.getElementById('l2TripsValue').textContent = trips.toLocaleString();
+        document.getElementById('l2LeakageValue').textContent = leakage + '%';
+        document.getElementById('l2CreditValue').textContent = credit.toFixed(2);
+        document.getElementById('l2TurnoverValue').textContent = turnover + '%';
+
+        const baseProportions = { tA: 0.35, tB: 0.30, tC: 0.15, tD: 0.10 };
+        const totalBase = 0.35 + 0.30 + 0.15 + 0.10;
+        const tier0Pct = leakage / 100;
+        const remaining = 1 - tier0Pct;
+        const tA = (baseProportions.tA / totalBase) * remaining;
+        const tB = (baseProportions.tB / totalBase) * remaining;
+        const tC = (baseProportions.tC / totalBase) * remaining;
+        const tD = (baseProportions.tD / totalBase) * remaining;
+        const pcts = [tier0Pct, tA, tB, tC, tD];
+
+        document.getElementById('l2TierDisplay').textContent =
+            (tier0Pct * 100).toFixed(0) + '% · ' +
+            (tA * 100).toFixed(1) + '% · ' +
+            (tB * 100).toFixed(1) + '% · ' +
+            (tC * 100).toFixed(1) + '% · ' +
+            (tD * 100).toFixed(1) + '%';
+
+        // 零售消费：T0=0, TA=50, TB=200, TC=350, TD=500
+        const retailSpend = [0, 50, 200, 350, 500];
+        const hours = [1.0, 1.5, 2.5, 2.0, 2.5];
+        const tierNames = ['T0: Free Rider', 'TA: Short Stay', 'TB: Long Stay', 'TC: HK$300+', 'TD: HK$500+'];
+        const tierRates = [0, HOURLY_RATE, HOURLY_RATE, PRIVILEGE_RATE, PRIVILEGE_RATE];
+
+        // 计算每笔实际停车收入（有 L2 计费规则）
+        const actualRev = hours.map((h, i) => calcActualParking(h, tierRates[i]));
+        // 计算无 L2 时的正常收费
+        const normalRev = hours.map(h => calcNormalParking(h));
+
+        const tenants = 125;
+        const techOpEx = 3500;
+        const tripsPer = pcts.map(p => Math.round(trips * p));
+        let totalActual = 0;
+        let totalNormal = 0;
+        for (let i = 0; i < 5; i++) {
+            totalActual += tripsPer[i] * actualRev[i];
+            totalNormal += tripsPer[i] * normalRev[i];
+        }
+        let adjRetail = 0;
+        for (let i = 0; i < 5; i++) adjRetail += tripsPer[i] * retailSpend[i];
+        const turnRent = adjRetail * (turnover / 100);
+        let totalCredits = 0;
+        for (let i = 0; i < 5; i++) totalCredits += tripsPer[i] * hours[i] * credit;
+        totalCredits = Math.min(totalCredits, tenants * 200);
+        const netMon = totalActual + turnRent - totalCredits - techOpEx;
+        const ann = netMon * 12;
+        const avgCredit = totalCredits / tenants;
+        const avgSaving = (totalNormal - totalActual) / trips;
+        const avgRetailPerTrip = adjRetail / trips;
+
+        // 计算站点数量使总年收入接近 10M
+        const targetAnnual = 10000000;
+        let sites = Math.round(targetAnnual / ann);
+        if (sites < 1) sites = 1;
+        // 调整使总年收入更精确
+        const totalAnn = ann * sites;
+
+        document.getElementById('l2AvgSavingDisplay').textContent = 'HK$' + avgSaving.toFixed(2);
+
+        // 构建 Tier 表格行
+        let tierRows = '';
+        for (let i = 0; i < 5; i++) {
+            tierRows += `<tr>
+                <td>${tierNames[i]}</td>
+                <td>${(pcts[i]*100).toFixed(1)}%</td>
+                <td>${tripsPer[i]}</td>
+                <td>${hours[i]}h</td>
+                <td>HK$${actualRev[i].toFixed(1)}</td>
+                <td>HK$${retailSpend[i]}</td>
+                <td>HK$${Math.round(tripsPer[i] * actualRev[i]).toLocaleString()}</td>
+                <td>HK$${Math.round(tripsPer[i] * retailSpend[i]).toLocaleString()}</td>
+            </tr>`;
+        }
+
+        let sensitivityRows = '';
+        const testLeakages = [5, 8, 10, 12, 15, 20];
+        testLeakages.forEach(testLeak => {
+            const t0 = testLeak / 100;
+            const rem = 1 - t0;
+            const tA2 = (baseProportions.tA / totalBase) * rem;
+            const tB2 = (baseProportions.tB / totalBase) * rem;
+            const tC2 = (baseProportions.tC / totalBase) * rem;
+            const tD2 = (baseProportions.tD / totalBase) * rem;
+            const p2 = [t0, tA2, tB2, tC2, tD2];
+            const tp2 = p2.map(p => Math.round(trips * p));
+            let act2 = 0, norm2 = 0;
+            for (let i = 0; i < 5; i++) {
+                act2 += tp2[i] * actualRev[i];
+                norm2 += tp2[i] * normalRev[i];
+            }
+            let retail2 = 0;
+            for (let i = 0; i < 5; i++) retail2 += tp2[i] * retailSpend[i];
+            const rent2 = retail2 * (turnover / 100);
+            let credits2 = 0;
+            for (let i = 0; i < 5; i++) credits2 += tp2[i] * hours[i] * credit;
+            credits2 = Math.min(credits2, tenants * 200);
+            const net2 = act2 + rent2 - credits2 - techOpEx;
+            const save2 = (norm2 - act2) / trips;
+            const isBase = testLeak === leakage;
+            sensitivityRows += `<tr class="${isBase ? 'highlight-row' : ''}">
+                <td>${testLeak}%</td>
+                <td>HK$${Math.round(act2).toLocaleString()}</td>
+                <td>HK$${save2.toFixed(2)}</td>
+                <td>HK$${Math.round(net2).toLocaleString()}</td>
+                <td>${isBase ? '← Current' : (net2 > netMon ? '+' + ((net2-netMon)/netMon*100).toFixed(0) + '%' : ((net2-netMon)/netMon*100).toFixed(0) + '%')}</td>
+            </tr>`;
+        });
+
+        const workingHTML = `
+            <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">5-Tier Matrix · ${trips.toLocaleString()} total trips/mo</h5>
+            <div class="model-note">
+                <i class="fas fa-info-circle"></i> 
+                <strong>Billing rule applied:</strong> With L2: first hour free, then rounded up to full hour. 
+                Tier C & D enjoy HK$5/hr privilege after spending ≥ HK$300 in mall.
+                <br><strong>Baseline (no L2):</strong> no free hour, rounded up to full hour at HK$20/hr.
+                <br><strong>Tier A:</strong> Short stay, spends HK$50 &nbsp;|&nbsp; <strong>Tier D:</strong> High spender, spends HK$500
+            </div>
+            <table class="working-table"><thead><tr><th>Tier</th><th>%</th><th>Trips</th><th>Hrs</th><th>Rev/trip</th><th>Spend</th><th>Total Rev</th><th>Total Spend</th></tr></thead><tbody>${tierRows}<tr class="highlight-row"><td><strong>Total</strong></td><td>100%</td><td>${trips}</td><td>${(tripsPer.reduce((a,b,i) => a + b * hours[i], 0) / trips).toFixed(1)}h</td><td>HK$${(totalActual/trips).toFixed(2)}</td><td>HK$${(adjRetail/trips).toFixed(0)}</td><td><strong>HK$${totalActual.toLocaleString()}</strong></td><td><strong>HK$${Math.round(adjRetail).toLocaleString()}</strong></td></tr></tbody></table>
+
+            <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Financial Breakdown (Single Site)</h5>
+            <table class="working-table"><thead><tr><th>Item</th><th>Amount</th></tr></thead><tbody>
+                <tr><td>Normal revenue (no L2, HK$20/hr, no free hour)</td><td>HK$${Math.round(totalNormal).toLocaleString()}</td></tr>
+                <tr><td>Actual parking revenue (with L2)</td><td>HK$${totalActual.toLocaleString()}</td></tr>
+                <tr><td><strong>Guest Average Saving</strong></td><td><strong>HK$${avgSaving.toFixed(2)} per trip</strong></td></tr>
+                <tr><td>Adjusted retail spend</td><td>HK$${Math.round(adjRetail).toLocaleString()}</td></tr>
+                <tr><td>Turnover rent (${turnover}%)</td><td>HK$${Math.round(turnRent).toLocaleString()}</td></tr>
+                <tr><td>Rent credits (HK$${credit}/hr)</td><td>HK$${Math.round(totalCredits).toLocaleString()}</td></tr>
+                <tr><td>Tech OpEx</td><td>HK$${techOpEx.toLocaleString()}</td></tr>
+                <tr class="highlight-row"><td><strong>Link REIT Net Monthly (Single Site)</strong></td><td><strong>HK$${Math.round(netMon).toLocaleString()}</strong></td></tr>
+                <tr class="highlight-row"><td><strong>Link REIT Annual (Single Site)</strong></td><td><strong>HK$${Math.round(ann).toLocaleString()}</strong></td></tr>
+            </tbody></table>
+
+            <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Sensitivity: Free-Rider Leakage Impact</h5>
+            <table class="sensitivity-table"><thead><tr><th>Leakage</th><th>Parking Revenue</th><th>Guest Avg Saving</th><th>Link Net Monthly</th><th>Change</th></tr></thead><tbody>${sensitivityRows}</tbody></table>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.2rem;margin-top:0.2rem;padding-top:0.2rem;border-top:1px solid #e3eaf2;">
+                <div style="background:#f1e9d8;border-radius:6px;padding:0.15rem 0.3rem;text-align:center;"><span style="font-size:0.55rem;color:#7a5f2e;">Avg Credit (per tenant)</span><div style="font-size:0.9rem;font-weight:700;">HK$${avgCredit.toFixed(1)}</div></div>
+                <div style="background:#d8f0e6;border-radius:6px;padding:0.15rem 0.3rem;text-align:center;"><span style="font-size:0.55rem;color:#0c6b4b;">Guest Avg Saving</span><div style="font-size:0.9rem;font-weight:700;">HK$${avgSaving.toFixed(2)}</div></div>
+                <div style="background:#d8e8f5;border-radius:6px;padding:0.15rem 0.3rem;text-align:center;"><span style="font-size:0.55rem;color:#1a5a7a;">Avg Retail / Trip</span><div style="font-size:0.9rem;font-weight:700;">HK$${avgRetailPerTrip.toFixed(0)}</div></div>
+            </div>
+            <div style="font-size:0.55rem;color:#4d6f92;margin-top:0.1rem;">${tenants} tenants · Scale-up 30x: <strong>HK$${Math.round(netMon*30).toLocaleString()}/mo</strong></div>
+        `;
+        document.getElementById('lever2Working').innerHTML = workingHTML;
+
+        // 主统计卡片（包含动态站点数量）
+        const netMonTotal = netMon * sites;
+        const annTotal = netMonTotal * 12;
+
+        document.getElementById('lever2Stats').innerHTML = `
+            <div class="stakeholder-grid">
+                <div class="stakeholder-item"><div class="stakeholder-name">Tenant (Referrer)</div><div class="stakeholder-value">HK$${avgCredit.toFixed(1)} <span style="font-size:0.6rem;font-weight:400;color:#4d6f92;">(avg)</span></div><div class="stakeholder-detail">Up to HK$200/mo · ${Math.round(avgCredit/200*100)}% utilized</div></div>
+                <div class="stakeholder-item"><div class="stakeholder-name">Guest (Visitor)</div><div class="stakeholder-value">HK$${avgSaving.toFixed(2)} <span style="font-size:0.6rem;font-weight:400;color:#4d6f92;">(avg saving)</span></div><div class="stakeholder-detail">First hour free · rounded up to full hour</div></div>
+                <div class="stakeholder-item"><div class="stakeholder-name">Retail Tenant</div><div class="stakeholder-value">HK$${Math.round(adjRetail).toLocaleString()} <span style="font-size:0.6rem;font-weight:400;color:#4d6f92;">/mo sales</span></div><div class="stakeholder-detail">${turnover}% rent share · HK$${Math.round(turnRent).toLocaleString()}/mo</div></div>
+                <div class="stakeholder-item" style="background:#f3f8fe;border-color:#b68b40;">
+                    <div class="stakeholder-name">Link REIT (Single Site)</div>
+                    <div class="stakeholder-value" style="color:#b68b40;">HK$${Math.round(netMon).toLocaleString()} <span style="font-size:0.6rem;font-weight:400;color:#4d6f92;">/mo</span> · HK$${Math.round(ann).toLocaleString()} <span style="font-size:0.6rem;font-weight:400;color:#4d6f92;">/yr</span></div>
+                    <div class="stakeholder-detail">Parking + Rent - Credits - Tech</div>
+                </div>
+            </div>
+
+            <div class="link-reit-banner">
+                <span class="label">LINK REIT · INCREMENTAL <span style="font-size:0.6rem;color:#b68b40;">(×${sites} sites)</span></span>
+                <span class="amount">HK$${Math.round(netMonTotal).toLocaleString()} <span class="sub">/mo</span></span>
+                <span class="amount annual">HK$${Math.round(annTotal).toLocaleString()} <span class="sub">/yr</span></span>
+                <span style="color:#b68b40;font-size:0.6rem;">(to reach ~HK$10M annual)</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:0.15rem;font-size:0.55rem;color:#2f4b74;background:#f1f7fe;border-radius:30px;padding:0.05rem 0.4rem;margin-top:0.05rem;">
+                <span><strong>Single site:</strong> HK$${Math.round(netMon).toLocaleString()}/mo</span>
+                <span><strong>×${sites} sites:</strong> HK$${Math.round(netMonTotal).toLocaleString()}/mo</span>
+                <span><strong>Annual (×${sites}):</strong> HK$${Math.round(annTotal).toLocaleString()}</span>
+            </div>
+        `;
+    }
+
+    ['l2TripsSlider','l2LeakageSlider','l2CreditSlider','l2TurnoverSlider'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updateL2);
+    });
+
+    document.getElementById('resetLever2').addEventListener('click', function() {
+        ['l2TripsSlider','l2LeakageSlider','l2CreditSlider','l2TurnoverSlider'].forEach((id,i) => {
+            document.getElementById(id).value = Object.values(l2D)[i];
+        });
+        updateL2();
+    });
+    updateL2();
+
+    // ================================================================
+    // LEVER 12: AVP SANDBOX (左右并排彩色横幅)
+    // ================================================================
+    const l12D = { bays: 200, rent: 500, rolloutBays: 400, premium: 15, marketRate: 2000 };
+
+    function updateL12() {
+        const bays = parseInt(document.getElementById('l12BaysSlider').value);
+        const rent = parseFloat(document.getElementById('l12RentSlider').value);
+        const rolloutBays = parseInt(document.getElementById('l12RolloutBaysSlider').value);
+        const premium = parseFloat(document.getElementById('l12PremiumSlider').value);
+        const marketRate = parseFloat(document.getElementById('l12MarketSlider').value);
+
+        document.getElementById('l12BaysValue').textContent = bays;
+        document.getElementById('l12RentValue').textContent = rent.toLocaleString();
+        document.getElementById('l12RolloutBaysValue').textContent = rolloutBays.toLocaleString();
+        document.getElementById('l12PremiumValue').textContent = premium + '%';
+        document.getElementById('l12MarketValue').textContent = marketRate.toLocaleString();
+
+        const monthlySandbox = bays * rent;
+        const annualSandbox = monthlySandbox * 12;
+        const totalSandbox = annualSandbox * 5;
+        const upliftedRate = marketRate * (1 + premium / 100);
+        const incrementalPerBay = upliftedRate - marketRate;
+        const monthlyRollout = rolloutBays * incrementalPerBay;
+        const annualRollout = monthlyRollout * 12;
+        const totalRollout5yr = annualRollout * 5;
+        const evCapex = Math.round(bays * 40000);
+        const evTotalCost = totalSandbox + evCapex;
+        const evAnnualCost = (totalSandbox + evCapex) / 5;
+
+        const scale = 1.7;
+        const sandboxScaled = annualSandbox * scale;
+        const rolloutScaled = annualRollout * scale;
+
+        const workingHTML = `
+            <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">Two-Stage Model</h5>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;">
+                <div style="background:#f8fafc;border-radius:6px;padding:0.25rem 0.4rem;border:1px solid #dce5ef;">
+                    <div style="font-size:0.6rem;font-weight:700;color:#0b2a4e;">Stage 1: Sandbox (Years 1-5)</div>
+                    <div style="font-size:0.8rem;font-weight:700;">HK$${annualSandbox.toLocaleString()}<span style="font-size:0.5rem;font-weight:400;color:#4d6f92;">/yr</span></div>
+                    <div style="font-size:0.6rem;color:#4d6f92;">${bays} bays × HK$${rent}/bay × 12</div>
+                    <div style="font-size:0.6rem;color:#b68b40;font-weight:600;">5-yr total: HK$${totalSandbox.toLocaleString()}</div>
+                </div>
+                <div style="background:#f8fafc;border-radius:6px;padding:0.25rem 0.4rem;border:1px solid #b68b40;">
+                    <div style="font-size:0.6rem;font-weight:700;color:#b68b40;">Stage 2: Commercial (Year 6+)</div>
+                    <div style="font-size:0.8rem;font-weight:700;color:#b68b40;">HK$${annualRollout.toLocaleString()}<span style="font-size:0.5rem;font-weight:400;color:#4d6f92;">/yr</span></div>
+                    <div style="font-size:0.6rem;color:#4d6f92;">${rolloutBays} bays × HK$${incrementalPerBay.toFixed(0)} uplift</div>
+                    <div style="font-size:0.6rem;color:#b68b40;font-weight:600;">5-yr view: HK$${totalRollout5yr.toLocaleString()}</div>
+                </div>
+            </div>
+
+            <h5 style="font-size:0.75rem;color:#0b2a4e;margin:0.2rem 0 0.05rem 0;">EV OEM Value Proposition</h5>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem;font-size:0.6rem;">
+                <div style="background:#f8fafc;border-radius:4px;padding:0.15rem 0.3rem;">
+                    <span style="font-weight:600;">5-yr lease cost:</span> HK$${totalSandbox.toLocaleString()}
+                </div>
+                <div style="background:#f8fafc;border-radius:4px;padding:0.15rem 0.3rem;">
+                    <span style="font-weight:600;">Hardware CapEx:</span> HK$${evCapex.toLocaleString()}
+                </div>
+                <div style="background:#f8fafc;border-radius:4px;padding:0.15rem 0.3rem;">
+                    <span style="font-weight:600;">Total investment:</span> HK$${evTotalCost.toLocaleString()}
+                </div>
+                <div style="background:#f8fafc;border-radius:4px;padding:0.15rem 0.3rem;">
+                    <span style="font-weight:600;">Annualised cost:</span> HK$${Math.round(evAnnualCost).toLocaleString()}/yr
+                </div>
+            </div>
+            <div style="font-size:0.55rem;color:#2f4b74;margin-top:0.1rem;padding:0.1rem 0.3rem;background:#f1f7fe;border-radius:4px;border-left:3px solid #0c6b4b;">
+                <strong>Why OEMs invest:</strong> HK extreme environment (2.3m bays · 1:7.5 ramps · GPS-denied) — scarce training asset. Algorithm acceleration + regulatory voice + premium subscription revenue.
+            </div>
+        `;
+        document.getElementById('lever12Working').innerHTML = workingHTML;
+
+        document.getElementById('lever12Stats').innerHTML = `
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;">
+                <div style="background:#f8fafc;border-radius:8px;padding:0.4rem 0.5rem;border:1px solid #dce5ef;">
+                    <div style="font-size:0.75rem;font-weight:700;color:#0b2a4e;text-transform:uppercase;letter-spacing:0.04em;">Stage 1: Sandbox</div>
+                    <div style="font-size:1.1rem;font-weight:700;">HK$${annualSandbox.toLocaleString()}<span style="font-size:0.75rem;font-weight:400;color:#4d6f92;"> /yr</span></div>
+                    <div style="font-size:0.75rem;color:#4d6f92;">${bays} bays · HK$${rent}/bay/mo · 5‑yr term</div>
+                    <div style="border-top:1px dashed #dce5ef;margin:0.15rem 0;padding-top:0.1rem;">
+                        <span style="font-size:0.75rem;font-weight:600;color:#0b2a4e;">5-yr total:</span>
+                        <span style="font-size:1.0rem;font-weight:700;color:#b68b40;">HK$${totalSandbox.toLocaleString()}</span>
+                    </div>
+                </div>
+                <div style="background:#f1e9d8;border-radius:8px;padding:0.4rem 0.5rem;border:1px solid #b68b40;">
+                    <div style="font-size:0.75rem;font-weight:700;color:#b68b40;text-transform:uppercase;letter-spacing:0.04em;">Stage 2: Commercial Roll-out</div>
+                    <div style="font-size:1.1rem;font-weight:700;color:#b68b40;">HK$${annualRollout.toLocaleString()}<span style="font-size:0.75rem;font-weight:400;color:#4d6f92;"> /yr</span></div>
+                    <div style="font-size:0.75rem;color:#4d6f92;">${rolloutBays} bays · ${premium}% premium · ${Math.round(incrementalPerBay)}/bay uplift</div>
+                    <div style="border-top:1px dashed #dce5ef;margin:0.15rem 0;padding-top:0.1rem;">
+                        <span style="font-size:0.75rem;font-weight:600;color:#0b2a4e;">5-yr view:</span>
+                        <span style="font-size:1.0rem;font-weight:700;color:#b68b40;">HK$${totalRollout5yr.toLocaleString()}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="banner-grid">
+                <div class="banner-blue">
+                    <span class="label"><i class="fas fa-flask"></i> Stage 1 · Sandbox (×1.7)</span>
+                    <span class="value">HK$${Math.round(sandboxScaled).toLocaleString()} <span style="font-size:0.7rem;font-weight:400;">/yr</span></span>
+                </div>
+                <div class="banner-gold">
+                    <span class="label"><i class="fas fa-rocket"></i> Stage 2 · Commercial (×1.7)</span>
+                    <span class="value">HK$${Math.round(rolloutScaled).toLocaleString()} <span style="font-size:0.7rem;font-weight:400;">/yr</span></span>
+                </div>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:0.15rem;font-size:0.75rem;color:#2f4b74;background:#f1f7fe;border-radius:30px;padding:0.05rem 0.4rem;margin-top:0.05rem;">
+                <span><strong>Sandbox (1 site):</strong> HK$${annualSandbox.toLocaleString()}/yr</span>
+                <span><strong>×1.7:</strong> HK$${Math.round(sandboxScaled).toLocaleString()}/yr</span>
+                <span><strong>Roll-out (1 site):</strong> HK$${annualRollout.toLocaleString()}/yr</span>
+                <span><strong>×1.7:</strong> HK$${Math.round(rolloutScaled).toLocaleString()}/yr</span>
+            </div>
+        `;
+    }
+
+    ['l12BaysSlider','l12RentSlider','l12RolloutBaysSlider','l12PremiumSlider','l12MarketSlider'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updateL12);
+    });
+
+    document.getElementById('resetLever12').addEventListener('click', function() {
+        ['l12BaysSlider','l12RentSlider','l12RolloutBaysSlider','l12PremiumSlider','l12MarketSlider'].forEach((id,i) => {
+            document.getElementById(id).value = Object.values(l12D)[i];
+        });
+        updateL12();
+    });
+    updateL12();
+
+});
+</script>
 
 </body>
 </html>
