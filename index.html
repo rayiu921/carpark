@@ -242,12 +242,56 @@
         #executive-summary .matrix-image-wrapper { max-height: 480px; overflow: hidden; }
         #executive-summary .matrix-image-wrapper img { max-height: 460px; width: auto; }
 
-        .reminders-box { background: #f0f7fe; border-left: 4px solid #0b2a4e; padding: 0.6rem 0.9rem; border-radius: 6px; margin-bottom: 0.8rem; font-size: 0.85rem; color: #1f3a5f; line-height: 1.5; }
-        .reminders-box .reminder-title { font-weight: 700; font-size: 1.0rem; color: #0b2a4e; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.4rem; }
-        .reminders-box .reminder-title i { color: #b68b40; font-size: 1.0rem; }
-        .reminders-box ul { list-style: none; padding-left: 0.2rem; margin: 0; }
-        .reminders-box ul li { font-size: 0.85rem; line-height: 1.5; margin-bottom: 0.15rem; padding-left: 1.2rem; position: relative; color: #1f3a5f; }
-        .reminders-box ul li::before { content: "•"; color: #b68b40; font-weight: bold; position: absolute; left: 0; }
+        /* ===== About This Summary 样式 ===== */
+        .about-box {
+            background: #f0f7fe;
+            border-left: 4px solid #0b2a4e;
+            padding: 0.8rem 1.0rem;
+            border-radius: 6px;
+            margin-bottom: 0.8rem;
+            font-size: 0.85rem;
+            color: #1f3a5f;
+            line-height: 1.6;
+        }
+        .about-box .about-title {
+            font-weight: 700;
+            font-size: 1.0rem;
+            color: #0b2a4e;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .about-box .about-title i {
+            color: #b68b40;
+            font-size: 1.0rem;
+        }
+        .about-box .opening-text {
+            font-size: 0.9rem;
+            color: #0b2a4e;
+            margin-bottom: 0.3rem;
+            line-height: 1.5;
+        }
+        .about-box ul {
+            list-style: none;
+            padding-left: 0.2rem;
+            margin: 0.3rem 0 0 0;
+        }
+        .about-box ul li {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 0.15rem;
+            padding-left: 1.2rem;
+            position: relative;
+            color: #1f3a5f;
+        }
+        .about-box ul li::before {
+            content: "•";
+            color: #b68b40;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
 
         /* 移除瀑布图注释 */
         .waterfall-note { display: none; }
@@ -328,8 +372,9 @@
             #lever12 .working-expand .sensitivity-table,
             #lever12 .working-expand .sensitivity-table th,
             #lever12 .working-expand .sensitivity-table td { font-size: 1.0em; }
-            .reminders-box { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
-            .reminders-box ul li { font-size: 0.75rem; }
+            .about-box { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
+            .about-box ul li { font-size: 0.75rem; }
+            .about-box .opening-text { font-size: 0.8rem; }
             .banner-blue, .banner-gold { font-size: 0.8rem; padding: 0.3rem 0.5rem; }
             .banner-blue .value, .banner-gold .value { font-size: 1.0rem; }
             .banner-grid { grid-template-columns: 1fr; }
@@ -366,8 +411,15 @@
         <!-- EXECUTIVE SUMMARY                                          -->
         <!-- ========================================================== -->
         <div id="executive-summary" class="lever-content active">
-            <div class="reminders-box">
-                <div class="reminder-title"><i class="fas fa-info-circle"></i> Friendly Reminders</div>
+            <!-- ===== 新版 "About This Summary" ===== -->
+            <div class="about-box">
+                <div class="about-title"><i class="fas fa-info-circle"></i> About This Summary</div>
+                <div class="opening-text">
+                    Across multiple revenue levers, Link REIT's car parks have the potential to unlock significant increase in annualised NOI within three years.
+                </div>
+                <div style="font-size:0.85rem; color:#1f3a5f; margin-bottom:0.2rem;">
+                    This summary presents a structured framework to explore that opportunity. A few friendly reminders on how to navigate this hypothetical business model:
+                </div>
                 <ul>
                     <li>This summary contains two diagrams only, with the intent to facilitate easy understanding and discussion.</li>
                     <li>Only three levers (L1 · Save to Fly, L2 · Park Duo Duo, and L12 · AVP Sandbox) are detailed in the clickable tabs for initial review and discussions.</li>
